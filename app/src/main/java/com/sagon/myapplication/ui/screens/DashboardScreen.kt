@@ -39,7 +39,7 @@ import com.sagon.myapplication.logic.HelpContent
 @Composable
 fun DashboardScreen(
     viewModel: PoolViewModel = viewModel(), 
-    onOpenAssistant: () -> Unit,
+    onOpenAssistant: (String?) -> Unit,
     onOpenHistory: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -56,6 +56,8 @@ fun DashboardScreen(
     var showTabletConfirm by remember { mutableStateOf(false) }
     var showPumpInfo by remember { mutableStateOf(false) }
     var showPumpConfirm by remember { mutableStateOf<Double?>(null) }
+    var showFilterWash by remember { mutableStateOf(false) }
+    var showWinterConfirm by remember { mutableStateOf(false) }
     var tabletResultSummary by remember { mutableStateOf<String?>(null) }
     
     // Estado temporal para el diálogo de pastillas
@@ -63,7 +65,22 @@ fun DashboardScreen(
     var tempHolidayMode by remember { mutableStateOf(false) }
 
     // Diálogos
-    helpContent?.let { (title, content) -> HelpDialog(title, content) { helpContent = null } }
+    helpContent?.let { (title, content) -> 
+        val botQuery = when {
+            title.contains("pH", ignoreCase = true) -> "explicame como regular el ph de la piscina, niveles ideales y que productos usar"
+            title.contains("Cloro", ignoreCase = true) -> "explicame como regular el cloro, niveles ideales, diferencia entre choque y mantenimiento y que comprar"
+            else -> null
+        }
+        HelpDialog(
+            title = title, 
+            content = content,
+            onBotClick = botQuery?.let { q -> { 
+                helpContent = null
+                onOpenAssistant(q)
+            }},
+            onDismiss = { helpContent = null }
+        ) 
+    }
     
     if (showTabletConfirm) {
         val showEducation = !hasSeenTabletInfo || (tabletActionCount > 0 && tabletActionCount % 30 == 0)
@@ -219,6 +236,73 @@ fun DashboardScreen(
         )
     }
 
+    if (showFilterWash) {
+        FilterWashDialog(
+            onDismiss = { showFilterWash = false },
+            onComplete = { viewModel.completeFilterWash() }
+        )
+    }
+
+    if (showWinterConfirm) {
+        var selectedType by remember { mutableStateOf("BOYA") }
+        AlertDialog(
+            onDismissRequest = { showWinterConfirm = false },
+            title = { Text("Registrar Invernador", fontWeight = FontWeight.Black) },
+            text = {
+                Column {
+                    Text("¿Qué tipo de invernador has añadido?")
+                    Spacer(Modifier.height(16.dp))
+                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
+                        FilterChip(
+                            selected = selectedType == "BOYA",
+                            onClick = { selectedType = "BOYA" },
+                            label = { Text("BOYA (2 meses)", fontSize = 11.sp, maxLines = 1) }
+                        )
+                        FilterChip(
+                            selected = selectedType == "LIQUIDO",
+                            onClick = { selectedType = "LIQUIDO" },
+                            label = { Text("LÍQUIDO (3 m.)", fontSize = 11.sp, maxLines = 1) }
+                        )
+                    }
+                    Spacer(Modifier.height(12.dp))
+                    Text(
+                        text = if(selectedType == "BOYA") 
+                            "Ideal para mantenimiento automático. Recuerda perforar los tetones laterales." 
+                            else "Requiere dilución previa. Protege el agua durante 90 días.",
+                        fontSize = 12.sp, color = Color.Gray, textAlign = TextAlign.Center
+                    )
+
+                    Spacer(Modifier.height(16.dp))
+                    
+                    // Enlace al Robot promocionando su uso
+                    OutlinedButton(
+                        onClick = { 
+                            showWinterConfirm = false
+                            onOpenAssistant("explicame como funciona el producto ivernacion, diferencias entre boyas y liquidos, recomendaciones de uso y sitios para comprar") 
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(12.dp),
+                        border = BorderStroke(1.dp, Color(0xFF0D47A1).copy(alpha = 0.3f)),
+                        colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFF0D47A1))
+                    ) {
+                        Icon(Icons.Rounded.Android, null, modifier = Modifier.size(18.dp))
+                        Spacer(Modifier.width(8.dp))
+                        Text("¿Dudas? Que me lo explique Blue Bot", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                    }
+                }
+            },
+            confirmButton = {
+                Button(onClick = {
+                    viewModel.updateWinterProduct(selectedType)
+                    showWinterConfirm = false
+                }) { Text("REGISTRAR") }
+            },
+            dismissButton = { TextButton(onClick = { showWinterConfirm = false }) { Text("CANCELAR") } },
+            shape = RoundedCornerShape(24.dp),
+            containerColor = Color.White
+        )
+    }
+
     if (showSettings) {
         SettingsDialog(
             onDeleteAccount = { viewModel.deleteUserAccount { showSettings = false } },
@@ -264,15 +348,17 @@ fun DashboardScreen(
             HeaderSection(
                 weather = weather, 
                 viewModel = viewModel, 
-                onSafety = { viewModel.showSafetyDialog.value = true }, 
-                onBot = onOpenAssistant, 
+                onBot = { onOpenAssistant(null) }, 
                 onHistory = onOpenHistory, 
-                onSettings = { showSettings = true }, 
-                onHelp = { t, c -> helpContent = t to c },
-                lastSafety = pool.lastSafetyCheck
+                onSettings = { showSettings = true }
             )
             
-            ModeSelector(pool.isWinterMode) { viewModel.updatePoolData(pool.volumeM3.toString(), pool.currentPh.toString(), pool.currentChlorine.toString(), it) }
+            ModeSelector(
+                isWinter = pool.isWinterMode, 
+                lastSafety = pool.lastSafetyCheck,
+                onSafety = { viewModel.showSafetyDialog.value = true },
+                onModeChange = { viewModel.updatePoolData(pool.volumeM3.toString(), pool.currentPh.toString(), pool.currentChlorine.toString(), it) }
+            )
 
             StatusIndicator(score = PoolCalculator.getPoolScore(pool))
 
@@ -291,13 +377,19 @@ fun DashboardScreen(
                             tempHolidayMode = false
                             showTabletConfirm = true 
                         },
+                        onWinterClick = { showWinterConfirm = true },
                         onShareClick = { viewModel.shareReport(context) },
                         onPumpHpClick = { showPumpConfirm = it }
                     )
                 }
             }
 
-            ResultsSection(pool, weather) { showPumpInfo = true }
+            ResultsSection(
+                pool = pool, 
+                weather = weather, 
+                onPumpInfo = { showPumpInfo = true },
+                onFilterClick = { showFilterWash = true }
+            )
             Spacer(Modifier.height(20.dp))
             Text(stringResource(R.string.credits_author), color = Color.White.copy(0.6f), fontSize = 11.sp, fontWeight = FontWeight.Medium, textAlign = TextAlign.Center)
         }
@@ -308,12 +400,9 @@ fun DashboardScreen(
 private fun HeaderSection(
     weather: com.sagon.myapplication.logic.WeatherInfo, 
     viewModel: PoolViewModel, 
-    onSafety: () -> Unit, 
     onBot: () -> Unit, 
     onHistory: () -> Unit, 
-    onSettings: () -> Unit, 
-    onHelp: (String, String) -> Unit,
-    lastSafety: Long
+    onSettings: () -> Unit
 ) {
     val context = LocalContext.current
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
@@ -332,10 +421,7 @@ private fun HeaderSection(
             }
         }
         Row(verticalAlignment = Alignment.CenterVertically) {
-            val isSafe = (System.currentTimeMillis() - lastSafety) < (30L * 24 * 60 * 60 * 1000)
-            
             JuicyIconButton(Icons.Rounded.Android, Color(0xFF0D47A1), pulse = true) { viewModel.triggerHapticFeedback(context); onBot() }
-            JuicyIconButton(Icons.Rounded.Shield, if (isSafe) Color(0xFF0D47A1) else Color(0xFFFF9800), !isSafe) { viewModel.triggerHapticFeedback(context); onSafety() }
             JuicyIconButton(Icons.Rounded.History, Color(0xFF0D47A1)) { viewModel.triggerHapticFeedback(context); onHistory() }
             JuicyIconButton(Icons.Rounded.Settings, Color(0xFF0D47A1)) { viewModel.triggerHapticFeedback(context); onSettings() }
         }
@@ -388,16 +474,42 @@ fun JuicyIconButton(icon: androidx.compose.ui.graphics.vector.ImageVector, tint:
 }
 
 @Composable
-private fun ModeSelector(isWinter: Boolean, onModeChange: (Boolean) -> Unit) {
+private fun ModeSelector(isWinter: Boolean, lastSafety: Long, onSafety: () -> Unit, onModeChange: (Boolean) -> Unit) {
     val summerColor = Color(0xFFFFC107)
     val winterColor = Color(0xFF2196F3)
     val currentColor by animateColorAsState(if (isWinter) winterColor else summerColor, label = "mode")
+    
+    val isSafe = (System.currentTimeMillis() - lastSafety) < (15L * 24 * 60 * 60 * 1000)
+
+    val infiniteTransition = rememberInfiniteTransition(label = "safety")
+    val alpha by infiniteTransition.animateFloat(
+        initialValue = 0.3f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(1000, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "blink"
+    )
 
     Surface(color = Color.Black.copy(alpha = 0.05f), shape = RoundedCornerShape(50.dp), modifier = Modifier.padding(vertical = 12.dp)) {
         Row(modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
             Text(stringResource(R.string.mode_summer), color = if (!isWinter) currentColor else Color.Gray, fontWeight = FontWeight.ExtraBold, fontSize = 14.sp)
-            Switch(checked = isWinter, onCheckedChange = onModeChange, Modifier.padding(horizontal = 16.dp), colors = SwitchDefaults.colors(checkedThumbColor = winterColor, uncheckedThumbColor = summerColor))
+            Switch(checked = isWinter, onCheckedChange = onModeChange, Modifier.padding(horizontal = 12.dp), colors = SwitchDefaults.colors(checkedThumbColor = winterColor, uncheckedThumbColor = summerColor))
             Text(stringResource(R.string.mode_winter), color = if (isWinter) currentColor else Color.Gray, fontWeight = FontWeight.ExtraBold, fontSize = 14.sp)
+            
+            Spacer(Modifier.width(16.dp))
+            VerticalDivider(modifier = Modifier.height(20.dp), color = Color.Gray.copy(alpha = 0.3f))
+            Spacer(Modifier.width(16.dp))
+            
+            IconButton(onClick = onSafety, modifier = Modifier.size(28.dp)) {
+                Icon(
+                    imageVector = Icons.Rounded.Shield,
+                    contentDescription = "Seguridad",
+                    tint = if (isSafe) Color(0xFF0D47A1) else Color(0xFFFF9800).copy(alpha = alpha),
+                    modifier = Modifier.size(24.dp)
+                )
+            }
         }
     }
 }
@@ -409,6 +521,7 @@ private fun InputsSection(
     onHelp: (String, String) -> Unit, 
     onCalcVolume: () -> Unit, 
     onTabletChangeClick: () -> Unit,
+    onWinterClick: () -> Unit,
     onShareClick: () -> Unit,
     onPumpHpClick: (Double) -> Unit
 ) {
@@ -425,6 +538,8 @@ private fun InputsSection(
                     icon = Icons.Rounded.WaterDrop, 
                     accentColor = Color(0xFF2196F3),
                     onValueChange = { viewModel.updatePoolData(it, pool.currentPh.toString(), pool.currentChlorine.toString(), pool.isWinterMode) }, 
+                    onIncrement = { viewModel.updatePoolData((pool.volumeM3 + 1.0).toString(), pool.currentPh.toString(), pool.currentChlorine.toString(), pool.isWinterMode) },
+                    onDecrement = { viewModel.updatePoolData((pool.volumeM3 - 1.0).coerceAtLeast(0.0).toString(), pool.currentPh.toString(), pool.currentChlorine.toString(), pool.isWinterMode) },
                     onHelpClick = onCalcVolume
                 )
             }
@@ -468,6 +583,14 @@ private fun InputsSection(
                         icon = Icons.Rounded.Science, 
                         accentColor = Color(0xFFFF9800), // Naranja para pH
                         onValueChange = { viewModel.updatePoolData(pool.volumeM3.toString(), it, pool.currentChlorine.toString(), pool.isWinterMode) }, 
+                        onIncrement = { 
+                            val nextVal = (Math.round((pool.currentPh + 0.1) * 10.0) / 10.0).coerceAtMost(10.0)
+                            viewModel.updatePoolData(pool.volumeM3.toString(), nextVal.toString(), pool.currentChlorine.toString(), pool.isWinterMode) 
+                        },
+                        onDecrement = { 
+                            val nextVal = (Math.round((pool.currentPh - 0.1) * 10.0) / 10.0).coerceAtLeast(0.0)
+                            viewModel.updatePoolData(pool.volumeM3.toString(), nextVal.toString(), pool.currentChlorine.toString(), pool.isWinterMode) 
+                        },
                         onHelpClick = { onHelp(phHelpTitle, HelpContent.PH_HELP) }
                     )
                 }
@@ -479,6 +602,14 @@ private fun InputsSection(
                         icon = Icons.Rounded.Opacity, 
                         accentColor = Color(0xFF00BCD4), // Cian para Cloro
                         onValueChange = { viewModel.updatePoolData(pool.volumeM3.toString(), pool.currentPh.toString(), it, pool.isWinterMode) }, 
+                        onIncrement = { 
+                            val nextVal = (Math.round((pool.currentChlorine + 0.1) * 10.0) / 10.0).coerceAtMost(10.0)
+                            viewModel.updatePoolData(pool.volumeM3.toString(), pool.currentPh.toString(), nextVal.toString(), pool.isWinterMode) 
+                        },
+                        onDecrement = { 
+                            val nextVal = (Math.round((pool.currentChlorine - 0.1) * 10.0) / 10.0).coerceAtLeast(0.0)
+                            viewModel.updatePoolData(pool.volumeM3.toString(), pool.currentPh.toString(), nextVal.toString(), pool.isWinterMode) 
+                        },
                         onHelpClick = { onHelp(clHelpTitle, HelpContent.CHLORINE_HELP) }
                     )
                 }
@@ -504,11 +635,25 @@ private fun InputsSection(
             }
         } else {
             Surface(color = Color.White.copy(alpha = 0.1f), shape = RoundedCornerShape(24.dp), modifier = Modifier.padding(top = 10.dp).fillMaxWidth()) {
-                Column(modifier = Modifier.padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-                    Icon(Icons.Rounded.AcUnit, null, tint = Color(0xFF0D47A1), modifier = Modifier.size(48.dp))
-                    Spacer(Modifier.height(8.dp))
-                    Text("PROTECCIÓN INVERNAL", color = Color(0xFF0D47A1), fontWeight = FontWeight.Black, fontSize = 20.sp, textAlign = TextAlign.Center)
-                    Text("Cálculos optimizados para hibernación", color = Color(0xFF0D47A1).copy(alpha = 0.7f), fontSize = 14.sp, textAlign = TextAlign.Center)
+                Column(modifier = Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(Icons.Rounded.AcUnit, null, tint = Color(0xFF0D47A1), modifier = Modifier.size(40.dp))
+                        Spacer(Modifier.width(12.dp))
+                        Column {
+                            Text("MODO INVIERNO", color = Color(0xFF0D47A1), fontWeight = FontWeight.Black, fontSize = 18.sp)
+                            Text("Mantenimiento reducido activo", color = Color(0xFF0D47A1).copy(alpha = 0.7f), fontSize = 12.sp)
+                        }
+                    }
+                    Spacer(Modifier.height(16.dp))
+                    JuicyButton(
+                        onClick = onWinterClick,
+                        modifier = Modifier.fillMaxWidth().height(48.dp),
+                        containerColor = Color(0xFF1976D2)
+                    ) {
+                        Icon(Icons.Rounded.AddModerator, null)
+                        Spacer(Modifier.width(8.dp))
+                        Text("REGISTRAR INVERNADOR", fontWeight = FontWeight.Bold)
+                    }
                 }
             }
         }
@@ -516,8 +661,13 @@ private fun InputsSection(
 }
 
 @Composable
-private fun ResultsSection(pool: com.sagon.myapplication.data.PoolData, weather: com.sagon.myapplication.logic.WeatherInfo, onPumpInfo: () -> Unit) {
-    Surface(Modifier.fillMaxWidth().clickable { onPumpInfo() }, RoundedCornerShape(20.dp), Color.White.copy(0.97f), shadowElevation = 6.dp) {
+private fun ResultsSection(
+    pool: com.sagon.myapplication.data.PoolData, 
+    weather: com.sagon.myapplication.logic.WeatherInfo, 
+    onPumpInfo: () -> Unit,
+    onFilterClick: () -> Unit
+) {
+    Surface(Modifier.fillMaxWidth(), RoundedCornerShape(20.dp), Color.White.copy(0.97f), shadowElevation = 6.dp) {
         Column(Modifier.padding(horizontal = 16.dp, vertical = 4.dp)) {
             if (!pool.isWinterMode) {
                 val phKey = PoolCalculator.getPhStatusKey(pool.currentPh)
@@ -535,12 +685,45 @@ private fun ResultsSection(pool: com.sagon.myapplication.data.PoolData, weather:
                     color = if (isExpired) Color(0xFFD32F2F) else Color(0xFF1976D2),
                     isBlinking = isExpired
                 )
+                
+                // Estado del Filtro
+                val filterDays = (now - pool.lastFilterWash) / (1000 * 60 * 60 * 24).toDouble()
+                val filterStatus = if (filterDays >= 15) "TOCA LAVADO" else "Limpio"
+                Box(modifier = Modifier.clickable { onFilterClick() }) {
+                    FinalResultRow(
+                        label = "FILTRO ARENA:",
+                        value = filterStatus,
+                        color = if (filterDays >= 15) Color(0xFFE91E63) else Color(0xFF2E7D32),
+                        isBlinking = filterDays >= 15
+                    )
+                }
             } else {
-                FinalResultRow(stringResource(R.string.result_winter_product), stringResource(R.string.unit_liters, PoolCalculator.calculateWinterProduct(pool.volumeM3)), Color(0xFF1976D2))
+                // Resultados Modo Invierno
+                val now = System.currentTimeMillis()
+                val winterDays = (now - pool.lastWinterProductDate) / (1000 * 60 * 60 * 24).toDouble()
+                val limit = if (pool.winterProductType == "BOYA") 60 else 90
+                val remaining = (limit - winterDays).toInt().coerceAtLeast(0)
+                
+                FinalResultRow(
+                    label = "PRODUCTO (${pool.winterProductType}):",
+                    value = if (pool.lastWinterProductDate == 0L) "No registrado" else "$remaining días restantes",
+                    color = if (remaining < 7) Color(0xFFD32F2F) else Color(0xFF1976D2),
+                    isBlinking = remaining < 7 && pool.lastWinterProductDate != 0L
+                )
+                
+                FinalResultRow(
+                    label = "RECOMENDACIÓN:",
+                    value = if (remaining < 7) "Reponer Producto" else "Solo Filtración",
+                    color = if (remaining < 7) Color(0xFFD32F2F) else Color(0xFF2E7D32)
+                )
             }
             HorizontalDivider(Modifier.padding(vertical = 2.dp), thickness = 1.dp, color = Color.LightGray.copy(0.4f))
-            val pumpHours = PoolCalculator.calculateFilteringHours(pool, weather.temp).toInt()
-            FinalResultRow(stringResource(R.string.result_pump_hours), stringResource(R.string.unit_hours_per_day, pumpHours), Color(0xFF0D47A1))
+            
+            // Fila de depuradora
+            Box(modifier = Modifier.clickable { onPumpInfo() }) {
+                val pumpHours = PoolCalculator.calculateFilteringHours(pool, weather.temp).toInt()
+                FinalResultRow(stringResource(R.string.result_pump_hours), stringResource(R.string.unit_hours_per_day, pumpHours), Color(0xFF0D47A1))
+            }
         }
     }
 }

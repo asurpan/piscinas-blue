@@ -19,11 +19,15 @@ class SpeechRecognizerManager(context: Context) {
             override fun onRmsChanged(rmsdB: Float) {}
             override fun onBufferReceived(buffer: ByteArray?) {}
             override fun onEndOfSpeech() {}
-            override fun onError(error: Int) {}
+            override fun onError(error: Int) {
+                onResult?.invoke("") // Enviar vacío en caso de error para resetear isListening
+            }
             override fun onResults(results: Bundle?) {
                 val matches = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
                 if (!matches.isNullOrEmpty()) {
                     onResult?.invoke(matches[0])
+                } else {
+                    onResult?.invoke("")
                 }
             }
             override fun onPartialResults(results: Bundle?) {}

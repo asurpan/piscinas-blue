@@ -1,9 +1,7 @@
-# Tareas: Inteligencia Hidráulica "Smart & Silent"
+# Tareas: Selectores de Precisión (Steppers) con Sonido
 
-- `[x]` Actualizar modelos de datos (`PoolData` y `PoolEntity`) con `pumpHp`
-- `[x]` Incrementar versión de Base de Datos Room a 4
-- `[x]` Implementar lógica de ingeniería hidráulica en `PoolCalculator`
-- `[x]` Actualizar `PoolViewModel` para manejar el cambio de potencia del motor
-- `[x]` Integrar selector de motor y diálogo técnico en `DashboardScreen`
-- `[x]` Optimizar `MaintenanceWorker` para avisos inteligentes (Ola de calor)
-- `[x]` Verificar en el dispositivo Xiaomi
+- `[ ]` Rediseñar `PoolInputField.kt` como un Stepper con botones `[-]` y `[+]`
+- `[ ]` Integrar `SoundManager.playClick()` en los nuevos botones
+- `[ ]` Actualizar `DashboardScreen.kt` con la lógica de incremento/decremento
+- `[ ]` Asegurar redondeo correcto de decimales (0.1)
+- `[ ]` Verificar en el dispositivo Xiaomi

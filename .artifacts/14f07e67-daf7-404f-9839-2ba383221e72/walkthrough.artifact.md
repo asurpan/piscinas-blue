@@ -1,38 +1,27 @@
-# Inteligencia Hidráulica "Smart & Silent"
+# Consola de Control de Precisión (Steppers con Sonido)
 
-Se ha implementado un motor de cálculo profesional para la depuradora, basado en ingeniería hidráulica real y sincronización climática.
+Se ha eliminado la necesidad de teclear valores decimales, sustituyendo los campos tradicionales por selectores de precisión mucho más rápidos y profesionales.
 
-## Mejoras Realizadas
+## Cambios Realizados
 
-### 1. Cálculo de Ingeniería (No más "12h fijas")
-Se ha sustituido la regla genérica por una fórmula de **Recirculación de Agua**:
-- **Caudal por Motor**: La app ahora sabe que un motor de **1 CV** mueve **16 m³/h**, mientras que uno de **0.5 CV** mueve **10 m³/h**.
-- **Ciclos de Limpieza (Vueltas)**: La IA determina cuántas veces debe pasar toda el agua por el filtro según el calor:
-    - Fresco (<20°C): 1 vuelta.
-    - Calor (28-32°C): 2 vueltas.
-    - Ola de calor (>33°C): 3 vueltas.
-- **Resultado**: Para tus 31 m³ con un motor de 1 CV, el tiempo bajará de 12h a unas **4-6h** reales, ahorrando muchísima luz.
+### 1. Selectores de Precisión (Steppers) 🔘
+Se han integrado botones `[-]` y `[+]` en los campos de **Capacidad**, **pH** y **Cloro**:
+- **pH y Cloro**: Los botones aumentan o disminuyen el valor de **0.1 en 0.1**. Esto permite un ajuste fino rapidísimo sin abrir el teclado.
+- **Capacidad**: Los botones ajustan el volumen de **1.0 en 1.0 m³**.
+- **Escritura Manual**: Si necesitas hacer un cambio brusco, aún puedes pulsar sobre el número central para usar el teclado.
 
-### 2. Nuevo Selector de Motor (CV)
-En la sección de "Capacidad", se ha añadido un selector elegante para indicar la potencia de tu bomba (**0.5, 0.75, 1.0 o 1.5 CV**). La app recordará este valor para todos sus cálculos.
-- **Confirmación de Seguridad**: Al cambiar la potencia, la app pedirá confirmación para evitar cambios accidentales que afecten al filtrado.
+### 2. Feedback Auditivo (Beep) 🔊
+Cada vez que pulsas un botón de incremento o decremento, la app emite un **sonido de "beep"** del sistema.
+- Proporciona una confirmación inmediata de que la pulsación ha sido registrada, ideal para el uso en exteriores bajo el sol.
 
-### 3. Diálogo de "Lógica de Filtrado"
-Al pulsar sobre el resultado de las horas de depuradora, la app abrirá una ventana explicando exactamente cómo ha llegado a ese número, detallando el volumen de tu piscina, el caudal de tu bomba y los ciclos necesarios por el clima actual.
+### 3. Redondeo Inteligente
+Se ha implementado una lógica de redondeo matemático para evitar errores de precisión de punto flotante (como ver un "7.40000001"). Ahora los números siempre se verán limpios y profesionales.
 
-### 4. Notificaciones Inteligentes (Ola de Calor)
-Se ha configurado el sistema en segundo plano (**WorkManager**) para que:
-- **No te moleste cada día**.
-- **Te avise SOLO si hay peligro**: Si el termómetro sube de 33°C, te enviará una alerta: *"¡Alerta Calor! Hoy sube la temperatura, aumenta el filtrado a X horas para proteger el agua."*
+## Cómo probarlo
+1. Ve al Dashboard.
+2. Pulsa suavemente el botón `+` del pH. Escucharás el **beep** y verás cómo sube una décima instantáneamente.
+3. Prueba a dejar pulsado el número si quieres teclear un valor muy diferente.
 
 ---
-### 5. Interfaz de Datos en Paralelo
-Se ha optimizado la pantalla para que los campos de **pH** y **Cloro** aparezcan en la misma línea horizontal:
-- **Colores Diferenciados**:
-    - **Naranja** para el pH (Laboratorio).
-    - **Cian** para el Cloro (Agua).
-- **Números más Grandes**: Se ha aumentado la fuente a **20.sp** para que los valores sean mucho más legibles y cómodos de introducir.
-- **Botón Compartir**: Ahora situado junto al botón de cambio de pastilla para un reporte rápido.
-
 > [!TIP]
-> **Pruébalo ahora**: Cambia entre 0.5 CV y 1.5 CV en la pantalla principal y verás cómo las horas se ajustan al instante de forma profesional.
+> Este sistema es ideal cuando tienes las manos húmedas o hay mucha luz solar, ya que los botones son grandes y ofrecen respuesta sonora.

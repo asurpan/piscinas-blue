@@ -35,6 +35,7 @@ class MainActivity : ComponentActivity() {
                 
                 var currentScreen by rememberSaveable { mutableStateOf("splash") }
                 var showExitDialog by remember { mutableStateOf(false) }
+                var initialBotQuery by rememberSaveable { mutableStateOf<String?>(null) }
 
                 val limitReached = usageCount >= 30 && !isActivated && stealthConfig.isEnabled
 
@@ -60,10 +61,21 @@ class MainActivity : ComponentActivity() {
                         if (viewModel.activateApp(code)) currentScreen = "main"
                     }
                     "main" -> DashboardScreen(
-                        onOpenAssistant = { currentScreen = "assistant" },
+                        onOpenAssistant = { query -> 
+                            initialBotQuery = query
+                            currentScreen = "assistant" 
+                        },
                         onOpenHistory = { currentScreen = "history" }
                     )
-                    "assistant" -> AssistantScreen { currentScreen = "main" }
+                    "assistant" -> {
+                        AssistantScreen(
+                            initialQuery = initialBotQuery,
+                            onBack = { 
+                                initialBotQuery = null
+                                currentScreen = "main" 
+                            }
+                        )
+                    }
                     "history" -> HistoryScreen { currentScreen = "main" }
                 }
             }
@@ -71,7 +83,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun setupMaintenanceReminders() {
-        val request = PeriodicWorkRequestBuilder<MaintenanceWorker>(3, TimeUnit.DAYS).build()
+        val request = PeriodicWorkRequestBuilder<MaintenanceWorker>(7, TimeUnit.DAYS).build()
         WorkManager.getInstance(this).enqueueUniquePeriodicWork(
             "pool_maintenance",
             ExistingPeriodicWorkPolicy.KEEP,

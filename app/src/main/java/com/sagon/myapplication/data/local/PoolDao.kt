@@ -24,6 +24,9 @@ interface PoolDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertLog(log: MaintenanceLogEntity)
 
+    @Delete
+    suspend fun deleteLog(log: MaintenanceLogEntity)
+
     @Query("DELETE FROM maintenance_logs")
     suspend fun deleteAllLogs()
 }

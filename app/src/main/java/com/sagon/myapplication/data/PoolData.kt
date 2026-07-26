@@ -11,5 +11,8 @@ data class PoolData(
     val userConsumptionFactor: Double = 1.0,
     val tabletQuantity: Int = 1,
     val isHolidayMode: Boolean = false,
-    val pumpHp: Double = 0.75
+    val pumpHp: Double = 0.75,
+    val lastFilterWash: Long = 0L,
+    val lastWinterProductDate: Long = 0L,
+    val winterProductType: String = "" // "LIQUIDO" o "BOYA"
 )

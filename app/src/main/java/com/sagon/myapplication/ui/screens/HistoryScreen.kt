@@ -1,7 +1,9 @@
 package com.sagon.myapplication.ui.screens
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -90,7 +92,33 @@ fun HistoryScreen(viewModel: PoolViewModel = viewModel(), onBack: () -> Unit) {
             } else {
                 LazyColumn(Modifier.padding(padding).fillMaxSize().padding(16.dp)) {
                     items(logs) { log ->
-                        LogCard(log)
+                        var showItemDelete by remember { mutableStateOf(false) }
+                        
+                        if (showItemDelete) {
+                            AlertDialog(
+                                onDismissRequest = { showItemDelete = false },
+                                title = { Text("¿Borrar registro?", fontWeight = FontWeight.Bold) },
+                                text = { Text("¿Quieres eliminar este registro del historial?") },
+                                confirmButton = {
+                                    TextButton(onClick = { 
+                                        viewModel.deleteLogEntry(log)
+                                        showItemDelete = false 
+                                    }) {
+                                        Text("BORRAR", color = Color.Red)
+                                    }
+                                },
+                                dismissButton = {
+                                    TextButton(onClick = { showItemDelete = false }) { Text("CANCELAR") }
+                                },
+                                shape = RoundedCornerShape(20.dp),
+                                containerColor = Color.White
+                            )
+                        }
+
+                        LogCard(
+                            log = log, 
+                            onLongClick = { showItemDelete = true }
+                        )
                     }
                 }
             }
@@ -98,11 +126,18 @@ fun HistoryScreen(viewModel: PoolViewModel = viewModel(), onBack: () -> Unit) {
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun LogCard(log: MaintenanceLogEntity) {
+private fun LogCard(log: MaintenanceLogEntity, onLongClick: () -> Unit) {
     val dateStr = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault()).format(Date(log.date))
     Card(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
+            .combinedClickable(
+                onClick = { /* Opcional: mostrar detalle */ },
+                onLongClick = onLongClick
+            ),
         colors = CardDefaults.cardColors(containerColor = Color.White.copy(alpha = 0.9f)),
         shape = RoundedCornerShape(16.dp)
     ) {

@@ -86,7 +86,10 @@ class PoolViewModel(application: Application) : AndroidViewModel(application) {
                         lastSafetyCheck = entity.lastSafetyCheck,
                         tabletQuantity = entity.tabletQuantity,
                         isHolidayMode = entity.isHolidayMode,
-                        pumpHp = entity.pumpHp
+                        pumpHp = entity.pumpHp,
+                        lastFilterWash = entity.lastFilterWash,
+                        lastWinterProductDate = entity.lastWinterProductDate,
+                        winterProductType = entity.winterProductType
                     )
                 } else PoolData()
                 _uiState.update { it.copy(poolData = data) }
@@ -144,6 +147,31 @@ class PoolViewModel(application: Application) : AndroidViewModel(application) {
         val newData = current.copy(pumpHp = hp)
         _uiState.update { it.copy(poolData = newData) }
         saveData(newData)
+    }
+
+    fun completeFilterWash() {
+        val current = _uiState.value.poolData
+        val newData = current.copy(lastFilterWash = System.currentTimeMillis())
+        _uiState.update { it.copy(poolData = newData) }
+        addLog("FILTRO", "Lavado y enjuague realizado correctamente")
+        saveData(newData)
+    }
+
+    fun updateWinterProduct(type: String) {
+        val current = _uiState.value.poolData
+        val newData = current.copy(
+            lastWinterProductDate = System.currentTimeMillis(),
+            winterProductType = type
+        )
+        _uiState.update { it.copy(poolData = newData) }
+        addLog("INVIERNO", "Aplicado producto invernador ($type)")
+        saveData(newData)
+    }
+
+    fun deleteLogEntry(log: MaintenanceLogEntity) {
+        viewModelScope.launch {
+            repository.deleteLog(log)
+        }
     }
 
     fun onTabletChanged(context: Context, quantity: Int, holidayMode: Boolean): String {
@@ -217,7 +245,10 @@ class PoolViewModel(application: Application) : AndroidViewModel(application) {
                     lastSafetyCheck = data.lastSafetyCheck,
                     tabletQuantity = data.tabletQuantity,
                     isHolidayMode = data.isHolidayMode,
-                    pumpHp = data.pumpHp
+                    pumpHp = data.pumpHp,
+                    lastFilterWash = data.lastFilterWash,
+                    lastWinterProductDate = data.lastWinterProductDate,
+                    winterProductType = data.winterProductType
                 )
             )
             FirebaseSyncManager.syncPoolToCloud(poolId, data)

@@ -26,6 +26,10 @@ class PoolRepository(private val poolDao: PoolDao) {
         poolDao.insertLog(log)
     }
 
+    suspend fun deleteLog(log: MaintenanceLogEntity) {
+        poolDao.deleteLog(log)
+    }
+
     suspend fun clearHistory() {
         poolDao.deleteAllLogs()
     }

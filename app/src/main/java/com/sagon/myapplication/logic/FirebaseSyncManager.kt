@@ -35,12 +35,21 @@ object FirebaseSyncManager {
             "currentPh" to data.currentPh,
             "currentChlorine" to data.currentChlorine,
             "isWinterMode" to data.isWinterMode,
-            "lastUpdate" to System.currentTimeMillis()
+            "lastUpdate" to System.currentTimeMillis(),
+            "lastTabletChange" to data.lastTabletChange,
+            "userConsumptionFactor" to data.userConsumptionFactor,
+            "lastSafetyCheck" to data.lastSafetyCheck,
+            "tabletQuantity" to data.tabletQuantity,
+            "isHolidayMode" to data.isHolidayMode,
+            "pumpHp" to data.pumpHp,
+            "lastFilterWash" to data.lastFilterWash,
+            "lastWinterProductDate" to data.lastWinterProductDate,
+            "winterProductType" to data.winterProductType
         )
         try {
             db.collection(COLLECTION_NAME).document(poolId).set(poolMap).await()
         } catch (e: Exception) {
-            // Error silencioso si no hay internet o falta google-services.json
+            // Error silencioso
         }
     }
 
@@ -49,10 +58,19 @@ object FirebaseSyncManager {
             .addSnapshotListener { snapshot, e ->
                 if (e == null && snapshot != null && snapshot.exists()) {
                     val data = PoolData(
-                        volumeM3 = snapshot.getDouble("volumeM3") ?: 0.0,
-                        currentPh = snapshot.getDouble("currentPh") ?: 7.4,
-                        currentChlorine = snapshot.getDouble("currentChlorine") ?: 1.2,
-                        isWinterMode = snapshot.getBoolean("isWinterMode") ?: false
+                        volumeM3 = snapshot.getDouble("volumeM3") ?: 25.0,
+                        currentPh = snapshot.getDouble("currentPh") ?: 7.2,
+                        currentChlorine = snapshot.getDouble("currentChlorine") ?: 1.0,
+                        isWinterMode = snapshot.getBoolean("isWinterMode") ?: false,
+                        lastTabletChange = snapshot.getLong("lastTabletChange") ?: System.currentTimeMillis(),
+                        userConsumptionFactor = snapshot.getDouble("userConsumptionFactor") ?: 1.0,
+                        lastSafetyCheck = snapshot.getLong("lastSafetyCheck") ?: 0L,
+                        tabletQuantity = snapshot.getLong("tabletQuantity")?.toInt() ?: 1,
+                        isHolidayMode = snapshot.getBoolean("isHolidayMode") ?: false,
+                        pumpHp = snapshot.getDouble("pumpHp") ?: 0.75,
+                        lastFilterWash = snapshot.getLong("lastFilterWash") ?: 0L,
+                        lastWinterProductDate = snapshot.getLong("lastWinterProductDate") ?: 0L,
+                        winterProductType = snapshot.getString("winterProductType") ?: ""
                     )
                     onUpdate(data)
                 }

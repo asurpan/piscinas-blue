@@ -32,48 +32,100 @@ class MaintenanceWorker(
                 userConsumptionFactor = poolEntity.userConsumptionFactor,
                 tabletQuantity = poolEntity.tabletQuantity,
                 isHolidayMode = poolEntity.isHolidayMode,
-                pumpHp = poolEntity.pumpHp
+                pumpHp = poolEntity.pumpHp,
+                lastFilterWash = poolEntity.lastFilterWash
             )
 
-            if (!poolData.isWinterMode) {
-                // Obtenemos el clima actual para el cálculo inteligente
-                val weather = try {
-                    WeatherManager.getWeatherData(37.38, -5.98)
-                } catch (e: Exception) {
-                    null
+            // Lógica de Previsión Inteligente "Zero Molestias"
+            val weather = try {
+                WeatherManager.getWeatherData(37.38, -5.98)
+            } catch (e: Exception) {
+                null
+            }
+
+            if (weather != null && !poolData.isWinterMode) {
+                val todayMax = weather.temp
+                val tomorrowMax = if (weather.maxTemps.size > 1) weather.maxTemps[1] else todayMax
+                val dayAfterMax = if (weather.maxTemps.size > 2) weather.maxTemps[2] else todayMax
+
+                // 1. Alerta de Ola de Calor Extrema (>35°C)
+                if (tomorrowMax >= 35.0 || dayAfterMax >= 35.0) {
+                    val targetTemp = if (tomorrowMax >= 35.0) tomorrowMax else dayAfterMax
+                    showNotification(
+                        "¡ALERTA EXTREMA! 🌡️🔥",
+                        "Se esperan ${targetTemp.toInt()}°C. Sube el filtrado y revisa el cloro para evitar agua verde."
+                    )
+                    return Result.success()
                 }
 
-                val temp = weather?.temp ?: 25.0
-                val wind = weather?.windSpeed ?: 10.0
-                val lifespan = PoolCalculator.calculateIntelligentTabletLifespan(poolData, temp, wind)
-                
+                // 2. Alerta de Choque Térmico (Subida > 5°C)
+                if (tomorrowMax - todayMax >= 5.0) {
+                    showNotification(
+                        "Aviso de Prevención 🌡️⬆️",
+                        "Mañana sube la temperatura drásticamente. Pon una pastilla extra hoy."
+                    )
+                    return Result.success()
+                }
+
+                // 3. Aviso de Ahorro (Bajada > 10°C)
+                if (todayMax - tomorrowMax >= 10.0) {
+                    showNotification(
+                        "Oportunidad de Ahorro 💡",
+                        "Mañana refresca mucho. Puedes bajar las horas de depuradora."
+                    )
+                    return Result.success()
+                }
+            }
+
+            // Chequeos de mantenimiento existentes
+            if (!poolData.isWinterMode) {
+                val lifespan = PoolCalculator.calculateIntelligentTabletLifespan(poolData, weather?.temp ?: 25.0, weather?.windSpeed ?: 10.0)
                 val now = System.currentTimeMillis()
                 val daysPassed = (now - poolData.lastTabletChange) / (1000 * 60 * 60 * 24).toDouble()
 
                 if (daysPassed >= lifespan) {
                     showNotification(
                         "¡PASTILLA CADUCADA! ⚠️",
-                        "La pastilla de cloro se ha agotado. Cámbiala ahora para mantener el agua cristalina."
+                        "La pastilla de cloro se ha agotado. Cámbiala ahora."
+                    )
+                    return Result.success()
+                }
+                
+                val filterDays = (now - poolData.lastFilterWash) / (1000 * 60 * 60 * 24).toDouble()
+                if (filterDays >= 15) {
+                    showNotification(
+                        "Mantenimiento de Filtro 🧼",
+                        "Toca lavar el filtro de arena para mantener el agua clara."
+                    )
+                    return Result.success()
+                }
+            } else {
+                // Mantenimiento en Modo Invierno
+                val now = System.currentTimeMillis()
+                val daysPassed = (now - poolData.lastWinterProductDate) / (1000 * 60 * 60 * 24).toDouble()
+                val limit = if (poolData.winterProductType == "BOYA") 60 else 90
+
+                if (poolData.lastWinterProductDate > 0 && daysPassed >= limit) {
+                    showNotification(
+                        "Invernación: Reposición ❄️",
+                        "El producto invernador (${poolData.winterProductType}) ha caducado. Añade una nueva dosis."
                     )
                     return Result.success()
                 }
 
-                if (temp > 33.0) {
-                    val flowRate = when (poolData.pumpHp) { 0.5 -> 10.0 0.75 -> 13.0 1.0 -> 16.0 1.5 -> 22.0 else -> 12.0 }
-                    val hours = (poolData.volumeM3 / flowRate) * 3.0 // 3 vueltas en ola de calor
+                // Aviso de Primavera (Marzo/Abril > 16°C)
+                val calendar = java.util.Calendar.getInstance()
+                val month = calendar.get(java.util.Calendar.MONTH) // 0-11
+                if ((month == 2 || month == 3) && (weather?.temp ?: 0.0) > 16.0) {
                     showNotification(
-                        "¡ALERTA CALOR! 🌡️",
-                        "Hoy hará ${temp.toInt()}°C. Sube el filtrado a ${String.format("%.1f", hours)} horas para evitar que el agua se estropee."
+                        "¡Llega la Primavera! ☀️",
+                        "El agua sube de 16°C. ¿Empezamos a preparar la piscina para la temporada?"
                     )
                     return Result.success()
                 }
             }
         }
 
-        showNotification(
-            "Mantenimiento PISCINAS BLUE",
-            "Es hora de revisar el nivel de cloro y pH de tu piscina. 🏊‍♂️"
-        )
         return Result.success()
     }
 
@@ -89,7 +141,7 @@ class MaintenanceWorker(
         val notification = NotificationCompat.Builder(applicationContext, channelId)
             .setContentTitle(title)
             .setContentText(message)
-            .setSmallIcon(R.mipmap.ic_launcher) // Usando el icono de la app
+            .setSmallIcon(R.mipmap.ic_launcher)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setAutoCancel(true)
             .build()

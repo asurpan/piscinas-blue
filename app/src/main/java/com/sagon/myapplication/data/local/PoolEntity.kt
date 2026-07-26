@@ -17,5 +17,8 @@ data class PoolEntity(
     val lastSafetyCheck: Long = 0L,
     val tabletQuantity: Int = 1,
     val isHolidayMode: Boolean = false,
-    val pumpHp: Double = 0.75
+    val pumpHp: Double = 0.75,
+    val lastFilterWash: Long = 0L,
+    val lastWinterProductDate: Long = 0L,
+    val winterProductType: String = ""
 )

@@ -1,7 +1,10 @@
 package com.sagon.myapplication.ui.components
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Android
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,6 +19,7 @@ import androidx.compose.ui.window.Dialog
 fun HelpDialog(
     title: String,
     content: String,
+    onBotClick: (() -> Unit)? = null,
     onDismiss: () -> Unit
 ) {
     Dialog(onDismissRequest = onDismiss) {
@@ -43,6 +47,22 @@ fun HelpDialog(
                     lineHeight = 22.sp,
                     color = Color.DarkGray
                 )
+                
+                if (onBotClick != null) {
+                    Spacer(Modifier.height(16.dp))
+                    OutlinedButton(
+                        onClick = onBotClick,
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(12.dp),
+                        border = BorderStroke(1.dp, Color(0xFF0D47A1).copy(alpha = 0.3f)),
+                        colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFF0D47A1))
+                    ) {
+                        Icon(Icons.Rounded.Android, null, modifier = Modifier.size(18.dp))
+                        Spacer(Modifier.width(8.dp))
+                        Text("¿Dudas? Que me lo explique Blue Bot", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                    }
+                }
+
                 Spacer(modifier = Modifier.height(24.dp))
                 Button(
                     onClick = onDismiss,

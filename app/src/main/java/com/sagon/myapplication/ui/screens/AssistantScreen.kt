@@ -1,5 +1,13 @@
 package com.sagon.myapplication.ui.screens
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -10,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.automirrored.rounded.Send
 import androidx.compose.material.icons.rounded.Mic
+import androidx.compose.material.icons.rounded.ShoppingCart
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -17,22 +26,66 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sagon.myapplication.R
 import com.sagon.myapplication.logic.BlueBotManager
 import com.sagon.myapplication.ui.PoolViewModel
 
-data class Message(val text: String, val isBot: Boolean)
+data class Message(
+    val text: String, 
+    val isBot: Boolean,
+    val productToSearch: String? = null
+)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AssistantScreen(viewModel: PoolViewModel = viewModel(), onBack: () -> Unit) {
+fun AssistantScreen(
+    viewModel: PoolViewModel = viewModel(), 
+    initialQuery: String? = null,
+    onBack: () -> Unit
+) {
+    val uiState by viewModel.uiState.collectAsState()
     var text by remember { mutableStateOf("") }
     val messages = remember { mutableStateListOf(Message("¡Hola! Soy Blue Bot. ¿Qué le pasa a tu piscina?", true)) }
+    var isListening by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+
+    LaunchedEffect(initialQuery) {
+        if (initialQuery != null) {
+            messages.add(Message(initialQuery, false))
+            val response = BlueBotManager.getResponse(initialQuery, uiState.weather)
+            messages.add(Message(response.text, true, response.productToSearch))
+        }
+    }
+
+    // Función para iniciar la escucha de voz
+    fun startVoice() {
+        isListening = true
+        viewModel.startVoiceInput { voiceText ->
+            isListening = false
+            if (voiceText.isNotBlank()) {
+                val response = BlueBotManager.getResponse(voiceText, uiState.weather)
+                messages.add(Message(voiceText, false))
+                messages.add(Message(response.text, true, response.productToSearch))
+            }
+        }
+    }
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) startVoice()
+        else {
+            Toast.makeText(context, "Permiso de audio denegado", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
@@ -47,7 +100,14 @@ fun AssistantScreen(viewModel: PoolViewModel = viewModel(), onBack: () -> Unit) 
             containerColor = Color.Transparent,
             topBar = {
                 TopAppBar(
-                    title = { Text("Blue Bot - Experto", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 24.sp) },
+                    title = { 
+                        Column {
+                            Text("Blue Bot - Experto", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                            if (isListening) {
+                                Text("Escuchando...", color = Color(0xFF4CAF50), fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                            }
+                        }
+                    },
                     navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, null, tint = Color.White) } },
                     colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
                 )
@@ -61,18 +121,19 @@ fun AssistantScreen(viewModel: PoolViewModel = viewModel(), onBack: () -> Unit) 
                 ChatInput(
                     text = text, 
                     onValueChange = { text = it },
+                    isListening = isListening,
                     onMicClick = {
-                        viewModel.startVoiceInput { voiceText ->
-                            if (voiceText.isNotBlank()) {
-                                messages.add(Message(voiceText, false))
-                                messages.add(Message(BlueBotManager.getResponse(voiceText), true))
-                            }
+                        if (ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
+                            startVoice()
+                        } else {
+                            permissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
                         }
                     },
                     onSend = {
                         if (text.isNotBlank()) {
+                            val response = BlueBotManager.getResponse(text)
                             messages.add(Message(text, false))
-                            messages.add(Message(BlueBotManager.getResponse(text), true))
+                            messages.add(Message(response.text, true, response.productToSearch))
                             text = ""
                         }
                     }
@@ -83,14 +144,24 @@ fun AssistantScreen(viewModel: PoolViewModel = viewModel(), onBack: () -> Unit) 
 }
 
 @Composable
-private fun ChatInput(text: String, onValueChange: (String) -> Unit, onMicClick: () -> Unit, onSend: () -> Unit) {
+private fun ChatInput(text: String, onValueChange: (String) -> Unit, isListening: Boolean, onMicClick: () -> Unit, onSend: () -> Unit) {
     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+        val micColor by animateColorAsState(
+            if (isListening) Color(0xFFF44336) else Color.White.copy(alpha = 0.2f),
+            label = "micColor"
+        )
+        
         IconButton(
             onClick = onMicClick,
-            colors = IconButtonDefaults.iconButtonColors(containerColor = Color.White.copy(alpha = 0.2f)),
+            colors = IconButtonDefaults.iconButtonColors(containerColor = micColor),
             modifier = Modifier.size(56.dp)
         ) {
-            Icon(Icons.Rounded.Mic, null, tint = Color.White, modifier = Modifier.size(32.dp))
+            Icon(
+                imageVector = Icons.Rounded.Mic, 
+                contentDescription = null, 
+                tint = Color.White, 
+                modifier = Modifier.size(32.dp)
+            )
         }
         Spacer(Modifier.width(12.dp))
         TextField(
@@ -111,6 +182,7 @@ private fun ChatBubble(message: Message) {
     val alignment = if (message.isBot) Alignment.Start else Alignment.End
     val color = if (message.isBot) Color.White.copy(0.9f) else Color(0xFFBBDEFB)
     val textColor = if (message.isBot) Color.DarkGray else Color(0xFF0D47A1)
+    val context = LocalContext.current
 
     Column(Modifier.fillMaxWidth().padding(vertical = 6.dp), horizontalAlignment = alignment) {
         Card(
@@ -121,15 +193,77 @@ private fun ChatBubble(message: Message) {
                 bottomEnd = if (message.isBot) 20.dp else 0.dp
             ),
             colors = CardDefaults.cardColors(containerColor = color), 
-            modifier = Modifier.widthIn(max = 300.dp)
+            modifier = Modifier.widthIn(max = 320.dp)
         ) {
-            Text(
-                text = message.text, 
-                modifier = Modifier.padding(16.dp), 
-                fontSize = 17.sp, 
-                color = textColor, 
-                lineHeight = 24.sp
-            )
+            Column(Modifier.padding(16.dp)) {
+                Text(
+                    text = message.text, 
+                    fontSize = 17.sp, 
+                    color = textColor, 
+                    lineHeight = 24.sp
+                )
+                
+                if (message.productToSearch != null) {
+                    Spacer(Modifier.height(16.dp))
+                    Text("COMPARAR PRECIOS EN DIRECTO:", fontSize = 10.sp, fontWeight = FontWeight.Bold, color = Color.Gray)
+                    Spacer(Modifier.height(8.dp))
+                    
+                    val encodedSearch = Uri.encode(message.productToSearch)
+                    
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            StoreButton(
+                                label = "AMAZON",
+                                color = Color(0xFFFF9800),
+                                modifier = Modifier.weight(1f),
+                                onClick = { openUrl(context, "https://www.amazon.es/s?k=$encodedSearch") }
+                            )
+                            StoreButton(
+                                label = "LEROY",
+                                color = Color(0xFF4CAF50),
+                                modifier = Modifier.weight(1f),
+                                onClick = { openUrl(context, "https://www.leroymerlin.es/buscar?q=$encodedSearch") }
+                            )
+                        }
+                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            StoreButton(
+                                label = "BRICO",
+                                color = Color(0xFF2196F3),
+                                modifier = Modifier.weight(1f),
+                                onClick = { openUrl(context, "https://www.bricodepot.es/catalogsearch/result/?q=$encodedSearch") }
+                            )
+                            StoreButton(
+                                label = "CARREFOUR",
+                                color = Color(0xFFE91E63),
+                                modifier = Modifier.weight(1f),
+                                onClick = { openUrl(context, "https://www.carrefour.es/?q=$encodedSearch") }
+                            )
+                        }
+                    }
+                }
+            }
         }
+    }
+}
+
+@Composable
+private fun StoreButton(label: String, color: Color, modifier: Modifier, onClick: () -> Unit) {
+    Button(
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(containerColor = color),
+        shape = RoundedCornerShape(10.dp),
+        contentPadding = PaddingValues(horizontal = 4.dp, vertical = 4.dp),
+        modifier = modifier.height(36.dp)
+    ) {
+        Text(label, fontSize = 10.sp, fontWeight = FontWeight.Black, color = Color.White, textAlign = TextAlign.Center)
+    }
+}
+
+private fun openUrl(context: android.content.Context, url: String) {
+    try {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        context.startActivity(intent)
+    } catch (e: Exception) {
+        Toast.makeText(context, "No se pudo abrir el enlace", Toast.LENGTH_SHORT).show()
     }
 }

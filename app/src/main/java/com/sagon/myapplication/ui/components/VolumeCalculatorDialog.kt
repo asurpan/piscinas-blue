@@ -41,9 +41,9 @@ fun VolumeCalculatorDialog(
                 CalculatorInput("Ancho (m)", width) { width = it }
                 CalculatorInput("Fondo Medio (m)", avgDepth) { avgDepth = it }
 
-                val l = length.toDoubleOrNull() ?: 0.0
-                val w = width.toDoubleOrNull() ?: 0.0
-                val d = avgDepth.toDoubleOrNull() ?: 0.0
+                val l = length.replace(',', '.').toDoubleOrNull() ?: 0.0
+                val w = width.replace(',', '.').toDoubleOrNull() ?: 0.0
+                val d = avgDepth.replace(',', '.').toDoubleOrNull() ?: 0.0
                 val result = l * w * d
 
                 Spacer(Modifier.height(16.dp))

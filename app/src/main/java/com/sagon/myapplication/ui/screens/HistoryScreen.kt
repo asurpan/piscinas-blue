@@ -31,6 +31,33 @@ import java.util.*
 @Composable
 fun HistoryScreen(viewModel: PoolViewModel = viewModel(), onBack: () -> Unit) {
     val logs by viewModel.maintenanceLogs.collectAsState(initial = emptyList())
+    var showDeleteConfirm by remember { mutableStateOf(false) }
+
+    if (showDeleteConfirm) {
+        AlertDialog(
+            onDismissRequest = { showDeleteConfirm = false },
+            title = { Text("¿Borrar Historial?", fontWeight = FontWeight.Black) },
+            text = { Text("Se eliminarán todos los registros de mantenimiento de forma permanente.") },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        viewModel.clearHistory()
+                        showDeleteConfirm = false
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFD32F2F))
+                ) {
+                    Text("BORRAR TODO", color = Color.White)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDeleteConfirm = false }) {
+                    Text("CANCELAR", color = Color.Gray)
+                }
+            },
+            shape = RoundedCornerShape(24.dp),
+            containerColor = Color.White
+        )
+    }
 
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
@@ -48,7 +75,7 @@ fun HistoryScreen(viewModel: PoolViewModel = viewModel(), onBack: () -> Unit) {
                     title = { Text("Historial de Mantenimiento", color = Color.White, fontWeight = FontWeight.Bold) },
                     navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, null, tint = Color.White) } },
                     actions = {
-                        IconButton(onClick = { viewModel.clearHistory() }) {
+                        IconButton(onClick = { showDeleteConfirm = true }) {
                             Icon(Icons.Rounded.Delete, null, tint = Color.White)
                         }
                     },

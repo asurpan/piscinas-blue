@@ -48,6 +48,14 @@ class PoolViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope, SharingStarted.Eagerly, false
     )
 
+    val tabletActionCount = preferenceManager.tabletActionCount.stateIn(
+        viewModelScope, SharingStarted.Eagerly, 0
+    )
+
+    val hasSeenTabletInfo = preferenceManager.hasSeenTabletInfo.stateIn(
+        viewModelScope, SharingStarted.Eagerly, false
+    )
+
     val showSuccessAnimation = mutableStateOf(false)
     val showSafetyDialog = mutableStateOf(false)
 
@@ -72,7 +80,13 @@ class PoolViewModel(application: Application) : AndroidViewModel(application) {
                         volumeM3 = entity.volumeM3,
                         currentPh = entity.lastPh,
                         currentChlorine = entity.lastChlorine,
-                        isWinterMode = entity.isWinterMode
+                        isWinterMode = entity.isWinterMode,
+                        lastTabletChange = entity.lastTabletChange,
+                        userConsumptionFactor = entity.userConsumptionFactor,
+                        lastSafetyCheck = entity.lastSafetyCheck,
+                        tabletQuantity = entity.tabletQuantity,
+                        isHolidayMode = entity.isHolidayMode,
+                        pumpHp = entity.pumpHp
                     )
                 } else PoolData()
                 _uiState.update { it.copy(poolData = data) }
@@ -125,20 +139,50 @@ class PoolViewModel(application: Application) : AndroidViewModel(application) {
         saveData(newData)
     }
 
-    fun onTabletChanged(context: Context) {
+    fun updatePumpHp(hp: Double) {
+        val current = _uiState.value.poolData
+        val newData = current.copy(pumpHp = hp)
+        _uiState.update { it.copy(poolData = newData) }
+        saveData(newData)
+    }
+
+    fun onTabletChanged(context: Context, quantity: Int, holidayMode: Boolean): String {
         val current = _uiState.value.poolData
         val weather = _uiState.value.weather
         val now = System.currentTimeMillis()
-        val daysPassed = (now - current.lastTabletChange) / (1000 * 60 * 60 * 24).toDouble()
         
+        val diffMs = now - current.lastTabletChange
+        val daysPassed = (diffMs / (1000 * 60 * 60 * 24).toDouble()).coerceAtLeast(0.1)
+        
+        // La IA aprende basándose en la última configuración (si eran 4 pastillas, calcula el factor sobre eso)
         val predictedDays = PoolCalculator.calculateIntelligentTabletLifespan(current, weather.temp, weather.windSpeed)
         val newFactor = (current.userConsumptionFactor * (daysPassed / predictedDays.toDouble())).coerceIn(0.5, 2.0)
         
-        val newData = current.copy(lastTabletChange = now, userConsumptionFactor = newFactor)
+        val newData = current.copy(
+            lastTabletChange = now, 
+            userConsumptionFactor = newFactor,
+            tabletQuantity = quantity,
+            isHolidayMode = holidayMode
+        )
         _uiState.update { it.copy(poolData = newData) }
-        addLog("PASTILLA", "Cambio de pastilla realizado")
+        
+        val modeText = if (holidayMode) "en Modo Vacaciones (dosificador cerrado)" else "en el skimmer"
+        val summary = "¡Cambio registrado!\n\n" +
+                "Has puesto $quantity pastilla(s) $modeText.\n" +
+                "La carga anterior duró ${String.format("%.1f", daysPassed)} días.\n" +
+                "Factor IA ajustado a ${String.format("%.2f", newFactor)}.\n" +
+                "Próximo aviso calculado según el clima y tus hábitos."
+        
+        addLog("PASTILLA", "Cambio realizado ($quantity past.). Modo: ${if(holidayMode) "Vacaciones" else "Normal"}")
         saveData(newData)
+        
+        viewModelScope.launch {
+            preferenceManager.incrementTabletAction()
+            preferenceManager.setHasSeenTabletInfo(true)
+        }
+        
         triggerHapticFeedback(context)
+        return summary
     }
 
     fun confirmSafetyCheck() {
@@ -160,15 +204,48 @@ class PoolViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun saveData(data: PoolData) {
         viewModelScope.launch {
-            repository.updatePool(PoolEntity(poolId, "Mi Piscina", data.volumeM3, data.currentPh, data.currentChlorine, data.isWinterMode))
+            repository.updatePool(
+                PoolEntity(
+                    id = poolId,
+                    name = "Mi Piscina",
+                    volumeM3 = data.volumeM3,
+                    lastPh = data.currentPh,
+                    lastChlorine = data.currentChlorine,
+                    isWinterMode = data.isWinterMode,
+                    lastTabletChange = data.lastTabletChange,
+                    userConsumptionFactor = data.userConsumptionFactor,
+                    lastSafetyCheck = data.lastSafetyCheck,
+                    tabletQuantity = data.tabletQuantity,
+                    isHolidayMode = data.isHolidayMode,
+                    pumpHp = data.pumpHp
+                )
+            )
             FirebaseSyncManager.syncPoolToCloud(poolId, data)
         }
     }
 
     fun shareReport(context: Context) {
-        val data = _uiState.value.poolData
+        val uiState = _uiState.value
+        val data = uiState.poolData
+        val weather = uiState.weather
         val score = PoolCalculator.getPoolScore(data)
-        val text = "*PISCINAS BLUE* 🏊‍♂️\nNota: $score/100\nAcción: ${if (data.isWinterMode) "Invernador" else "Cloro"}"
+        val pumpHours = PoolCalculator.calculateFilteringHours(data, weather.temp).toInt()
+        
+        val mode = if (data.isWinterMode) "INVERNADOR ❄️" else "VERANO ☀️"
+        
+        val text = "*PISCINAS BLUE* 🏊‍♂️\n" +
+                "--------------------------\n" +
+                "📊 *ESTADO*: $score/100\n" +
+                "📅 *MODO*: $mode\n\n" +
+                "🌡️ *CLIMA*: ${weather.temp.toInt()}°C | ${weather.windSpeed.toInt()} km/h\n" +
+                "💧 *VOLUMEN*: ${data.volumeM3} m³\n" +
+                "🧪 *pH*: ${data.currentPh}\n" +
+                "🧼 *CLORO*: ${data.currentChlorine} ppm\n\n" +
+                "⚙️ *RECOMENDACIÓN*:\n" +
+                "Filtrado: $pumpHours h/día\n" +
+                "--------------------------\n" +
+                "_Generado por Piscinas Blue_"
+
         context.startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
             putExtra(Intent.EXTRA_TEXT, text)

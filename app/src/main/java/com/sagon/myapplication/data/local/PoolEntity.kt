@@ -11,5 +11,11 @@ data class PoolEntity(
     val lastPh: Double,
     val lastChlorine: Double,
     val isWinterMode: Boolean,
-    val lastUpdate: Long = System.currentTimeMillis()
+    val lastUpdate: Long = System.currentTimeMillis(),
+    val lastTabletChange: Long = System.currentTimeMillis(),
+    val userConsumptionFactor: Double = 1.0,
+    val lastSafetyCheck: Long = 0L,
+    val tabletQuantity: Int = 1,
+    val isHolidayMode: Boolean = false,
+    val pumpHp: Double = 0.75
 )

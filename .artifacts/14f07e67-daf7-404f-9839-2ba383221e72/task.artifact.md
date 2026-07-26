@@ -1,9 +1,9 @@
-# Tareas de Corrección Inicio de Sesión (Android 15)
+# Tareas: Inteligencia Hidráulica "Smart & Silent"
 
-- `[x]` Actualizar versiones de librerías de Credenciales en `libs.versions.toml`
-- `[x]` Sincronizar proyecto con Gradle
-- `[x]` Migrar `AuthManager.kt` a `GetSignInWithGoogleOption`
-- `[x]` Mejorar manejo de errores y logs en `AuthManager.kt`
-- `[x]` Implementar UI compacta sin scroll
-- `[x]` Ajuste final de tamaños para visibilidad total
-- `[x]` Verificar compilación y solicitar prueba al usuario
+- `[x]` Actualizar modelos de datos (`PoolData` y `PoolEntity`) con `pumpHp`
+- `[x]` Incrementar versión de Base de Datos Room a 4
+- `[x]` Implementar lógica de ingeniería hidráulica en `PoolCalculator`
+- `[x]` Actualizar `PoolViewModel` para manejar el cambio de potencia del motor
+- `[x]` Integrar selector de motor y diálogo técnico en `DashboardScreen`
+- `[x]` Optimizar `MaintenanceWorker` para avisos inteligentes (Ola de calor)
+- `[x]` Verificar en el dispositivo Xiaomi

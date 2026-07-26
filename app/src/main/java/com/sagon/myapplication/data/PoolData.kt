@@ -8,5 +8,8 @@ data class PoolData(
     val isWinterMode: Boolean = false,
     val lastSafetyCheck: Long = 0L,
     val lastTabletChange: Long = System.currentTimeMillis(),
-    val userConsumptionFactor: Double = 1.0
+    val userConsumptionFactor: Double = 1.0,
+    val tabletQuantity: Int = 1,
+    val isHolidayMode: Boolean = false,
+    val pumpHp: Double = 0.75
 )

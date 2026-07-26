@@ -43,6 +43,9 @@ fun DashboardScreen(
     onOpenHistory: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val tabletActionCount by viewModel.tabletActionCount.collectAsState()
+    val hasSeenTabletInfo by viewModel.hasSeenTabletInfo.collectAsState()
+    
     val pool = uiState.poolData
     val weather = uiState.weather
     val context = LocalContext.current
@@ -50,13 +53,176 @@ fun DashboardScreen(
     var helpContent by remember { mutableStateOf<Pair<String, String>?>(null) }
     var showSettings by remember { mutableStateOf(false) }
     var showVolumeCalc by remember { mutableStateOf(false) }
+    var showTabletConfirm by remember { mutableStateOf(false) }
+    var showPumpInfo by remember { mutableStateOf(false) }
+    var showPumpConfirm by remember { mutableStateOf<Double?>(null) }
+    var tabletResultSummary by remember { mutableStateOf<String?>(null) }
+    
+    // Estado temporal para el diálogo de pastillas
+    var tempTabletQty by remember { mutableStateOf(1) }
+    var tempHolidayMode by remember { mutableStateOf(false) }
 
     // Diálogos
     helpContent?.let { (title, content) -> HelpDialog(title, content) { helpContent = null } }
     
+    if (showTabletConfirm) {
+        val showEducation = !hasSeenTabletInfo || (tabletActionCount > 0 && tabletActionCount % 30 == 0)
+
+        AlertDialog(
+            onDismissRequest = { showTabletConfirm = false },
+            title = { Text("Registro de Pastillas", fontWeight = FontWeight.Black) },
+            text = {
+                Column {
+                    Text("Indica cuántas pastillas has añadido:")
+                    Row(
+                        modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        FilledIconButton(
+                            onClick = { if (tempTabletQty > 1) tempTabletQty-- },
+                            colors = IconButtonDefaults.filledIconButtonColors(containerColor = Color(0xFFE3F2FD))
+                        ) {
+                            Icon(Icons.Rounded.Remove, null, tint = Color(0xFF0D47A1))
+                        }
+                        Text(
+                            text = tempTabletQty.toString(),
+                            fontSize = 28.sp,
+                            fontWeight = FontWeight.Black,
+                            modifier = Modifier.padding(horizontal = 24.dp),
+                            color = Color(0xFF0D47A1)
+                        )
+                        FilledIconButton(
+                            onClick = { if (tempTabletQty < 6) tempTabletQty++ },
+                            colors = IconButtonDefaults.filledIconButtonColors(containerColor = Color(0xFFE3F2FD))
+                        ) {
+                            Icon(Icons.Rounded.Add, null, tint = Color(0xFF0D47A1))
+                        }
+                    }
+
+                    if (tempTabletQty > 1) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Checkbox(checked = tempHolidayMode, onCheckedChange = { tempHolidayMode = it })
+                            Text("¿Modo Vacaciones?\n(Dosificador cerrado)", fontSize = 14.sp)
+                        }
+                    }
+
+                    if (showEducation && tempTabletQty > 1) {
+                        Surface(
+                            color = Color(0xFFFFF3E0),
+                            shape = RoundedCornerShape(12.dp),
+                            modifier = Modifier.padding(top = 8.dp)
+                        ) {
+                            Column(Modifier.padding(12.dp)) {
+                                Text("💡 CONSEJO PRO", fontWeight = FontWeight.Bold, color = Color(0xFFE65100), fontSize = 12.sp)
+                                Spacer(Modifier.height(4.dp))
+                                Text(
+                                    "Poner varias pastillas en el skimmer NO hace que duren más, solo suben el nivel de cloro a niveles peligrosos. Úsalas solo para vacaciones cerrando las rejillas del dosificador.",
+                                    fontSize = 11.sp,
+                                    lineHeight = 14.sp
+                                )
+                            }
+                        }
+                    }
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        tabletResultSummary = viewModel.onTabletChanged(context, tempTabletQty, tempHolidayMode)
+                        showTabletConfirm = false
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0D47A1))
+                ) {
+                    Text("CONFIRMAR", color = Color.White)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showTabletConfirm = false }) {
+                    Text("CANCELAR", color = Color.Gray)
+                }
+            },
+            shape = RoundedCornerShape(24.dp),
+            containerColor = Color.White
+        )
+    }
+
+    tabletResultSummary?.let { summary ->
+        AlertDialog(
+            onDismissRequest = { tabletResultSummary = null },
+            title = { Text("¡Guardado!", fontWeight = FontWeight.Black, color = Color(0xFF4CAF50)) },
+            text = { Text(summary) },
+            confirmButton = {
+                Button(onClick = { tabletResultSummary = null }) {
+                    Text("ENTENDIDO")
+                }
+            },
+            shape = RoundedCornerShape(24.dp),
+            containerColor = Color.White
+        )
+    }
+    
+    if (showPumpInfo) {
+        val flowRate = when (pool.pumpHp) { 0.5 -> 10.0 0.75 -> 13.0 1.0 -> 16.0 1.5 -> 22.0 else -> 12.0 }
+        val cycles = when { 
+            pool.isWinterMode -> 0.5 
+            weather.temp < 20 -> 1.0 
+            weather.temp < 26 -> 1.5 
+            weather.temp < 30 -> 2.0 
+            weather.temp < 34 -> 2.5 
+            else -> 3.0 
+        }
+        val hours = (pool.volumeM3 / flowRate) * cycles
+
+        AlertDialog(
+            onDismissRequest = { showPumpInfo = false },
+            title = { Text("Lógica de Filtrado", fontWeight = FontWeight.Black) },
+            text = {
+                Column {
+                    Text("Mi IA calcula el tiempo basándose en ingeniería hidráulica:")
+                    Spacer(Modifier.height(12.dp))
+                    Text("• Volumen: ${pool.volumeM3}m³", fontSize = 14.sp)
+                    Text("• Motor (${pool.pumpHp} CV): Mueve aprox. ${flowRate.toInt()}m³/h", fontSize = 14.sp)
+                    Text("• Clima (${weather.temp.toInt()}°C): Requiere $cycles vueltas de agua", fontSize = 14.sp)
+                    Spacer(Modifier.height(12.dp))
+                    Text("Fórmula: (Volumen / Caudal) x Ciclos = ${String.format(java.util.Locale.getDefault(), "%.1f", hours)} horas", fontWeight = FontWeight.Bold, color = Color(0xFF0D47A1))
+                }
+            },
+            confirmButton = { Button(onClick = { showPumpInfo = false }) { Text("ENTENDIDO") } },
+            shape = RoundedCornerShape(24.dp),
+            containerColor = Color.White
+        )
+    }
+
+    showPumpConfirm?.let { hp ->
+        AlertDialog(
+            onDismissRequest = { showPumpConfirm = null },
+            title = { Text("Cambiar Potencia", fontWeight = FontWeight.Black) },
+            text = { Text("¿Confirmas que quieres cambiar el motor a $hp CV?\n\nEsto recalculará inmediatamente las horas de filtrado necesarias para tu piscina.") },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        viewModel.updatePumpHp(hp)
+                        showPumpConfirm = null
+                    }
+                ) {
+                    Text("CONFIRMAR")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showPumpConfirm = null }) {
+                    Text("CANCELAR", color = Color.Gray)
+                }
+            },
+            shape = RoundedCornerShape(24.dp),
+            containerColor = Color.White
+        )
+    }
+
     if (showSettings) {
         SettingsDialog(
             onDeleteAccount = { viewModel.deleteUserAccount { showSettings = false } },
+            onSyncHelp = { helpContent = "Sincronización" to HelpContent.CLOUD_HELP },
             onDismiss = { showSettings = false }
         )
     }
@@ -99,7 +265,6 @@ fun DashboardScreen(
                 weather = weather, 
                 viewModel = viewModel, 
                 onSafety = { viewModel.showSafetyDialog.value = true }, 
-                onShare = { viewModel.shareReport(context) }, 
                 onBot = onOpenAssistant, 
                 onHistory = onOpenHistory, 
                 onSettings = { showSettings = true }, 
@@ -116,12 +281,24 @@ fun DashboardScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.padding(top = 8.dp)
                 ) {
-                    InputsSection(pool, viewModel, { t, c -> helpContent = t to c }, { showVolumeCalc = true })
+                    InputsSection(
+                        pool = pool, 
+                        viewModel = viewModel, 
+                        onHelp = { t, c -> helpContent = t to c }, 
+                        onCalcVolume = { showVolumeCalc = true }, 
+                        onTabletChangeClick = { 
+                            tempTabletQty = 1
+                            tempHolidayMode = false
+                            showTabletConfirm = true 
+                        },
+                        onShareClick = { viewModel.shareReport(context) },
+                        onPumpHpClick = { showPumpConfirm = it }
+                    )
                 }
             }
 
-            ResultsSection(pool, weather)
-            Spacer(Modifier.height(6.dp))
+            ResultsSection(pool, weather) { showPumpInfo = true }
+            Spacer(Modifier.height(20.dp))
             Text(stringResource(R.string.credits_author), color = Color.White.copy(0.6f), fontSize = 11.sp, fontWeight = FontWeight.Medium, textAlign = TextAlign.Center)
         }
     }
@@ -132,7 +309,6 @@ private fun HeaderSection(
     weather: com.sagon.myapplication.logic.WeatherInfo, 
     viewModel: PoolViewModel, 
     onSafety: () -> Unit, 
-    onShare: () -> Unit, 
     onBot: () -> Unit, 
     onHistory: () -> Unit, 
     onSettings: () -> Unit, 
@@ -159,10 +335,40 @@ private fun HeaderSection(
             val isSafe = (System.currentTimeMillis() - lastSafety) < (30L * 24 * 60 * 60 * 1000)
             
             JuicyIconButton(Icons.Rounded.Android, Color(0xFF0D47A1), pulse = true) { viewModel.triggerHapticFeedback(context); onBot() }
-            JuicyIconButton(Icons.Rounded.CloudSync, Color(0xFF4CAF50)) { onHelp("Sincronización", HelpContent.CLOUD_HELP) }
             JuicyIconButton(Icons.Rounded.Shield, if (isSafe) Color(0xFF0D47A1) else Color(0xFFFF9800), !isSafe) { viewModel.triggerHapticFeedback(context); onSafety() }
             JuicyIconButton(Icons.Rounded.History, Color(0xFF0D47A1)) { viewModel.triggerHapticFeedback(context); onHistory() }
             JuicyIconButton(Icons.Rounded.Settings, Color(0xFF0D47A1)) { viewModel.triggerHapticFeedback(context); onSettings() }
+        }
+    }
+}
+
+@Composable
+fun JuicyButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    containerColor: Color = Color(0xFF0D47A1),
+    content: @Composable RowScope.() -> Unit
+) {
+    var isPressed by remember { mutableStateOf(false) }
+    val animatedScale by animateFloatAsState(
+        if (isPressed) 0.92f else 1f,
+        spring(Spring.DampingRatioMediumBouncy, Spring.StiffnessLow),
+        label = "press"
+    )
+
+    Button(
+        onClick = { isPressed = true; onClick() },
+        modifier = modifier.scale(animatedScale),
+        shape = RoundedCornerShape(16.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = containerColor)
+    ) {
+        content()
+    }
+
+    LaunchedEffect(isPressed) {
+        if (isPressed) {
+            kotlinx.coroutines.delay(100)
+            isPressed = false
         }
     }
 }
@@ -197,21 +403,104 @@ private fun ModeSelector(isWinter: Boolean, onModeChange: (Boolean) -> Unit) {
 }
 
 @Composable
-private fun InputsSection(pool: com.sagon.myapplication.data.PoolData, viewModel: PoolViewModel, onHelp: (String, String) -> Unit, onCalcVolume: () -> Unit) {
-    val context = LocalContext.current
+private fun InputsSection(
+    pool: com.sagon.myapplication.data.PoolData, 
+    viewModel: PoolViewModel, 
+    onHelp: (String, String) -> Unit, 
+    onCalcVolume: () -> Unit, 
+    onTabletChangeClick: () -> Unit,
+    onShareClick: () -> Unit,
+    onPumpHpClick: (Double) -> Unit
+) {
     val phHelpTitle = stringResource(R.string.help_title_ph)
     val clHelpTitle = stringResource(R.string.help_title_chlorine)
     val capLabel = stringResource(R.string.label_volume)
 
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
-        PoolInputField(capLabel, pool.volumeM3.toString(), Icons.Rounded.WaterDrop, { viewModel.updatePoolData(it, pool.currentPh.toString(), pool.currentChlorine.toString(), pool.isWinterMode) }, onCalcVolume)
+        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            Box(modifier = Modifier.weight(1.3f)) {
+                PoolInputField(
+                    label = capLabel, 
+                    value = pool.volumeM3.toString(), 
+                    icon = Icons.Rounded.WaterDrop, 
+                    accentColor = Color(0xFF2196F3),
+                    onValueChange = { viewModel.updatePoolData(it, pool.currentPh.toString(), pool.currentChlorine.toString(), pool.isWinterMode) }, 
+                    onHelpClick = onCalcVolume
+                )
+            }
+            Spacer(Modifier.width(8.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                Text("Motor (CV)", color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(start = 4.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth().height(48.dp).background(Color.White.copy(alpha = 0.2f), RoundedCornerShape(12.dp)).padding(2.dp),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    listOf(0.5, 0.75, 1.0, 1.5).forEach { hp ->
+                        val isSelected = pool.pumpHp == hp
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxHeight()
+                                .clip(RoundedCornerShape(8.dp))
+                                .background(if (isSelected) Color.White else Color.Transparent)
+                                .clickable { onPumpHpClick(hp) },
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = hp.toString(),
+                                fontSize = 11.sp,
+                                fontWeight = if (isSelected) FontWeight.Black else FontWeight.Normal,
+                                color = if (isSelected) Color(0xFF0D47A1) else Color.White
+                            )
+                        }
+                    }
+                }
+            }
+        }
+        
         if (!pool.isWinterMode) {
-            PoolInputField(stringResource(R.string.label_ph), pool.currentPh.toString(), Icons.Rounded.Science, { viewModel.updatePoolData(pool.volumeM3.toString(), it, pool.currentChlorine.toString(), pool.isWinterMode) }, { onHelp(phHelpTitle, HelpContent.PH_HELP) })
-            PoolInputField(stringResource(R.string.label_chlorine), pool.currentChlorine.toString(), Icons.Rounded.Opacity, { viewModel.updatePoolData(pool.volumeM3.toString(), pool.currentPh.toString(), it, pool.isWinterMode) }, { onHelp(clHelpTitle, HelpContent.CHLORINE_HELP) })
-            Button(onClick = { viewModel.onTabletChanged(context) }, Modifier.fillMaxWidth().padding(top = 12.dp).height(48.dp), colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0D47A1).copy(alpha = 0.8f)), shape = RoundedCornerShape(16.dp)) {
-                Icon(Icons.Rounded.Sync, null, Modifier.size(20.dp))
+            Row(modifier = Modifier.fillMaxWidth()) {
+                Box(modifier = Modifier.weight(1f)) {
+                    PoolInputField(
+                        label = stringResource(R.string.label_ph), 
+                        value = pool.currentPh.toString(), 
+                        icon = Icons.Rounded.Science, 
+                        accentColor = Color(0xFFFF9800), // Naranja para pH
+                        onValueChange = { viewModel.updatePoolData(pool.volumeM3.toString(), it, pool.currentChlorine.toString(), pool.isWinterMode) }, 
+                        onHelpClick = { onHelp(phHelpTitle, HelpContent.PH_HELP) }
+                    )
+                }
                 Spacer(Modifier.width(8.dp))
-                Text(stringResource(R.string.btn_tablet_changed), fontSize = 14.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                Box(modifier = Modifier.weight(1f)) {
+                    PoolInputField(
+                        label = stringResource(R.string.label_chlorine), 
+                        value = pool.currentChlorine.toString(), 
+                        icon = Icons.Rounded.Opacity, 
+                        accentColor = Color(0xFF00BCD4), // Cian para Cloro
+                        onValueChange = { viewModel.updatePoolData(pool.volumeM3.toString(), pool.currentPh.toString(), it, pool.isWinterMode) }, 
+                        onHelpClick = { onHelp(clHelpTitle, HelpContent.CHLORINE_HELP) }
+                    )
+                }
+            }
+            
+            Row(modifier = Modifier.fillMaxWidth().padding(top = 12.dp), verticalAlignment = Alignment.CenterVertically) {
+                JuicyButton(
+                    onClick = { 
+                        com.sagon.myapplication.logic.SoundManager.playClick()
+                        onTabletChangeClick() 
+                    }, 
+                    modifier = Modifier.weight(1f).height(48.dp), 
+                    containerColor = Color(0xFF0D47A1).copy(alpha = 0.8f)
+                ) {
+                    Icon(Icons.Rounded.Sync, null, Modifier.size(20.dp))
+                    Spacer(Modifier.width(8.dp))
+                    Text(stringResource(R.string.btn_tablet_changed), fontSize = 14.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                }
+                Spacer(Modifier.width(8.dp))
+                JuicyIconButton(icon = Icons.Rounded.Share, tint = Color(0xFF4CAF50)) {
+                    onShareClick()
+                }
             }
         } else {
             Surface(color = Color.White.copy(alpha = 0.1f), shape = RoundedCornerShape(24.dp), modifier = Modifier.padding(top = 10.dp).fillMaxWidth()) {
@@ -227,15 +516,25 @@ private fun InputsSection(pool: com.sagon.myapplication.data.PoolData, viewModel
 }
 
 @Composable
-private fun ResultsSection(pool: com.sagon.myapplication.data.PoolData, weather: com.sagon.myapplication.logic.WeatherInfo) {
-    Surface(Modifier.fillMaxWidth(), RoundedCornerShape(20.dp), Color.White.copy(0.97f), shadowElevation = 6.dp) {
+private fun ResultsSection(pool: com.sagon.myapplication.data.PoolData, weather: com.sagon.myapplication.logic.WeatherInfo, onPumpInfo: () -> Unit) {
+    Surface(Modifier.fillMaxWidth().clickable { onPumpInfo() }, RoundedCornerShape(20.dp), Color.White.copy(0.97f), shadowElevation = 6.dp) {
         Column(Modifier.padding(horizontal = 16.dp, vertical = 4.dp)) {
             if (!pool.isWinterMode) {
                 val phKey = PoolCalculator.getPhStatusKey(pool.currentPh)
                 val phStatus = when(phKey) { "low" -> stringResource(R.string.status_low) "high" -> stringResource(R.string.status_high) else -> stringResource(R.string.status_ideal) }
                 FinalResultRow(stringResource(R.string.result_ph_status), phStatus, if (phKey == "ideal") Color(0xFF2E7D32) else Color(0xFFD32F2F))
-                val days = PoolCalculator.calculateIntelligentTabletLifespan(pool, weather.temp, weather.windSpeed)
-                FinalResultRow(stringResource(R.string.result_tablet_duration), stringResource(R.string.unit_days, days), Color(0xFF1976D2))
+                
+                val daysLifespan = PoolCalculator.calculateIntelligentTabletLifespan(pool, weather.temp, weather.windSpeed)
+                val now = System.currentTimeMillis()
+                val daysPassed = (now - pool.lastTabletChange) / (1000 * 60 * 60 * 24).toDouble()
+                val isExpired = daysPassed >= daysLifespan
+                
+                FinalResultRow(
+                    label = stringResource(R.string.result_tablet_duration),
+                    value = if (isExpired) "¡CADUCADA!" else stringResource(R.string.unit_days, daysLifespan),
+                    color = if (isExpired) Color(0xFFD32F2F) else Color(0xFF1976D2),
+                    isBlinking = isExpired
+                )
             } else {
                 FinalResultRow(stringResource(R.string.result_winter_product), stringResource(R.string.unit_liters, PoolCalculator.calculateWinterProduct(pool.volumeM3)), Color(0xFF1976D2))
             }
@@ -247,10 +546,29 @@ private fun ResultsSection(pool: com.sagon.myapplication.data.PoolData, weather:
 }
 
 @Composable
-fun FinalResultRow(label: String, value: String, color: Color) {
+fun FinalResultRow(label: String, value: String, color: Color, isBlinking: Boolean = false) {
+    val alpha by if (isBlinking) {
+        rememberInfiniteTransition(label = "blink").animateFloat(
+            initialValue = 0.4f,
+            targetValue = 1f,
+            animationSpec = infiniteRepeatable(
+                animation = tween(1000, easing = FastOutSlowInEasing),
+                repeatMode = RepeatMode.Reverse
+            ),
+            label = "alpha"
+        )
+    } else {
+        remember { mutableStateOf(1f) }
+    }
+
     Row(Modifier.fillMaxWidth().padding(vertical = 2.dp), Arrangement.SpaceBetween, Alignment.CenterVertically) {
         Text(label, fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Color.Gray)
-        Text(value, fontSize = 17.sp, fontWeight = FontWeight.Black, color = color)
+        Text(
+            text = value,
+            fontSize = 17.sp,
+            fontWeight = FontWeight.Black,
+            color = color.copy(alpha = alpha)
+        )
     }
 }
 

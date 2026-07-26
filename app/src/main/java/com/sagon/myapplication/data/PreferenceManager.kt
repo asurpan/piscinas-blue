@@ -15,6 +15,8 @@ class PreferenceManager(private val context: Context) {
         val ONBOARDING_COMPLETED = booleanPreferencesKey("onboarding_completed")
         val USAGE_COUNT = intPreferencesKey("usage_count")
         val IS_ACTIVATED = booleanPreferencesKey("is_activated")
+        val TABLET_ACTION_COUNT = intPreferencesKey("tablet_action_count")
+        val HAS_SEEN_TABLET_INFO = booleanPreferencesKey("has_seen_tablet_info")
     }
 
     val isOnboardingCompleted: Flow<Boolean> = context.dataStore.data
@@ -26,6 +28,12 @@ class PreferenceManager(private val context: Context) {
     val isActivated: Flow<Boolean> = context.dataStore.data
         .map { it[IS_ACTIVATED] ?: false }
 
+    val tabletActionCount: Flow<Int> = context.dataStore.data
+        .map { it[TABLET_ACTION_COUNT] ?: 0 }
+
+    val hasSeenTabletInfo: Flow<Boolean> = context.dataStore.data
+        .map { it[HAS_SEEN_TABLET_INFO] ?: false }
+
     suspend fun setOnboardingCompleted(completed: Boolean) {
         context.dataStore.edit { it[ONBOARDING_COMPLETED] = completed }
     }
@@ -35,6 +43,17 @@ class PreferenceManager(private val context: Context) {
             val current = it[USAGE_COUNT] ?: 0
             it[USAGE_COUNT] = current + 1 
         }
+    }
+
+    suspend fun incrementTabletAction() {
+        context.dataStore.edit { 
+            val current = it[TABLET_ACTION_COUNT] ?: 0
+            it[TABLET_ACTION_COUNT] = current + 1 
+        }
+    }
+
+    suspend fun setHasSeenTabletInfo(seen: Boolean) {
+        context.dataStore.edit { it[HAS_SEEN_TABLET_INFO] = seen }
     }
 
     suspend fun setActivated(activated: Boolean) {

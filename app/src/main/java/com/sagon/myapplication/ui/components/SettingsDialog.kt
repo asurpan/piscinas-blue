@@ -5,6 +5,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.CloudSync
 import androidx.compose.material.icons.rounded.DeleteForever
 import androidx.compose.material.icons.rounded.Gavel
 import androidx.compose.material.icons.rounded.PrivacyTip
@@ -24,6 +25,7 @@ import com.sagon.myapplication.logic.HelpContent
 @Composable
 fun SettingsDialog(
     onDeleteAccount: () -> Unit,
+    onSyncHelp: () -> Unit,
     onDismiss: () -> Unit
 ) {
     var showLegalText by remember { mutableStateOf<String?>(null) }
@@ -42,6 +44,7 @@ fun SettingsDialog(
                 Text("AJUSTES Y LEGAL", fontSize = 20.sp, fontWeight = FontWeight.Black, color = Color(0xFF0D47A1))
                 Spacer(Modifier.height(24.dp))
 
+                SettingsItem(Icons.Rounded.CloudSync, "Sincronización en la Nube") { onSyncHelp() }
                 SettingsItem(Icons.Rounded.Gavel, "Aviso Legal") { showLegalText = HelpContent.LEGAL_NOTICE }
                 SettingsItem(Icons.Rounded.PrivacyTip, "Privacidad") { showLegalText = HelpContent.LEGAL_NOTICE } // Usamos el mismo bloque o uno específico
                 

@@ -27,12 +27,12 @@ fun PoolInputField(
     label: String,
     value: String,
     icon: ImageVector,
+    accentColor: Color = Color(0xFF2196F3),
     onValueChange: (String) -> Unit,
     onHelpClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
-            .fillMaxWidth()
             .padding(vertical = 2.dp)
     ) {
         Text(
@@ -49,8 +49,8 @@ fun PoolInputField(
                 .shadow(
                     elevation = 4.dp,
                     shape = RoundedCornerShape(12.dp),
-                    ambientColor = Color(0xFF2196F3),
-                    spotColor = Color(0xFF2196F3)
+                    ambientColor = accentColor,
+                    spotColor = accentColor
                 )
                 .combinedClickable(
                     onClick = { /* Acción normal al tocar el borde */ },
@@ -66,7 +66,7 @@ fun PoolInputField(
                 Icon(
                     imageVector = icon,
                     contentDescription = null,
-                    tint = Color(0xFF2196F3),
+                    tint = accentColor,
                     modifier = Modifier.size(24.dp)
                 )
                 
@@ -76,19 +76,19 @@ fun PoolInputField(
                     modifier = Modifier.weight(1f).padding(horizontal = 8.dp),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     textStyle = LocalTextStyle.current.copy(
-                        fontSize = 17.sp,
+                        fontSize = 20.sp,
                         fontWeight = FontWeight.ExtraBold,
                         color = Color(0xFF0D47A1)
                     ),
                     singleLine = true,
-                    cursorBrush = SolidColor(Color(0xFF2196F3))
+                    cursorBrush = SolidColor(accentColor)
                 )
 
                 IconButton(onClick = onHelpClick) {
                     Icon(
                         imageVector = Icons.Rounded.Info,
                         contentDescription = "Ayuda",
-                        tint = Color(0xFF2196F3).copy(alpha = 0.4f),
+                        tint = accentColor.copy(alpha = 0.4f),
                         modifier = Modifier.size(20.dp)
                     )
                 }

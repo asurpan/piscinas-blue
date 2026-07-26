@@ -20,24 +20,37 @@ object PoolCalculator {
     }
 
     /**
-     * Calcula las horas de filtrado recomendadas de forma inteligente.
-     * Factores: Temperatura, Estado del agua (pH/Cloro) y Modo.
+     * Calcula las horas de filtrado recomendadas usando ingeniería hidráulica.
+     * Basado en: Volumen, Caudal del motor (CV) y Factor Climático (Vueltas de agua).
      */
     fun calculateFilteringHours(data: PoolData, temperature: Double): Double {
-        var baseHours = if (data.isWinterMode) {
-            (temperature / 3.0).coerceIn(1.0, 4.0)
-        } else {
-            (temperature / 2.0).coerceIn(4.0, 12.0)
+        // Mapeo de Potencia (CV) a Caudal aproximado (m³/h)
+        val flowRate = when (data.pumpHp) {
+            0.5 -> 10.0
+            0.75 -> 13.0
+            1.0 -> 16.0
+            1.5 -> 22.0
+            else -> 12.0
         }
 
-        // Inteligencia Adicional: Penalizaciones por desequilibrio
-        // Si el pH es muy alto, el agua tiende a enturbiarse -> filtrar más
-        if (data.currentPh > 7.8) baseHours += 2.0
+        // Factor de Recirculación (cuántas veces debe pasar toda el agua por el filtro)
+        val cycles = when {
+            data.isWinterMode -> 0.5 // Hibernación
+            temperature < 20 -> 1.0
+            temperature < 26 -> 1.5
+            temperature < 30 -> 2.0
+            temperature < 34 -> 2.5
+            else -> 3.0 // Ola de calor
+        }
+
+        // Fórmula: (Volumen / Caudal) * Ciclos
+        var hours = (data.volumeM3 / flowRate) * cycles
+
+        // Ajustes extra por calidad del agua
+        if (data.currentPh > 7.8) hours += 1.0
+        if (data.currentChlorine < 0.5) hours += 1.5
         
-        // Si el cloro es muy bajo, riesgo de algas -> filtrar más para mover el producto
-        if (data.currentChlorine < 0.5) baseHours += 2.0
-        
-        return baseHours.coerceAtMost(24.0)
+        return hours.coerceIn(1.0, 24.0)
     }
 
     fun calculateWinterProduct(volume: Double): Double {
@@ -58,12 +71,22 @@ object PoolCalculator {
     }
 
     fun calculateIntelligentTabletLifespan(data: PoolData, currentTemp: Double, windSpeed: Double): Int {
-        var days = 7.0
-        if (currentTemp > 30) days -= 1.5
-        if (currentTemp > 35) days -= 1.0
-        if (windSpeed > 20) days -= 1.0
-        days *= data.userConsumptionFactor
-        return days.toInt().coerceAtLeast(1)
+        var baseDays = 7.0
+        if (currentTemp > 30) baseDays -= 1.5
+        if (currentTemp > 35) baseDays -= 1.0
+        if (windSpeed > 20) baseDays -= 1.0
+        
+        val consumptionFactor = data.userConsumptionFactor
+        
+        val finalDays = if (data.tabletQuantity > 1 && data.isHolidayMode) {
+            // Modo vacaciones: dosificador cerrado, las pastillas duran mucho más
+            baseDays * (1.0 + (data.tabletQuantity - 1) * 0.75) * consumptionFactor
+        } else {
+            // Modo normal: más pastillas aumentan poco la duración, solo el pico de cloro
+            baseDays * (1.0 + (data.tabletQuantity - 1) * 0.15) * consumptionFactor
+        }
+        
+        return finalDays.toInt().coerceAtLeast(1)
     }
 
     fun getPhStatusKey(ph: Double): String {

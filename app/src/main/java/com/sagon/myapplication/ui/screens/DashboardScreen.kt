@@ -109,23 +109,20 @@ fun DashboardScreen(
             
             ModeSelector(pool.isWinterMode) { viewModel.updatePoolData(pool.volumeM3.toString(), pool.currentPh.toString(), pool.currentChlorine.toString(), it) }
 
-            Spacer(Modifier.height(8.dp))
             StatusIndicator(score = PoolCalculator.getPoolScore(pool))
 
-            Box(Modifier.weight(1f).fillMaxWidth(), Alignment.Center) {
+            Box(Modifier.weight(1f).fillMaxWidth(), Alignment.TopCenter) { // Alineado arriba para dejar sitio al teclado
                 Column(
-                    modifier = Modifier.verticalScroll(rememberScrollState()),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.padding(top = 8.dp)
                 ) {
                     InputsSection(pool, viewModel, { t, c -> helpContent = t to c }, { showVolumeCalc = true })
                 }
             }
 
-            Spacer(Modifier.height(8.dp))
             ResultsSection(pool, weather)
-
-            Spacer(Modifier.height(16.dp))
-            Text(stringResource(R.string.credits_author), color = Color.White.copy(0.6f), fontSize = 12.sp, fontWeight = FontWeight.Medium, textAlign = TextAlign.Center)
+            Spacer(Modifier.height(6.dp))
+            Text(stringResource(R.string.credits_author), color = Color.White.copy(0.6f), fontSize = 11.sp, fontWeight = FontWeight.Medium, textAlign = TextAlign.Center)
         }
     }
 }
@@ -211,18 +208,18 @@ private fun InputsSection(pool: com.sagon.myapplication.data.PoolData, viewModel
         if (!pool.isWinterMode) {
             PoolInputField(stringResource(R.string.label_ph), pool.currentPh.toString(), Icons.Rounded.Science, { viewModel.updatePoolData(pool.volumeM3.toString(), it, pool.currentChlorine.toString(), pool.isWinterMode) }, { onHelp(phHelpTitle, HelpContent.PH_HELP) })
             PoolInputField(stringResource(R.string.label_chlorine), pool.currentChlorine.toString(), Icons.Rounded.Opacity, { viewModel.updatePoolData(pool.volumeM3.toString(), pool.currentPh.toString(), it, pool.isWinterMode) }, { onHelp(clHelpTitle, HelpContent.CHLORINE_HELP) })
-            Button(onClick = { viewModel.onTabletChanged(context) }, Modifier.fillMaxWidth().padding(top = 16.dp).height(64.dp), colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0D47A1).copy(alpha = 0.8f)), shape = RoundedCornerShape(20.dp)) {
-                Icon(Icons.Rounded.Sync, null, Modifier.size(24.dp))
-                Spacer(Modifier.width(10.dp))
-                Text(stringResource(R.string.btn_tablet_changed), fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.White)
+            Button(onClick = { viewModel.onTabletChanged(context) }, Modifier.fillMaxWidth().padding(top = 12.dp).height(48.dp), colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0D47A1).copy(alpha = 0.8f)), shape = RoundedCornerShape(16.dp)) {
+                Icon(Icons.Rounded.Sync, null, Modifier.size(20.dp))
+                Spacer(Modifier.width(8.dp))
+                Text(stringResource(R.string.btn_tablet_changed), fontSize = 14.sp, fontWeight = FontWeight.Bold, color = Color.White)
             }
         } else {
-            Surface(color = Color.White.copy(alpha = 0.1f), shape = RoundedCornerShape(24.dp), modifier = Modifier.padding(top = 20.dp).fillMaxWidth()) {
-                Column(modifier = Modifier.padding(32.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-                    Icon(Icons.Rounded.AcUnit, null, tint = Color(0xFF0D47A1), modifier = Modifier.size(56.dp))
-                    Spacer(Modifier.height(16.dp))
-                    Text("PROTECCIÓN INVERNAL", color = Color(0xFF0D47A1), fontWeight = FontWeight.Black, fontSize = 24.sp, textAlign = TextAlign.Center)
-                    Text("Cálculos optimizados para hibernación", color = Color(0xFF0D47A1).copy(alpha = 0.7f), fontSize = 16.sp, textAlign = TextAlign.Center)
+            Surface(color = Color.White.copy(alpha = 0.1f), shape = RoundedCornerShape(24.dp), modifier = Modifier.padding(top = 10.dp).fillMaxWidth()) {
+                Column(modifier = Modifier.padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+                    Icon(Icons.Rounded.AcUnit, null, tint = Color(0xFF0D47A1), modifier = Modifier.size(48.dp))
+                    Spacer(Modifier.height(8.dp))
+                    Text("PROTECCIÓN INVERNAL", color = Color(0xFF0D47A1), fontWeight = FontWeight.Black, fontSize = 20.sp, textAlign = TextAlign.Center)
+                    Text("Cálculos optimizados para hibernación", color = Color(0xFF0D47A1).copy(alpha = 0.7f), fontSize = 14.sp, textAlign = TextAlign.Center)
                 }
             }
         }
@@ -231,8 +228,8 @@ private fun InputsSection(pool: com.sagon.myapplication.data.PoolData, viewModel
 
 @Composable
 private fun ResultsSection(pool: com.sagon.myapplication.data.PoolData, weather: com.sagon.myapplication.logic.WeatherInfo) {
-    Surface(Modifier.fillMaxWidth(), RoundedCornerShape(32.dp), Color.White.copy(0.97f), shadowElevation = 15.dp) {
-        Column(Modifier.padding(24.dp)) {
+    Surface(Modifier.fillMaxWidth(), RoundedCornerShape(20.dp), Color.White.copy(0.97f), shadowElevation = 6.dp) {
+        Column(Modifier.padding(horizontal = 16.dp, vertical = 4.dp)) {
             if (!pool.isWinterMode) {
                 val phKey = PoolCalculator.getPhStatusKey(pool.currentPh)
                 val phStatus = when(phKey) { "low" -> stringResource(R.string.status_low) "high" -> stringResource(R.string.status_high) else -> stringResource(R.string.status_ideal) }
@@ -242,7 +239,7 @@ private fun ResultsSection(pool: com.sagon.myapplication.data.PoolData, weather:
             } else {
                 FinalResultRow(stringResource(R.string.result_winter_product), stringResource(R.string.unit_liters, PoolCalculator.calculateWinterProduct(pool.volumeM3)), Color(0xFF1976D2))
             }
-            HorizontalDivider(Modifier.padding(vertical = 12.dp), thickness = 1.dp, color = Color.LightGray.copy(0.4f))
+            HorizontalDivider(Modifier.padding(vertical = 2.dp), thickness = 1.dp, color = Color.LightGray.copy(0.4f))
             val pumpHours = PoolCalculator.calculateFilteringHours(pool, weather.temp).toInt()
             FinalResultRow(stringResource(R.string.result_pump_hours), stringResource(R.string.unit_hours_per_day, pumpHours), Color(0xFF0D47A1))
         }
@@ -251,9 +248,9 @@ private fun ResultsSection(pool: com.sagon.myapplication.data.PoolData, weather:
 
 @Composable
 fun FinalResultRow(label: String, value: String, color: Color) {
-    Row(Modifier.fillMaxWidth().padding(vertical = 6.dp), Arrangement.SpaceBetween, Alignment.CenterVertically) {
-        Text(label, fontSize = 14.sp, fontWeight = FontWeight.Bold, color = Color.Gray)
-        Text(value, fontSize = 20.sp, fontWeight = FontWeight.Black, color = color)
+    Row(Modifier.fillMaxWidth().padding(vertical = 2.dp), Arrangement.SpaceBetween, Alignment.CenterVertically) {
+        Text(label, fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Color.Gray)
+        Text(value, fontSize = 17.sp, fontWeight = FontWeight.Black, color = color)
     }
 }
 

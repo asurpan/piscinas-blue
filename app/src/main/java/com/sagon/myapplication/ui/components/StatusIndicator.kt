@@ -43,24 +43,24 @@ fun StatusIndicator(score: Int) {
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(12.dp)
+        modifier = Modifier.padding(vertical = 2.dp)
     ) {
         Text(
             text = emoji,
-            fontSize = 70.sp,
+            fontSize = 36.sp,
             modifier = Modifier.scale(if (score >= 90) scale else 1f)
         )
         Text(
             text = message,
             color = Color.White,
-            fontSize = 18.sp,
+            fontSize = 14.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(top = 4.dp)
+            modifier = Modifier.padding(top = 0.dp)
         )
         Text(
             text = stringResource(R.string.score_label, score),
             color = Color.White.copy(alpha = 0.8f),
-            fontSize = 12.sp
+            fontSize = 10.sp
         )
     }
 }

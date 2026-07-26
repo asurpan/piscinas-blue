@@ -14,6 +14,13 @@ He creado un archivo marcador de posición (placeholder) en:
 ### 3. Recuperación del Icono del Robot (Asistente)
 Se ha cambiado el icono del asistente en el Dashboard de `SmartToy` a `Android`. Esto soluciona el problema de que el botón no apareciera en algunos dispositivos, asegurando que el acceso al asistente sea siempre visible.
 
+### 4. Interfaz Super-Compacta (Visibilidad Total)
+Se ha refinado el diseño para garantizar que todo sea visible en una sola pantalla:
+- **Emoji y Estado**: Ajustado a `36sp` para ganar espacio sin perder el impacto visual.
+- **Campos de Entrada**: Reducida la altura a `48dp` y minimizados los márgenes verticales a `2dp`. Se ha migrado a `BasicTextField` para evitar que los números se corten por el padding interno de Material3.
+- **Tarjeta de Resultados**: Reducido el padding vertical a `4.dp` y las filas a `2.dp`. Se ha añadido un pequeño margen inferior para separarla de los créditos del pie.
+- **Sin Scroll**: La pantalla principal es ahora 100% estática, evitando desplazamientos innecesarios.
+
 > [!TIP]
 > Actualmente el archivo es un marcador vacío para que la app compile. Para que suene de verdad, **sustituye el archivo `piscina_entrada.mp3`** en esa carpeta por uno que tenga el sonido de agua que prefieras.
 

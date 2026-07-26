@@ -4,4 +4,6 @@
 - `[x]` Sincronizar proyecto con Gradle
 - `[x]` Migrar `AuthManager.kt` a `GetSignInWithGoogleOption`
 - `[x]` Mejorar manejo de errores y logs en `AuthManager.kt`
-- `[ ]` Verificar compilación y solicitar prueba al usuario
+- `[x]` Implementar UI compacta sin scroll
+- `[x]` Ajuste final de tamaños para visibilidad total
+- `[x]` Verificar compilación y solicitar prueba al usuario

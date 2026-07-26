@@ -1,0 +1,80 @@
+<resources>
+    <string name="app_name">BLUE POOLS</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_title_1">Wetter-Intelligenz</string>
+    <string name="onboarding_desc_1">Ihr Pool blickt in den Himmel. Wir passen das Chlor automatisch an Wind und Hitze in Ihrer Stadt an.</string>
+    <string name="onboarding_title_2">Blue Bot: Ihr Experte</string>
+    <string name="onboarding_desc_2">Grünes Wasser? Zweifel? Fragen Sie unseren Experten-Bot kostenlos rund um die Uhr für kristallklares Wasser.</string>
+    <string name="onboarding_title_3">Totale Sicherheit</string>
+    <string name="onboarding_desc_3">Das Schutzschild erinnert Sie an den Test des FI-Schutzschalters. Schützen Sie Ihre Familie durch schnelle Checks.</string>
+    <string name="onboarding_title_4">Ihr Pool in der Cloud</string>
+    <string name="onboarding_desc_4">Ihre Daten gehen nie verloren. Synchronisieren Sie mit Ihrem Google-Konto und teilen Sie den Zugriff in Echtzeit mit jedem.</string>
+    <string name="btn_continue">WEITER</string>
+    <string name="btn_start_now">JETZT STARTEN</string>
+
+    <!-- Dashboard -->
+    <string name="mode_summer">SOMMER</string>
+    <string name="mode_winter">WINTER</string>
+    <string name="label_volume">Kapazität (m³)</string>
+    <string name="label_ph">Wasser-pH</string>
+    <string name="label_chlorine">Chlor (ppm)</string>
+    <string name="btn_tablet_changed">TABLETTE GEWECHSELT</string>
+    <string name="result_ph_status">pH-STATUS:</string>
+    <string name="result_tablet_duration">TABLETTEN-DAUER:</string>
+    <string name="result_winter_product">WINTERMITTEL:</string>
+    <string name="result_pump_hours">PUMPSTUNDEN:</string>
+    <string name="unit_days">%d Tage</string>
+    <string name="unit_liters">%.2f L</string>
+    <string name="unit_hours_per_day">%d h/Tag</string>
+    <string name="pool_perfect">Perfekter Pool!</string>
+    <string name="pool_almost">Fast ideal...</string>
+    <string name="pool_needs_adjustment">Anpassung nötig!</string>
+    <string name="score_label">Punktzahl: %d/100</string>
+    <string name="credits_author">APP programmiert von Jose Manuel G \"LorenSoft\"</string>
+
+    <!-- Bot & Assistant -->
+    <string name="bot_title">Blue Bot - Experte</string>
+    <string name="bot_initial_msg">Hallo! Ich bin Blue Bot. Was gibt es Neues an Ihrem Pool?</string>
+    <string name="chat_placeholder">Hier schreiben...</string>
+
+    <!-- Activation -->
+    <string name="activation_title">TESTLIMIT ERREICHT</string>
+    <string name="activation_desc_default">Sie haben die Testversion 30 Mal genutzt. Um BLUE POOLS lebenslang zu nutzen, leisten Sie eine Wartungsspende.</string>
+    <string name="btn_activate">APP AKTIVIEREN</string>
+    <string name="activation_code_label">Geben Sie Ihren Aktivierungscode ein</string>
+
+    <!-- Help & Safety -->
+    <string name="help_title_capacity">Kapazität</string>
+    <string name="help_title_ph">Wasser-pH</string>
+    <string name="help_title_chlorine">Chlorgehalt</string>
+    <string name="btn_understood">Verstanden</string>
+    <string name="safety_dialog_title">Elektrische Sicherheit</string>
+    <string name="safety_dialog_msg">Haben Sie die TEST-Taste am Sicherungskasten gedrückt und hat der Schalter ausgelöst?</string>
+    <string name="btn_yes_ok">JA, ALLES OK</string>
+    <string name="btn_no_later">NEIN / SPÄTER</string>
+
+    <!-- Bot Responses -->
+    <string name="bot_resp_cloro_alto">Entfernen Sie die Tabletten, decken Sie den Pool auf und lassen Sie die Sonne arbeiten. Wenn es schnell gehen muss, lassen Sie 10% Wasser ab.</string>
+    <string name="bot_resp_ph_alto">Das Wasser ist alkalisch. Nutzen Sie einen \'pH-Senker\'. Schalten Sie Wasserfälle für eine Weile aus.</string>
+    <string name="bot_resp_verde">Alarm! 1. pH auf 7.2 einstellen. 2. Schockchlorung. 3. Wände bürsten. 4. 24 Stunden durchgehend filtern.</string>
+    <string name="bot_resp_turbia">Zu wenig Filterung oder Kalk. Sandfilter rückspülen und \'Flockungsmittel\' nutzen, damit der Schmutz sinkt.</string>
+    <string name="bot_resp_limpieza_ext">Nutzen Sie 1%ige Bleiche gegen Viren. Bei Kalk auf Steinen wirkt Essig Wunder.</string>
+    <string name="bot_resp_depuradora">In Spanien: 70% zwischen 00:00 und 08:00 (Niedrigtarif) programmieren. Rest mittags zur Chlorverteilung.</string>
+    <string name="bot_resp_wifi">Ich empfehle den \'Yieryi 7-in-1 WiFi\' bei AliExpress oder \'Blue Connect\' bei Amazon. Diese messen alles selbst.</string>
+    <string name="bot_resp_limpiador">Am günstigsten ist der Venturi-Sauger (20€). Für Komfort ist der Wybot Akku-Roboter die beste Wahl.</string>
+    <string name="bot_resp_mascota">Nutzen Sie natürliche Repellents (Neem) gegen Insekten. Chemikalien erst trocknen lassen, bevor Haustiere herankommen.</string>
+    <string name="bot_resp_greeting">Hallo! Ich bin Blue Bot, Ihr Pool-Experte. Wie kann ich Ihnen heute helfen?</string>
+    <string name="bot_resp_unknown">Ich bin nicht sicher, ob ich Sie verstehe. Versuchen Sie: \'grünes Wasser\', \'hohes Chlor\' oder \'Filter programmieren\'.</string>
+
+    <!-- Calculator Status -->
+    <string name="status_low">Niedrig</string>
+    <string name="status_high">Hoch</string>
+    <string name="status_ideal">Ideal</string>
+
+    <!-- Exit Dialog -->
+    <string name="exit_title">App beenden</string>
+    <string name="exit_msg">Sind Sie sicher, dass Sie die Anwendung schließen möchten?</string>
+    <string name="btn_exit_yes">Ja, beenden</string>
+    <string name="btn_exit_no">Nein, zurück</string>
+</resources>

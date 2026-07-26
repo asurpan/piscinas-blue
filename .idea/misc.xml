@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_21" default="true" project-jdk-name="jbr-21" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+  <component name="StoredSessionsInfoStore">
+    <option name="sessions">
+      <list>
+        <SessionInfoState>
+          <option name="id" value="20260613-021759-3212b311-fc45-4223-875c-46ad3298cb34" />
+          <option name="lastUpdateTimestamp" value="1781309879570" />
+          <option name="responseMode" value="Agent" />
+          <option name="title" value="New Agent Session" />
+          <option name="user" value="52661007t@gmail.com" />
+        </SessionInfoState>
+        <SessionInfoState>
+          <option name="id" value="20260628-004931-c6c22fb2-07b3-44c6-9269-b60b47301ac5" />
+          <option name="lastUpdateTimestamp" value="1782600571264" />
+          <option name="responseMode" value="Agent" />
+          <option name="title" value="New Agent Session" />
+          <option name="user" value="appsaiber@gmail.com" />
+        </SessionInfoState>
+        <SessionInfoState>
+          <option name="id" value="20260629-183056-057502f6-7b6f-4bc6-95e4-6aaeb15ab1bd" />
+          <option name="lastUpdateTimestamp" value="1782750656710" />
+          <option name="responseMode" value="Agent" />
+          <option name="title" value="New Agent Session" />
+          <option name="user" value="asurpan@gmail.com" />
+        </SessionInfoState>
+        <SessionInfoState>
+          <option name="id" value="20260629-195637-1f2dc76d-ba9f-4d78-a734-8a924c152af0" />
+          <option name="lastUpdateTimestamp" value="1782755797070" />
+          <option name="responseMode" value="Agent" />
+          <option name="title" value="New Agent Session" />
+          <option name="user" value="zarco20000@gmail.com" />
+        </SessionInfoState>
+        <SessionInfoState>
+          <option name="id" value="20260709-223817-a2f0d9a8-237b-4d6c-82fb-bdba90243504" />
+          <option name="lastUpdateTimestamp" value="1783629497159" />
+          <option name="responseMode" value="Agent" />
+          <option name="title" value="New Agent Session" />
+          <option name="user" value="ndsvmusic3@gmail.com" />
+        </SessionInfoState>
+        <SessionInfoState>
+          <option name="id" value="20260712-132453-cb7684ea-47c6-4322-ac29-b0f566a54722" />
+          <option name="lastUpdateTimestamp" value="1783855493992" />
+          <option name="responseMode" value="Agent" />
+          <option name="title" value="New Agent Session" />
+          <option name="user" value="ndsvmusic1@gmail.com" />
+        </SessionInfoState>
+      </list>
+    </option>
+  </component>
+</project>

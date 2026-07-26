@@ -1,0 +1,80 @@
+<resources>
+    <string name="app_name">蓝色泳池</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_title_1">气象大脑</string>
+    <string name="onboarding_desc_1">您的泳池直视天空。我们根据您城市的风力和热量自动调整氯含量。</string>
+    <string name="onboarding_title_2">Blue Bot：您的专家</string>
+    <string name="onboarding_desc_2">水变绿了？有疑问？24/7 免费咨询我们的专家机器人，保持水质晶莹剔透。</string>
+    <string name="onboarding_title_3">全面安全</string>
+    <string name="onboarding_desc_3">安全盾牌会提醒您测试漏电保护器。通过快速检查保护您的家人。</string>
+    <string name="onboarding_title_4">云端泳池</string>
+    <string name="onboarding_desc_4">您的数据永不丢失。与您的 Google 账户同步，实时与任何人分享访问权限。</string>
+    <string name="btn_continue">继续</string>
+    <string name="btn_start_now">现在开始</string>
+
+    <!-- Dashboard -->
+    <string name="mode_summer">夏季</string>
+    <string name="mode_winter">冬季</string>
+    <string name="label_volume">容量 (m³)</string>
+    <string name="label_ph">水 pH 值</string>
+    <string name="label_chlorine">氯含量 (ppm)</string>
+    <string name="btn_tablet_changed">我已更换药剂</string>
+    <string name="result_ph_status">pH 状态：</string>
+    <string name="result_tablet_duration">药剂预计天数：</string>
+    <string name="result_winter_product">防冻剂：</string>
+    <string name="result_pump_hours">泵运行时间：</string>
+    <string name="unit_days">%d 天</string>
+    <string name="unit_liters">%.2f L</string>
+    <string name="unit_hours_per_day">%d 小时/天</string>
+    <string name="pool_perfect">完美泳池！</string>
+    <string name="pool_almost">接近理想...</string>
+    <string name="pool_needs_adjustment">需要调整！</string>
+    <string name="score_label">评分：%d/100</string>
+    <string name="credits_author">APP 开发：Jose Manuel G \"LorenSoft\"</string>
+
+    <!-- Bot & Assistant -->
+    <string name="bot_title">Blue Bot - 专家</string>
+    <string name="bot_initial_msg">你好！我是 Blue Bot。您的泳池有什么情况？</string>
+    <string name="chat_placeholder">在这里输入...</string>
+
+    <!-- Activation -->
+    <string name="activation_title">达到试用限制</string>
+    <string name="activation_desc_default">您已使用试用版 30 次。如需终身使用蓝色泳池，请进行维护捐赠。</string>
+    <string name="btn_activate">激活 APP</string>
+    <string name="activation_code_label">输入您的激活码</string>
+
+    <!-- Help & Safety -->
+    <string name="help_title_capacity">容量</string>
+    <string name="help_title_ph">水 pH 值</string>
+    <string name="help_title_chlorine">氯水平</string>
+    <string name="btn_understood">明白了</string>
+    <string name="safety_dialog_title">用电安全</string>
+    <string name="safety_dialog_msg">您是否按下了电箱上的 TEST 按钮，开关是否跳闸？</string>
+    <string name="btn_yes_ok">是的，一切正常</string>
+    <string name="btn_no_later">不 / 稍后</string>
+
+    <!-- Bot Responses -->
+    <string name="bot_resp_cloro_alto">取出药剂，掀开泳池盖，让太阳直射。如果赶时间，排掉 10% 的水并重新加满。</string>
+    <string name="bot_resp_ph_alto">水呈碱性。使用“pH 降低剂”。关闭瀑布一段时间以降低水平。</string>
+    <string name="bot_resp_verde">警报！1. 将 pH 调至 7.2。2. 进行冲击性氯化。3. 刷洗池壁。4. 连续过滤 24 小时。</string>
+    <string name="bot_resp_turbia">过滤不足或有水垢。反洗砂滤器并使用“絮凝剂”或“澄清剂”。</string>
+    <string name="bot_resp_limpieza_ext">使用 1% 稀释漂白水杀灭病毒。如果是石头上的水垢，白醋效果很好。</string>
+    <string name="bot_resp_depuradora">在西班牙，请在 00:00 至 08:00（电费便宜）安排 70% 的过滤。中午安排其余时间以移动氯。</string>
+    <string name="bot_resp_wifi">我推荐 AliExpress 上的 Yieryi 7-in-1 WiFi 或 Amazon 上的 Blue Connect。</string>
+    <string name="bot_resp_limpiador">最便宜的是 Venturi 吸尘器（20欧元）。追求舒适的话，Wybot 电池机器人性价比最高。</string>
+    <string name="bot_resp_mascota">使用天然驱虫剂（苦楝油）。如果使用化学品，请在让宠物进入前确保已晾干。</string>
+    <string name="bot_resp_greeting">你好！我是 Blue Bot，您的泳池专家。今天有什么可以帮您的？</string>
+    <string name="bot_resp_unknown">我不确定是否理解。请尝试：“水变绿”、“氯太高”或“如何设置过滤器”。</string>
+
+    <!-- Calculator Status -->
+    <string name="status_low">低</string>
+    <string name="status_high">高</string>
+    <string name="status_ideal">理想</string>
+
+    <!-- Exit Dialog -->
+    <string name="exit_title">退出应用</string>
+    <string name="exit_msg">您确定要关闭应用程序吗？</string>
+    <string name="btn_exit_yes">是的，退出</string>
+    <string name="btn_exit_no">不，返回</string>
+</resources>

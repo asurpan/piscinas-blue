@@ -1,0 +1,30 @@
+# Tareas: App PISCINAS BLUE - Fase 2 (Avanzado)
+
+- `[x]` Estructura básica y Configuración
+    - `[x]` Crear modelo de datos `PoolData`
+    - `[x]` Implementar lógica en `PoolCalculator`
+- `[x]` Interfaz de Usuario (UI) - Fase 1
+    - `[x]` Componente de animación `WaterFillAnimation` (Splash)
+    - `[x]` Pantalla principal (Dashboard) con imagen de fondo `p.png`
+- `[x]` Infraestructura y Persistencia
+    - `[x]` Configurar dependencias de Firebase y Room
+    - `[x]` Implementar base de datos local con Room
+    - `[x]` Crear Repositorio `PoolRepository`
+    - `[x]` Configurar Firebase Firestore
+- `[x]` Funciones Inteligentes
+    - `[x]` Implementar WorkManager para notificaciones de mantenimiento
+    - `[x]` Crear lógica de "Informe de Servicio" para WhatsApp
+- `[x]` Colaboración
+    - `[x]` Implementar sistema de códigos para compartir piscinas
+    - `[x]` Sincronización en tiempo real entre usuarios compartidos
+- `[x]` Pulido Estético y Usabilidad
+    - `[x]` Crear contenido de ayuda en `HelpContent.kt`
+    - `[x]` Implementar `HelpDialog.kt`
+    - `[x]` Añadir emojis reactivos y transparencias (Glassmorphism)
+    - `[x]` Feedback háptico y diseño responsivo
+- `[x]` Lanzamiento y Monetización
+    - `[x]` Implementar Onboarding de 4 slides.
+    - `[x]` Lógica de límite de 30 usos con DataStore.
+    - `[x]` Pantalla de Activación dinámica.
+    - `[x]` Implementar Modo "Stealth" con Firebase remoto.
+    - `[x]` Añadir créditos de autor en Dashboard.

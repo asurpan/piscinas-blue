@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PISCINAS BLUE | Tu Piscina Inteligente en la Nube</title>
+
+    <!-- SEO & ASO GLOBAL PRO -->
+    <meta name="description" content="Gestiona tu piscina con IA. Ubicación dinámica, control de cloro y pH, historial inteligente y acceso compartido. ¡Descárgala gratis!">
+    <meta name="keywords" content="piscina, mantenimiento, cloro, pH, lorensoft, app gratis, agua verde, piscina inteligente, pool calculator, compartir piscina, gps piscina, pool care app">
+    <meta name="author" content="LorenSoft">
+
+    <!-- Etiquetas de Idioma para Google (SEO Internacional) -->
+    <link rel="alternate" hreflang="es" href="https://asurpan.github.io/piscinas-blue/" />
+    <link rel="alternate" hreflang="en" href="https://asurpan.github.io/piscinas-blue/" />
+    <link rel="alternate" hreflang="fr" href="https://asurpan.github.io/piscinas-blue/" />
+    <link rel="alternate" hreflang="pt" href="https://asurpan.github.io/piscinas-blue/" />
+    <link rel="alternate" hreflang="de" href="https://asurpan.github.io/piscinas-blue/" />
+    <link rel="alternate" hreflang="zh" href="https://asurpan.github.io/piscinas-blue/" />
+    <link rel="alternate" hreflang="x-default" href="https://asurpan.github.io/piscinas-blue/" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="PISCINAS BLUE | El Cerebro de tu Piscina">
+    <meta property="og:description" content="IA climática y control total desde tu móvil. ¡Agua cristalina garantizada!">
+    <meta property="og:image" content="https://asurpan.github.io/piscinas-blue/hero-preview.jpg">
+    <meta property="og:url" content="https://asurpan.github.io/piscinas-blue/">
+
+    <style>
+        :root { --blue-dark: #0D47A1; --blue-primary: #1976D2; --blue-light: #64B5F6; --green: #4CAF50; --white: #ffffff; }
+        body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; background-color: #f0f7ff; overflow-x: hidden; }
+
+        .hero { text-align: center; padding: 120px 20px; background: linear-gradient(135deg, var(--blue-dark), var(--blue-light)); color: white; border-radius: 0 0 60px 60px; box-shadow: 0 20px 50px rgba(25, 118, 210, 0.3); }
+        .hero h1 { font-size: clamp(2.5em, 8vw, 4em); margin: 0; font-weight: 900; letter-spacing: -2px; }
+        .hero p { font-size: 1.3em; opacity: 0.9; margin: 20px auto 40px; max-width: 800px; }
+
+        .btn-container { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .btn { padding: 18px 45px; border-radius: 50px; text-decoration: none; font-weight: 800; transition: 0.3s; display: inline-flex; align-items: center; min-width: 260px; justify-content: center; }
+        .btn-google { background-color: #000; color: white; }
+        .btn-apk { background-color: var(--green); color: white; }
+        .btn:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+
+        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; padding: 60px 20px; max-width: 1200px; margin: 0 auto; }
+        .card { background: white; padding: 35px; border-radius: 30px; text-align: center; transition: 0.3s; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #e3f2fd; }
+        .card:hover { transform: scale(1.03); border-color: var(--blue-light); }
+        .card h3 { color: var(--blue-primary); font-size: 1.6em; margin-bottom: 15px; }
+        .card p { font-size: 1em; color: #666; }
+
+        .install-guide { background: #fff; padding: 40px; border-radius: 35px; border-left: 10px solid var(--green); margin: 40px 20px; max-width: 900px; margin-inline: auto; box-shadow: 0 15px 40px rgba(0,0,0,0.05); }
+        .badge { display: inline-block; background: #e8f5e9; color: #2e7d32; padding: 6px 15px; border-radius: 10px; font-weight: 800; font-size: 0.8em; margin-bottom: 15px; }
+
+        .footer { text-align: center; padding: 60px 20px; background: var(--blue-dark); color: white; }
+        .footer a { color: var(--blue-light); text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <section class="hero">
+        <h1 id="title">PISCINAS BLUE 🏊‍♂️</h1>
+        <p id="tagline">IA Meteorológica, Ubicación GPS y Control Total en la Nube. La app definitiva para tu piscina.</p>
+
+        <div class="btn-container">
+            <a href="https://play.google.com/store/apps/details?id=com.sagon.piscinasblue" class="btn btn-google" id="btnPlay">Disponible en Google Play</a>
+            <a href="app-release.apk" class="btn btn-apk" id="btnApk">Descargar APK Directo</a>
+        </div>
+    </section>
+
+    <div class="features">
+        <div class="card">
+            <h3 id="f1t">🌍 GPS Inteligente</h3>
+            <p id="f1d">Sincroniza con tu ciudad exacta. Analizamos el viento y el calor local para que el cloro dure más.</p>
+        </div>
+        <div class="card">
+            <h3 id="f2t">🤝 Comparte Piscina</h3>
+            <p id="f2d">Comparte el ID de tu piscina con familiares o jardineros. Todos verán los niveles en tiempo real.</p>
+        </div>
+        <div class="card">
+            <h3 id="f3t">📊 Historial Pro</h3>
+            <p id="f3d">Registra cada medición y cambio de pastilla. Aprende del pasado para tener un agua perfecta.</p>
+        </div>
+        <div class="card">
+            <h3 id="f4t">🤖 Blue Bot IA</h3>
+            <p id="f4d">Tu experto 24/7. Resuelve problemas de agua verde o turbia al instante con consejos profesionales.</p>
+        </div>
+        <div class="card">
+            <h3 id="f5t">🛡️ Seguridad Eléctrica</h3>
+            <p id="f5d">Única app que te recuerda revisar el diferencial. La seguridad de tu familia no tiene precio.</p>
+        </div>
+        <div class="card">
+            <h3 id="f6t">☁️ Sincronización</h3>
+            <p id="f6d">Nunca pierdas tus datos. Con Google Firebase, tu piscina viaja siempre contigo en tu cuenta.</p>
+        </div>
+    </div>
+
+    <div class="install-guide">
+        <div class="badge" id="trustBadge">🛡️ CUMPLIMIENTO TOTAL DE PRIVACIDAD</div>
+        <h4 id="guideTitle">Instalación segura y rápida</h4>
+        <p id="guideDesc"><strong>PISCINAS BLUE</strong> es 100% segura. Solo usamos el GPS una vez para configurar tu clima local:</p>
+        <ol id="steps">
+            <li id="s1">Descarga el archivo <strong>.apk</strong>.</li>
+            <li id="s2">Si Android pregunta, selecciona <strong>"Instalar de todas formas"</strong>.</li>
+            <li id="s3">Inicia sesión con Google y disfruta.</li>
+        </ol>
+        <p style="font-size: 0.8em; opacity: 0.5;" id="legalsmall">* La aplicación es analizada automáticamente por tu dispositivo.</p>
+    </div>
+
+    <footer class="footer">
+        <p>© 2026 LorenSoft | <a href="privacidad.html" id="linkPrivacy">Política de Privacidad</a></p>
+        <p><small id="credits">PISCINAS BLUE - Innovación por Jose Manuel G</small></p>
+    </footer>
+
+    <script>
+        const translations = {
+            es: {
+                title: "PISCINAS BLUE 🏊‍♂️",
+                tagline: "IA Meteorológica, Ubicación GPS y Control Total en la Nube. La app definitiva para tu piscina.",
+                btnPlay: "Disponible en Google Play", btnApk: "Descargar APK Directo",
+                f1t: "🌍 GPS Inteligente", f1d: "Sincroniza con tu ciudad exacta. Analizamos el viento y el calor local para que el cloro dure más.",
+                f2t: "🤝 Comparte Piscina", f2d: "Comparte el ID de tu piscina con familiares o jardineros. Todos verán los niveles en tiempo real.",
+                f3t: "📊 Historial Pro", f3d: "Registra cada medición y cambio de pastilla. Aprende del pasado para tener un agua perfecta.",
+                f4t: "🤖 Blue Bot IA", f4d: "Tu experto 24/7. Resuelve problemas de agua verde o turbia al instante con consejos profesionales.",
+                f5t: "🛡️ Seguridad Eléctrica", f5d: "Única app que te recuerda revisar el diferencial. La seguridad de tu familia no tiene precio.",
+                f6t: "☁️ Sincronización", f6d: "Nunca pierdas tus datos. Con Google Firebase, tu piscina viaja siempre contigo en tu cuenta.",
+                trustBadge: "🛡️ CUMPLIMIENTO TOTAL DE PRIVACIDAD", guideTitle: "Instalación segura y rápida",
+                guideDesc: "PISCINAS BLUE es 100% segura. Solo usamos el GPS una vez para configurar tu clima local:",
+                s1: "Descarga el archivo .apk.", s2: "Si Android pregunta, selecciona 'Instalar de todas formas'.", s3: "Inicia sesión con Google y disfruta.",
+                linkPrivacy: "Política de Privacidad", credits: "PISCINAS BLUE - Innovación por Jose Manuel G", legalsmall: "* La aplicación es analizada automáticamente por tu dispositivo."
+            },
+            en: {
+                title: "BLUE POOLS 🏊‍♂️",
+                tagline: "Weather AI, GPS Location & Cloud Sync. The ultimate app for your pool.",
+                btnPlay: "Available on Google Play", btnApk: "Direct APK Download",
+                f1t: "🌍 Smart GPS", f1d: "Sync with your exact city. We analyze local wind and heat so chlorine lasts longer.",
+                f2t: "🤝 Pool Sharing", f2d: "Share your pool ID with family or gardeners. Everyone sees levels in real-time.",
+                f3t: "📊 Pro History", f3d: "Record every measurement and tablet change. Learn from the past for perfect water.",
+                f4t: "🤖 Blue Bot AI", f4d: "Your 24/7 expert. Solve green or cloudy water issues instantly with pro tips.",
+                f5t: "🛡️ Total Safety", f5d: "The only app that reminds you to test the circuit breaker. Family safety is priceless.",
+                f6t: "☁️ Cloud Sync", f6d: "Never lose data. With Google Firebase, your pool always travels with your account.",
+                trustBadge: "🛡️ TOTAL PRIVACY COMPLIANT", guideTitle: "Secure and Fast Installation",
+                guideDesc: "BLUE POOLS is 100% safe. We only use GPS once to set up your local weather:",
+                s1: "Download the .apk file.", s2: "If Android asks, select 'Install anyway'.", s3: "Sign in with Google and enjoy.",
+                linkPrivacy: "Privacy Policy", credits: "BLUE POOLS - Innovation by Jose Manuel G", legalsmall: "* The app is automatically scanned by your device."
+            },
+            fr: {
+                title: "PISCINAS BLUE 🏊‍♂️",
+                tagline: "IA Météo, Localisation GPS et Cloud. L'application ultime pour votre piscine.",
+                btnPlay: "Disponible sur Google Play", btnApk: "Téléchargement direct de l'APK",
+                f1t: "🌍 GPS Intelligent", f1d: "Synchronisez avec votre ville. Nous analysons le vent et la chaleur locale pour économiser le chlore.",
+                f2t: "🤝 Partage de Piscine", f2d: "Partagez l'ID de votre piscine. Tout le monde voit les niveaux en temps réel.",
+                f3t: "📊 Historique Pro", f3d: "Enregistrez chaque mesure. Apprenez du passé pour une eau parfaite.",
+                f4t: "🤖 Blue Bot IA", f4d: "Votre expert 24/7. Résolvez les problèmes d'eau verte instantanément.",
+                f5t: "🛡️ Sécurité Totale", f5d: "La seule application qui rappelle de tester le disjoncteur différentiel.",
+                f6t: "☁️ Synchronisation", f6d: "Ne perdez jamais vos données. Votre piscine voyage avec votre compte Google.",
+                trustBadge: "🛡️ CONFORMITÉ TOTALE CONFIDENTIALITÉ", guideTitle: "Installation Sûre",
+                guideDesc: "PISCINAS BLUE est 100% sûr. Nous n'utilisons le GPS qu'une fois pour votre météo :",
+                s1: "Téléchargez le fichier .apk.", s2: "Si Android demande, sélectionnez 'Installer quand même'.", s3: "Connectez-vous avec Google et profitez.",
+                linkPrivacy: "Confidentialité", credits: "PISCINAS BLUE - Par Jose Manuel G", legalsmall: "* L'application est analysée par votre système."
+            },
+            pt: {
+                title: "PISCINAS BLUE 🏊‍♂️",
+                tagline: "IA Climática, Localização GPS e Nuvem. O app definitivo para sua piscina.",
+                btnPlay: "Disponível no Google Play", btnApk: "Download Direto do APK",
+                f1t: "🌍 GPS Inteligente", f1d: "Sincronize com sua cidade. Analisamos o vento e o calor local para economizar cloro.",
+                f2t: "🤝 Compartilhe Piscina", f2d: "Compartilhe o ID com familiares. Todos veem os níveis em tempo real.",
+                f3t: "📊 Histórico Pro", f3d: "Registre cada medição. Aprenda com o passado para ter água perfeita.",
+                f4t: "🤖 Blue Bot IA", f4d: "Seu especialista 24/7. Resolva problemas de água verde instantaneamente.",
+                f5t: "🛡️ Segurança Total", f5d: "O único app que lembra você de testar o diferencial elétrico.",
+                f6t: "☁️ Sincronización", f6d: "Nunca perca dados. Sua piscina viaja com sua conta Google.",
+                trustBadge: "🛡️ CONFORMIDADE TOTAL PRIVACIDADE", guideTitle: "Instalação Segura",
+                guideDesc: "PISCINAS BLUE é 100% seguro. Usamos o GPS apenas uma vez:",
+                s1: "Baixe o arquivo .apk.", s2: "Se o Android perguntar, selecione 'Instalar assim mesmo'.", s3: "Entre com o Google e aproveite.",
+                linkPrivacy: "Privacidade", credits: "PISCINAS BLUE - Por Jose Manuel G", legalsmall: "* O app é verificado pelo seu dispositivo."
+            }
+        };
+
+        function applyTranslation() {
+            const userLang = navigator.language.split('-')[0];
+            const t = translations[userLang] || translations.es;
+
+            Object.keys(t).forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.innerText = t[id];
+            });
+
+            // Re-apply HTML for steps
+            document.getElementById('steps').innerHTML = `
+                <li>${t.s1}</li>
+                <li>${t.s2}</li>
+                <li>${t.s3}</li>
+            `;
+            document.getElementById('guideDesc').innerHTML = `<strong>PISCINAS BLUE</strong> ${t.guideDesc.split('PISCINAS BLUE')[1] || t.guideDesc}`;
+        }
+
+        window.onload = applyTranslation;
+    </script>
+</body>
+</html>

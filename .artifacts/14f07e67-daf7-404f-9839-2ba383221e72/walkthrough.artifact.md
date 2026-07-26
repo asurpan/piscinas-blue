@@ -1,27 +1,31 @@
-# Consola de Control de Precisión (Steppers con Sonido)
+# Asistente Blue Bot: Reconocimiento Natural y Auto-Scroll 🤖📜
 
-Se ha eliminado la necesidad de teclear valores decimales, sustituyendo los campos tradicionales por selectores de precisión mucho más rápidos y profesionales.
+Se ha mejorado la experiencia de uso del robot para que las conversaciones sean más fluidas y el reconocimiento de tus problemas sea instantáneo.
 
-## Cambios Realizados
+## Mejoras Realizadas
 
-### 1. Selectores de Precisión (Steppers) 🔘
-Se han integrado botones `[-]` y `[+]` en los campos de **Capacidad**, **pH** y **Cloro**:
-- **pH y Cloro**: Los botones aumentan o disminuyen el valor de **0.1 en 0.1**. Esto permite un ajuste fino rapidísimo sin abrir el teclado.
-- **Capacidad**: Los botones ajustan el volumen de **1.0 en 1.0 m³**.
-- **Escritura Manual**: Si necesitas hacer un cambio brusco, aún puedes pulsar sobre el número central para usar el teclado.
+### 1. Reconocimiento de Frases Naturales
+El robot ahora entiende tus intenciones aunque no uses palabras técnicas aisladas. He ampliado su "cerebro" para capturar:
+- **Intención de Necesidad**: *"necesito cloro"*, *"quiero comprar algicida"*, *"dónde hay botes de boya"*.
+- **Reporte de Síntomas**: *"la piscina tiene bichos"*, *"veo el agua turbia"*, *"mi piscina está verde"*.
+- **Problemas Técnicos**: *"tengo problemas con el motor"*, *"la llave no gira"*.
 
-### 2. Feedback Auditivo (Beep) 🔊
-Cada vez que pulsas un botón de incremento o decremento, la app emite un **sonido de "beep"** del sistema.
-- Proporciona una confirmación inmediata de que la pulsación ha sido registrada, ideal para el uso en exteriores bajo el sol.
+### 2. Auto-Scroll Inteligente
+Se ha acabado el tener que bajar el chat con el dedo cada vez que el robot responde.
+- **Seguimiento Automático**: La lista de mensajes ahora baja sola al final en cuanto se añade una nueva frase (tuya o del bot).
+- **Posicionamiento en Consultas**: Al entrar desde un panel de dudas (ej: pH o Invernador), el chat se posicionará automáticamente en la respuesta detallada.
 
-### 3. Redondeo Inteligente
-Se ha implementado una lógica de redondeo matemático para evitar errores de precisión de punto flotante (como ver un "7.40000001"). Ahora los números siempre se verán limpios y profesionales.
+### 3. Diccionario Ampliado
+Se han incluido términos comunes para que el robot sea más servicial:
+- **Algas y Bichos**: Consejos inmediatos de choque.
+- **Suministros**: Acceso directo a comparativas de **cloro**, **pH**, **algicida** y **floculante**.
 
 ## Cómo probarlo
-1. Ve al Dashboard.
-2. Pulsa suavemente el botón `+` del pH. Escucharás el **beep** y verás cómo sube una décima instantáneamente.
-3. Prueba a dejar pulsado el número si quieres teclear un valor muy diferente.
+1. Entra en el robot.
+2. Escribe o di: *"necesito algicida porque mi piscina tiene algas"*.
+3. Observa cómo el robot entiende las dos cosas (te da el consejo de limpieza y el botón de compra).
+4. Verifica que el chat baja solo para mostrarte siempre la última información.
 
 ---
 > [!TIP]
-> Este sistema es ideal cuando tienes las manos húmedas o hay mucha luz solar, ya que los botones son grandes y ofrecen respuesta sonora.
+> Recuerda que si el robot te recomienda un producto, verás el panel de **COMPARAR PRECIOS EN DIRECTO** justo debajo para ahorrar tiempo y dinero.

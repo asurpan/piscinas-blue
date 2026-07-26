@@ -3,7 +3,7 @@
 
     <!-- Onboarding -->
     <string name="onboarding_title_1">Weather Brain</string>
-    <string name="onboarding_desc_1">Your pool looks at the sky. We adjust the chlorine according to the wind and heat of your city automatically.</string>
+    <string name="onboarding_desc_1">To calculate the exact filtering and chlorine duration, PISCINAS BLUE needs to know your city\'s weather. We will only use your position to obtain real weather data for your area.</string>
     <string name="onboarding_title_2">Blue Bot: Your Expert</string>
     <string name="onboarding_desc_2">Green water? Doubts? Ask our expert bot for free 24/7 and keep the water crystal clear.</string>
     <string name="onboarding_title_3">Total Safety</string>

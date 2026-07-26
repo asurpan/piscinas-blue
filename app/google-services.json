@@ -1,0 +1,76 @@
+{
+  "project_info": {
+    "project_number": "971255407953",
+    "project_id": "piscinas-blue",
+    "storage_bucket": "piscinas-blue.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:971255407953:android:fce9fa69b959cfc3d8df70",
+        "android_client_info": {
+          "package_name": "com.sagon.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "971255407953-69mtf0b7puudqkbg18jf93du1tdp0jor.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sagon.myapplication",
+            "certificate_hash": "f8fd923f9b17bdf7c883b815688b6d1aaa53851d"
+          }
+        },
+        {
+          "client_id": "971255407953-avfeu5c9ckuum1sqsv9o5u5po725j9v8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-KOT6-1tSGZQ9UlBqcruLfIDUTvUjS6Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "971255407953-avfeu5c9ckuum1sqsv9o5u5po725j9v8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:971255407953:android:a8d17bc98a49ce7bd8df70",
+        "android_client_info": {
+          "package_name": "com.sagon.piscinasblue"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "971255407953-avfeu5c9ckuum1sqsv9o5u5po725j9v8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-KOT6-1tSGZQ9UlBqcruLfIDUTvUjS6Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "971255407953-avfeu5c9ckuum1sqsv9o5u5po725j9v8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

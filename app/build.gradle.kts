@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.sagon.myapplication"
+    namespace = "com.sagon.piscinasblue"
     compileSdk = 37
 
     defaultConfig {
-        applicationId = "com.sagon.myapplication"
+        applicationId = "com.sagon.piscinasblue"
         minSdk = 26
         targetSdk = 35
         versionCode = 1

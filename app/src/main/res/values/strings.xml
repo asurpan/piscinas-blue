@@ -3,7 +3,7 @@
 
     <!-- Onboarding -->
     <string name="onboarding_title_1">Cerebro Meteorológico</string>
-    <string name="onboarding_desc_1">Tu piscina mira al cielo. Ajustamos el cloro según el viento y calor de tu ciudad automáticamente.</string>
+    <string name="onboarding_desc_1">Para calcular el filtrado exacto y la duración del cloro, PISCINAS BLUE necesita conocer el clima de tu ciudad. Solo usaremos tu posición para obtener datos meteorológicos reales de tu zona.</string>
     <string name="onboarding_title_2">Blue Bot: Tu Experto</string>
     <string name="onboarding_desc_2">¿Agua verde? ¿Dudas? Pregunta a nuestro bot experto gratis 24/7 y mantén el agua cristalina.</string>
     <string name="onboarding_title_3">Seguridad Total</string>

@@ -1,31 +1,36 @@
-# Plan: Sustitución de Teclado por Selectores de Precisión (Steppers)
+# Plan de Cambio de Nombre de Paquete
 
-El objetivo es eliminar la fricción de tener que teclear valores decimales, sustituyendo los campos de texto tradicionales por un sistema de incremento/decremento mediante botones, manteniendo la opción de escritura manual para cambios drásticos.
+El objetivo es renombrar el identificador único de la aplicación de `com.sagon.myapplication` a `com.sagon.piscinasblue` para cumplir con los estándares de la Google Play Store y mejorar el profesionalismo del proyecto.
+
+## User Review Required
+
+> [!CAUTION]
+> **Acción Requerida en Firebase**: Al cambiar el nombre del paquete, la conexión con Firebase (Firestore, Auth, etc.) dejará de funcionar inmediatamente.
+> 1. Debes ir a tu [Consola de Firebase](https://console.firebase.google.com/).
+> 2. Añadir una nueva aplicación de Android con el nombre `com.sagon.piscinasblue`.
+> 3. Descargar el nuevo archivo `google-services.json`.
+> 4. Sustituir el archivo actual en la carpeta `app/` de tu proyecto.
 
 ## Proposed Changes
 
-### 1. Componente `PoolInputField.kt` [MODIFY]
-- Rediseñar el componente para que sea un **Stepper**.
-- Añadir botones `[-]` y `[+]` táctiles en los extremos del control.
-- El valor central será un `Text` (o un `BasicTextField` optimizado) que reacciona a los botones.
-- **Parámetros nuevos**:
-    - `step: Double`: La cantidad que aumenta/disminuye en cada pulsación (0.1 o 1.0).
-    - `onIncrement`: Callback para sumar.
-    - `onDecrement`: Callback para restar.
+### 1. Configuración de Compilación
+#### [MODIFY] [build.gradle.kts](file:///C:/Users/Jose/AndroidStudioProjects/MyApplication/app/build.gradle.kts)
+- Cambiar `namespace` a `"com.sagon.piscinasblue"`.
+- Cambiar `applicationId` a `"com.sagon.piscinasblue"`.
 
-### 2. Pantalla `DashboardScreen.kt` [MODIFY]
-- Actualizar las llamadas a `PoolInputField` para pasar los nuevos parámetros de incremento.
-- Lógica de redondeo: Asegurar que al sumar 0.1 no aparezcan errores de precisión (ej: 7.200000001).
+### 2. Refactorización de Código Fuente
+- Actualizar todas las declaraciones de `package` en los archivos Kotlin.
+- Actualizar todos los `import` que apunten al paquete antiguo.
+- Ajustar las referencias en `AndroidManifest.xml` (si las hay).
 
-## Lógica de Pasos (Step)
-- **Capacidad**: +/- 1.0 m³
-- **pH**: +/- 0.1 unidades.
-- **Cloro**: +/- 0.1 ppm.
+### 3. Ajuste de Estructura de Directorios
+- Mover físicamente los archivos de la carpeta `com/sagon/myapplication/` a `com/sagon/piscinasblue/` para mantener la consistencia del proyecto.
 
-## Verification Plan
+## Plan de Verificación
 
-### Manual Verification
-1. Abrir la app.
-2. Pulsar el `+` en el campo de pH -> Verificar que pasa de 7.2 a 7.3 instantáneamente sin abrir teclado.
-3. Dejar pulsado el número -> Verificar que se puede escribir manualmente si se desea.
-4. Comprobar que los botones son lo suficientemente grandes para usarse con comodidad.
+### Pruebas Automatizadas
+- Ejecutar `gradle_build` para asegurar que el proyecto compila con el nuevo nombre.
+
+### Verificación Manual
+- Abrir la App en el dispositivo.
+- Verificar que el inicio de sesión de Google (que depende del nombre del paquete) funcione tras actualizar el `google-services.json` y el SHA-1 en la consola.

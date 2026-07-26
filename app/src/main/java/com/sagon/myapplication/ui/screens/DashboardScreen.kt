@@ -145,7 +145,7 @@ private fun HeaderSection(
     val context = LocalContext.current
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
         Column {
-            Text(stringResource(R.string.app_name), fontSize = 32.sp, fontWeight = FontWeight.Black, color = Color(0xFF0D47A1), letterSpacing = (-1).sp)
+            Text(stringResource(R.string.app_name), fontSize = 28.sp, fontWeight = FontWeight.Black, color = Color(0xFF0D47A1), letterSpacing = (-1).sp)
             Surface(color = Color(0xFF0D47A1).copy(alpha = 0.1f), shape = RoundedCornerShape(8.dp)) {
                 Row(modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Rounded.CloudDone, null, tint = Color(0xFF4CAF50), modifier = Modifier.size(14.dp))
@@ -161,24 +161,23 @@ private fun HeaderSection(
         Row(verticalAlignment = Alignment.CenterVertically) {
             val isSafe = (System.currentTimeMillis() - lastSafety) < (30L * 24 * 60 * 60 * 1000)
             
+            JuicyIconButton(Icons.Rounded.Android, Color(0xFF0D47A1), pulse = true) { viewModel.triggerHapticFeedback(context); onBot() }
             JuicyIconButton(Icons.Rounded.CloudSync, Color(0xFF4CAF50)) { onHelp("Sincronización", HelpContent.CLOUD_HELP) }
-            
             JuicyIconButton(Icons.Rounded.Shield, if (isSafe) Color(0xFF0D47A1) else Color(0xFFFF9800), !isSafe) { viewModel.triggerHapticFeedback(context); onSafety() }
             JuicyIconButton(Icons.Rounded.History, Color(0xFF0D47A1)) { viewModel.triggerHapticFeedback(context); onHistory() }
-            JuicyIconButton(Icons.Rounded.SmartToy, Color(0xFF0D47A1), pulse = true, iconSize = 34.dp) { viewModel.triggerHapticFeedback(context); onBot() }
             JuicyIconButton(Icons.Rounded.Settings, Color(0xFF0D47A1)) { viewModel.triggerHapticFeedback(context); onSettings() }
         }
     }
 }
 
 @Composable
-fun JuicyIconButton(icon: androidx.compose.ui.graphics.vector.ImageVector, tint: Color = Color.White, pulse: Boolean = false, iconSize: androidx.compose.ui.unit.Dp = 28.dp, onClick: () -> Unit) {
+fun JuicyIconButton(icon: androidx.compose.ui.graphics.vector.ImageVector, tint: Color = Color.White, pulse: Boolean = false, iconSize: androidx.compose.ui.unit.Dp = 24.dp, onClick: () -> Unit) {
     val infiniteTransition = rememberInfiniteTransition(label = "pulse")
     val scalePulse by infiniteTransition.animateFloat(1f, if (pulse) 1.25f else 1f, infiniteRepeatable(tween(1200, easing = FastOutSlowInEasing), RepeatMode.Reverse), label = "scale")
     var isPressed by remember { mutableStateOf(false) }
     val animatedScale by animateFloatAsState(if (isPressed) 0.85f else 1f, spring(Spring.DampingRatioMediumBouncy, Spring.StiffnessLow), label = "press")
 
-    Box(modifier = Modifier.padding(2.dp).size(52.dp).scale(if (pulse) scalePulse else animatedScale).background(tint.copy(alpha = 0.08f), CircleShape).clip(CircleShape).clickable { isPressed = true; onClick() }, contentAlignment = Alignment.Center) {
+    Box(modifier = Modifier.padding(1.dp).size(38.dp).scale(if (pulse) scalePulse else animatedScale).background(tint.copy(alpha = 0.08f), CircleShape).clip(CircleShape).clickable { isPressed = true; onClick() }, contentAlignment = Alignment.Center) {
         if (pulse) Box(modifier = Modifier.fillMaxSize().background(tint.copy(alpha = 0.15f * (1f - (scalePulse - 1f) * 4f)), CircleShape))
         Icon(icon, null, tint = tint, modifier = Modifier.size(iconSize))
     }

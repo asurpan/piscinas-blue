@@ -3,20 +3,18 @@ package com.sagon.myapplication.logic
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.util.Log
+import android.widget.Toast
 import androidx.credentials.*
 import androidx.credentials.exceptions.GetCredentialException
-import com.google.android.libraries.identity.googleid.GetGoogleIdOption
+import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
-import java.security.MessageDigest
-import java.util.UUID
 
 object AuthManager {
     private const val TAG = "AuthManager"
@@ -32,42 +30,23 @@ object AuthManager {
         return null
     }
 
-    fun isInternetAvailable(context: Context): Boolean {
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val network = connectivityManager.activeNetwork ?: return false
-        val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
-        return activeNetwork.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-    }
-
-    suspend fun signInWithGoogle(context: Context): Boolean = withContext(Dispatchers.Main) {
-        if (!isInternetAvailable(context)) {
-            Log.e(TAG, "No hay conexión a internet")
-            return@withContext false
-        }
-
+    suspend fun signInWithGoogle(context: Context): Boolean = withContext(Dispatchers.Main.immediate) {
         val activity = context.findActivity() ?: return@withContext false
+        
+        // PAUSA CRÍTICA PARA XIAOMI: Deja que el sistema termine sus tareas antes de pedir la ventana
+        delay(600)
+
+        Log.i(TAG, "Solicitando selector de cuentas (SIWG)...")
         val credentialManager = CredentialManager.create(activity)
         
-        // Generar un nonce para mayor seguridad (requerido por algunas versiones de Firebase/Google)
-        val rawNonce = UUID.randomUUID().toString()
-        val bytes = rawNonce.toByteArray()
-        val md = MessageDigest.getInstance("SHA-256")
-        val digest = md.digest(bytes)
-        val hashedNonce = digest.fold("") { str, it -> str + "%02x".format(it) }
-
-        val googleIdOption = GetGoogleIdOption.Builder()
-            .setFilterByAuthorizedAccounts(false)
-            .setServerClientId(WEB_CLIENT_ID)
-            .setAutoSelectEnabled(false)
-            .setNonce(hashedNonce)
+        val signInWithGoogleOption = GetSignInWithGoogleOption.Builder(WEB_CLIENT_ID)
             .build()
 
         val request = GetCredentialRequest.Builder()
-            .addCredentialOption(googleIdOption)
+            .addCredentialOption(signInWithGoogleOption)
             .build()
 
         try {
-            Log.i(TAG, "Lanzando selector de Google con nonce...")
             val result = credentialManager.getCredential(activity, request)
             val credential = result.credential
             
@@ -75,15 +54,18 @@ object AuthManager {
                 val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
                 val firebaseCredential = GoogleAuthProvider.getCredential(googleIdTokenCredential.idToken, null)
                 auth.signInWithCredential(firebaseCredential).await()
-                Log.i(TAG, "¡Login Firebase Exitoso!")
                 return@withContext true
             }
             false
         } catch (e: GetCredentialException) {
-            Log.e(TAG, "Error de Google (${e.type}): ${e.message}")
+            // Mostramos el error real en el móvil para debuguear en vivo
+            withContext(Dispatchers.Main) {
+                Toast.makeText(context, "Error Google: ${e.message}", Toast.LENGTH_LONG).show()
+            }
+            Log.e(TAG, "Error: ${e.message}")
             false
         } catch (e: Exception) {
-            Log.e(TAG, "Error crítico: ${e.message}")
+            Log.e(TAG, "Error Crítico: ${e.message}")
             false
         }
     }

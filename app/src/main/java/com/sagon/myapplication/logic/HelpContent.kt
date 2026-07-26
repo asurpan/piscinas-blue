@@ -45,12 +45,12 @@ object HelpContent {
     """.trimIndent()
 
     val LEGAL_NOTICE = """
-        *AVISO LEGAL Y PRIVACIDAD (ESPAÑA)*
-        Titular: [TUS DATOS AQUÍ - Nombre/NIF].
-        Cumplimos el RGPD: Tus datos se guardan en tu móvil y se sincronizan de forma segura con Google Firebase.
+        *AVISO LEGAL Y PRIVACIDAD*
+        Responsable: Jose Manuel G.
+        Cumplimos el RGPD: Tus datos se sincronizan de forma segura con Google Firebase.
         
         *DESCARGO DE RESPONSABILIDAD:*
-        Esta app ofrece estimaciones. Lee siempre la etiqueta del fabricante de productos químicos. No nos hacemos responsables del uso indebido de los mismos.
+        Esta app ofrece estimaciones basadas en algoritmos químicos. Lee siempre la etiqueta del fabricante. No nos hacemos responsables del uso indebido de productos.
     """.trimIndent()
 
     val CLOUD_HELP = """

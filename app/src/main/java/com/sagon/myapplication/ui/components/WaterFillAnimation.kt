@@ -14,12 +14,30 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.platform.LocalContext
+import com.sagon.myapplication.R
+import android.media.MediaPlayer
 import kotlinx.coroutines.delay
 import kotlin.math.sin
 
 @Composable
 fun WaterFillAnimation(onAnimationComplete: () -> Unit) {
+    val context = LocalContext.current
     val fillLevel = remember { Animatable(0f) }
+
+    DisposableEffect(Unit) {
+        val mediaPlayer = try {
+            MediaPlayer.create(context, R.raw.piscina_entrada)?.apply {
+                start()
+            }
+        } catch (e: Exception) {
+            null
+        }
+        onDispose {
+            mediaPlayer?.release()
+        }
+    }
+
     val waveOffset = rememberInfiniteTransition().animateFloat(
         initialValue = 0f,
         targetValue = 2f * Math.PI.toFloat(),

@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.sagon.myapplication"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.sagon.myapplication"

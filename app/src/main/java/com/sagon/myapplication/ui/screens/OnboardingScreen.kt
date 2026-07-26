@@ -2,7 +2,6 @@ package com.sagon.myapplication.ui.screens
 
 import android.Manifest
 import android.os.Build
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -10,8 +9,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
@@ -53,28 +54,17 @@ fun OnboardingScreen(onFinish: () -> Unit) {
         Box(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(Color.Black.copy(0.7f), Color.Transparent, Color.Black.copy(0.8f)))))
 
         Column(
-            modifier = Modifier.fillMaxSize().systemBarsPadding().padding(20.dp),
+            modifier = Modifier.fillMaxSize().systemBarsPadding().padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Contenido Central
             Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {
                 HorizontalPager(state = pagerState) { page -> OnboardingPage(page) }
             }
 
-            // Pie de página (Indicadores y Botones)
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.padding(bottom = 16.dp)
-            ) {
-                Row(Modifier.padding(bottom = 24.dp)) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Row(Modifier.padding(vertical = 16.dp)) {
                     repeat(4) { i ->
-                        val isSelected = pagerState.currentPage == i
-                        Box(
-                            Modifier
-                                .padding(4.dp)
-                                .background(if (isSelected) Color.White else Color.White.copy(0.3f), CircleShape)
-                                .size(if (isSelected) 10.dp else 6.dp)
-                        )
+                        Box(Modifier.padding(4.dp).background(if (pagerState.currentPage == i) Color.White else Color.White.copy(0.3f), CircleShape).size(if (pagerState.currentPage == i) 10.dp else 6.dp))
                     }
                 }
 
@@ -82,10 +72,6 @@ fun OnboardingScreen(onFinish: () -> Unit) {
                     Button(
                         onClick = {
                             if (!isSigningIn) {
-                                if (!AuthManager.isInternetAvailable(context)) {
-                                    Toast.makeText(context, "⚠️ Verifica tu conexión a internet", Toast.LENGTH_LONG).show()
-                                    return@Button
-                                }
                                 isSigningIn = true
                                 scope.launch {
                                     try {
@@ -93,8 +79,6 @@ fun OnboardingScreen(onFinish: () -> Unit) {
                                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                                                 permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
                                             } else onFinish()
-                                        } else {
-                                            Toast.makeText(context, "Error al iniciar sesión con Google", Toast.LENGTH_LONG).show()
                                         }
                                     } finally {
                                         isSigningIn = false
@@ -102,27 +86,26 @@ fun OnboardingScreen(onFinish: () -> Unit) {
                                 }
                             }
                         },
-                        modifier = Modifier.fillMaxWidth().height(56.dp),
-                        shape = RoundedCornerShape(18.dp),
+                        modifier = Modifier.fillMaxWidth().height(60.dp),
+                        shape = RoundedCornerShape(20.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = Color.Black),
                         enabled = !isSigningIn
                     ) {
-                        if (isSigningIn) {
-                            CircularProgressIndicator(Modifier.size(24.dp), Color.Black, strokeWidth = 2.dp)
-                        } else {
+                        if (isSigningIn) CircularProgressIndicator(Modifier.size(24.dp), Color.Black)
+                        else {
                             Icon(Icons.Rounded.AccountCircle, null, tint = Color(0xFF4285F4))
-                            Spacer(Modifier.width(10.dp))
-                            Text("ENTRAR CON GOOGLE", fontWeight = FontWeight.Black, fontSize = 15.sp)
+                            Spacer(Modifier.width(12.dp))
+                            Text("ENTRAR CON GOOGLE", fontWeight = FontWeight.Black)
                         }
                     }
                 } else {
                     Button(
                         onClick = { scope.launch { pagerState.animateScrollToPage(pagerState.currentPage + 1) } },
                         modifier = Modifier.fillMaxWidth().height(56.dp),
-                        shape = RoundedCornerShape(18.dp),
+                        shape = RoundedCornerShape(16.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2196F3))
                     ) {
-                        Text("CONTINUAR", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                        Text("CONTINUAR", fontWeight = FontWeight.Bold)
                     }
                 }
             }
@@ -152,38 +135,16 @@ private fun OnboardingPage(page: Int) {
     }
 
     Column(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp),
+        modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Surface(
-            shape = CircleShape, 
-            color = Color.White.copy(alpha = 0.15f), 
-            modifier = Modifier.size(80.dp) // Icono más compacto
-        ) {
-            Icon(
-                imageVector = icon, 
-                contentDescription = null, 
-                tint = Color.White, 
-                modifier = Modifier.padding(20.dp).fillMaxSize()
-            )
+        Surface(shape = CircleShape, color = Color.White.copy(0.12f), modifier = Modifier.size(90.dp)) {
+            Icon(icon, null, tint = Color.White, modifier = Modifier.padding(22.dp).fillMaxSize())
         }
-        Spacer(Modifier.height(24.dp))
-        Text(
-            text = title, 
-            color = Color.White, 
-            fontSize = 24.sp, 
-            fontWeight = FontWeight.Black, 
-            textAlign = TextAlign.Center, 
-            lineHeight = 28.sp
-        )
-        Spacer(Modifier.height(12.dp))
-        Text(
-            text = desc, 
-            color = Color.White.copy(alpha = 0.85f), 
-            fontSize = 16.sp, 
-            textAlign = TextAlign.Center, 
-            lineHeight = 22.sp
-        )
+        Spacer(Modifier.height(32.dp))
+        Text(title, color = Color.White, fontSize = 24.sp, fontWeight = FontWeight.Black, textAlign = TextAlign.Center)
+        Spacer(Modifier.height(16.dp))
+        Text(desc, color = Color.White.copy(0.85f), fontSize = 16.sp, textAlign = TextAlign.Center, lineHeight = 22.sp)
     }
 }

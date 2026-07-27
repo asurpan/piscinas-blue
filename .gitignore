@@ -1,22 +1,16 @@
-*.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
-local.properties
+# Ignore everything by default
+*
 
-# Signing keys & Sensitive files
-llave PISCINA BLUE
-*.jks
-*.keystore
-*.p12
-google-services.json
+# Allow only these web files
+!index.html
+!privacidad.html
+!google9312739a0adb99dd.html
+!.gitignore
+
+# Also ignore typical OS/IDE noise even if they start with "."
+.DS_Store
+.idea/
+.gradle/
+build/
+capture/
+local.properties

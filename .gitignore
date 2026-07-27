@@ -6,6 +6,7 @@
 !privacidad.html
 !google9312739a0adb99dd.html
 !.gitignore
+!app-release.apk
 
 # Also ignore typical OS/IDE noise even if they start with "."
 .DS_Store

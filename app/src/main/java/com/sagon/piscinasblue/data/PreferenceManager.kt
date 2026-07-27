@@ -20,6 +20,8 @@ class PreferenceManager(private val context: Context) {
         val POOL_ID = stringPreferencesKey("pool_id")
         val LATITUDE = doublePreferencesKey("latitude")
         val LONGITUDE = doublePreferencesKey("longitude")
+        val IS_GENUINE = booleanPreferencesKey("is_genuine")
+        val HAS_SET_VOLUME = booleanPreferencesKey("has_set_volume")
     }
 
     val poolId: Flow<String?> = context.dataStore.data
@@ -37,6 +39,13 @@ class PreferenceManager(private val context: Context) {
             it[LATITUDE] = lat
             it[LONGITUDE] = lon
         }
+    }
+
+    val isGenuine: Flow<Boolean> = context.dataStore.data
+        .map { it[IS_GENUINE] ?: false }
+
+    suspend fun setGenuine(genuine: Boolean) {
+        context.dataStore.edit { it[IS_GENUINE] = genuine }
     }
 
     suspend fun setPoolId(id: String) {
@@ -57,6 +66,9 @@ class PreferenceManager(private val context: Context) {
 
     val hasSeenTabletInfo: Flow<Boolean> = context.dataStore.data
         .map { it[HAS_SEEN_TABLET_INFO] ?: false }
+
+    val hasSetVolume: Flow<Boolean> = context.dataStore.data
+        .map { it[HAS_SET_VOLUME] ?: false }
 
     suspend fun setOnboardingCompleted(completed: Boolean) {
         context.dataStore.edit { it[ONBOARDING_COMPLETED] = completed }
@@ -82,5 +94,9 @@ class PreferenceManager(private val context: Context) {
 
     suspend fun setActivated(activated: Boolean) {
         context.dataStore.edit { it[IS_ACTIVATED] = activated }
+    }
+
+    suspend fun setHasSetVolume(set: Boolean) {
+        context.dataStore.edit { it[HAS_SET_VOLUME] = set }
     }
 }

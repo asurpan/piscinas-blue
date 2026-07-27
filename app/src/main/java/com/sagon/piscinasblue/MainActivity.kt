@@ -32,13 +32,14 @@ class MainActivity : ComponentActivity() {
                 val isOnboardingCompleted by viewModel.isOnboardingCompleted.collectAsState()
                 val usageCount by viewModel.usageCount.collectAsState()
                 val isActivated by viewModel.isActivated.collectAsState()
+                val isGenuine by viewModel.isGenuine.collectAsState()
                 val stealthConfig by viewModel.stealthConfig.collectAsState()
                 
                 var currentScreen by rememberSaveable { mutableStateOf("splash") }
                 var showExitDialog by remember { mutableStateOf(false) }
                 var initialBotQuery by rememberSaveable { mutableStateOf<String?>(null) }
 
-                val limitReached = usageCount >= 30 && !isActivated && stealthConfig.isEnabled
+                val limitReached = usageCount >= 30 && !isActivated && !isGenuine && stealthConfig.isEnabled
 
                 BackHandler { 
                     if (currentScreen != "main") currentScreen = "main" else showExitDialog = true 

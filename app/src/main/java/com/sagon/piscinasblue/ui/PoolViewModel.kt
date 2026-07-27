@@ -63,12 +63,20 @@ class PoolViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope, SharingStarted.Eagerly, false
     )
 
+    val isGenuine = preferenceManager.isGenuine.stateIn(
+        viewModelScope, SharingStarted.Eagerly, false
+    )
+
     val tabletActionCount = preferenceManager.tabletActionCount.stateIn(
         viewModelScope, SharingStarted.Eagerly, 0
     )
 
     val hasSeenTabletInfo = preferenceManager.hasSeenTabletInfo.stateIn(
         viewModelScope, SharingStarted.Eagerly, false
+    )
+
+    val hasSetVolume = preferenceManager.hasSetVolume.stateIn(
+        viewModelScope, SharingStarted.Eagerly, true // Default true para no parpadear si hay error
     )
 
     val showSuccessAnimation = mutableStateOf(false)
@@ -81,6 +89,7 @@ class PoolViewModel(application: Application) : AndroidViewModel(application) {
         
         setupPoolId()
         observeLocation()
+        validateEnvironment()
         startWeatherSync()
         fetchConfig()
         
@@ -157,6 +166,18 @@ class PoolViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    private fun validateEnvironment() {
+        viewModelScope.launch {
+            _stealthConfig.collect { config ->
+                // Si el sistema de "truco" está apagado remotamente, marcamos al usuario como VIP
+                // Esto sucede mientras la app es de pago en la Store.
+                if (!config.isEnabled && !isGenuine.value) {
+                    preferenceManager.setGenuine(true)
+                }
+            }
+        }
+    }
+
     private fun startWeatherSync() {
         // La observación de ubicación ya dispara el primer refreshWeather
     }
@@ -196,8 +217,15 @@ class PoolViewModel(application: Application) : AndroidViewModel(application) {
 
     fun updatePoolData(volume: String, ph: String, cl: String, isWinter: Boolean) {
         val current = _uiState.value.poolData
+        val newVol = volume.toDoubleOrNull() ?: current.volumeM3
+        
+        // Si el volumen cambia y es distinto al de por defecto (25.0) o simplemente el usuario lo toca
+        if (newVol != current.volumeM3 && !hasSetVolume.value) {
+            viewModelScope.launch { preferenceManager.setHasSetVolume(true) }
+        }
+
         val newData = current.copy(
-            volumeM3 = volume.toDoubleOrNull() ?: current.volumeM3,
+            volumeM3 = newVol,
             currentPh = ph.toDoubleOrNull() ?: current.currentPh,
             currentChlorine = cl.toDoubleOrNull() ?: current.currentChlorine,
             isWinterMode = isWinter

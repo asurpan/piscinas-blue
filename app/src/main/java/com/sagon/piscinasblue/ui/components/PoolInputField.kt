@@ -1,11 +1,15 @@
 package com.sagon.piscinasblue.ui.components
 
+import androidx.compose.animation.core.*
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
@@ -20,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -36,7 +41,10 @@ fun PoolInputField(
     value: String,
     icon: ImageVector,
     accentColor: Color = Color(0xFF2196F3),
-    valueColor: Color = Color(0xFF0D47A1), // Color por defecto
+    valueColor: Color = Color(0xFF0D47A1),
+    isBlinking: Boolean = false,
+    readOnly: Boolean = false,
+    blinkColor: Color = Color(0xFF4CAF50), 
     onValueChange: (String) -> Unit,
     onIncrement: (() -> Unit)? = null,
     onDecrement: (() -> Unit)? = null,
@@ -44,8 +52,21 @@ fun PoolInputField(
 ) {
     val scope = rememberCoroutineScope()
 
+    val infiniteTransition = rememberInfiniteTransition(label = "blink")
+    val blinkAlpha by infiniteTransition.animateFloat(
+        initialValue = 1f,
+        targetValue = 0f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(500, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "alpha"
+    )
+
     Column(
-        modifier = Modifier.padding(vertical = 2.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 2.dp)
     ) {
         Text(
             text = label,
@@ -59,14 +80,27 @@ fun PoolInputField(
                 .fillMaxWidth()
                 .height(48.dp)
                 .shadow(
-                    elevation = 4.dp,
+                    elevation = if (isBlinking) 12.dp else 4.dp,
                     shape = RoundedCornerShape(12.dp),
-                    ambientColor = accentColor,
-                    spotColor = accentColor
-                ),
+                    ambientColor = if (isBlinking) blinkColor else accentColor,
+                    spotColor = if (isBlinking) blinkColor else accentColor
+                )
+                .then(if (isBlinking) Modifier.clickable { onHelpClick() } else Modifier), // Táctil total aquí para el ripple
             shape = RoundedCornerShape(12.dp),
-            color = Color.White.copy(alpha = 0.95f)
+            color = if (isBlinking) {
+                // Parpadeo más agresivo entre blanco y verde
+                Color.White.copy(alpha = 1f - (blinkAlpha * 0.3f))
+            } else Color.White.copy(alpha = 0.95f),
+            border = if (isBlinking) BorderStroke(2.dp, blinkColor.copy(alpha = blinkAlpha)) else BorderStroke(1.dp, Color.White.copy(alpha = 0.5f))
         ) {
+            if (isBlinking) {
+                // Capa de color verde vibrante que parpadea
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(blinkColor.copy(alpha = blinkAlpha * 0.3f))
+                )
+            }
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxSize()
@@ -106,32 +140,46 @@ fun PoolInputField(
 
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.weight(1f).combinedClickable(
-                        onClick = { /* Permite abrir teclado */ },
-                        onLongClick = onHelpClick
-                    ),
+                    modifier = Modifier.weight(1f),
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Icon(
                         imageVector = icon,
                         contentDescription = null,
-                        tint = accentColor.copy(alpha = 0.5f),
-                        modifier = Modifier.size(18.dp)
+                        tint = if (isBlinking) blinkColor else accentColor.copy(alpha = 0.5f),
+                        modifier = Modifier.size(20.dp)
                     )
                     
+                    val focusManager = LocalFocusManager.current
                     BasicTextField(
                         value = value,
                         onValueChange = onValueChange,
-                        modifier = Modifier.width(60.dp).padding(horizontal = 4.dp),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        readOnly = readOnly,
+                        modifier = Modifier
+                            .width(85.dp)
+                            .padding(horizontal = 2.dp)
+                            .pointerInput(readOnly, isBlinking) {
+                                // Si está parpadeando, no dejamos que el texto capture el toque, que lo coja el Surface
+                                if (!readOnly && !isBlinking) {
+                                    detectTapGestures { /* Foco normal solo si NO parpadea */ }
+                                }
+                            },
+                        enabled = !isBlinking, // Desactivar interacción directa si parpadea para forzar el click del Surface
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Number,
+                            imeAction = androidx.compose.ui.text.input.ImeAction.Done
+                        ),
+                        keyboardActions = KeyboardActions(
+                            onDone = { focusManager.clearFocus() }
+                        ),
                         textStyle = LocalTextStyle.current.copy(
-                            fontSize = 20.sp,
+                            fontSize = 18.sp,
                             fontWeight = FontWeight.Black,
-                            color = valueColor,
+                            color = if (isBlinking) blinkColor else if (readOnly) valueColor.copy(alpha = 0.7f) else valueColor,
                             textAlign = TextAlign.Center
                         ),
                         singleLine = true,
-                        cursorBrush = SolidColor(accentColor)
+                        cursorBrush = SolidColor(if (isBlinking || readOnly) Color.Transparent else accentColor)
                     )
                 }
 

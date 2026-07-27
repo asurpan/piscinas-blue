@@ -22,3 +22,9 @@ Se ha implementado un sistema completo de ubicación dinámica y una lógica de 
 ## Verificación Realizada
 - Se ha comprobado que el sistema usa Sevilla (37.38, -5.98) como valor por defecto si el usuario no otorga permisos.
 - La lógica de filtrado y pastillas ha sido actualizada para ser más agresiva con el calor extremo.
+
+### Actualización: Escudo Invisible
+Se ha implementado una protección silenciosa para compradores legales.
+- **Detección Pasiva**: Los usuarios que descarguen la app mientras el "truco" está apagado en Firebase ganarán inmunidad perpetua.
+- **Seguridad**: No se utilizan APIs de facturación de Google, lo que hace el código indistinguible de una configuración normal de la app.
+- **Control Remoto**: El desarrollador decide cuándo activar el sistema de donaciones para nuevos usuarios sin afectar a los antiguos.

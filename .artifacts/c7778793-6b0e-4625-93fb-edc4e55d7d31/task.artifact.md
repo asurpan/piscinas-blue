@@ -1,5 +1,0 @@
-- `[x]` Añadir `HAS_SET_VOLUME` en `PreferenceManager.kt`
-- `[x]` Exponer y gestionar `hasSetVolume` en `PoolViewModel.kt`
-- `[x]` Implementar animación de parpadeo/pulso en `PoolInputField.kt`
-- `[x]` Conectar el parpadeo en `DashboardScreen.kt`
-- `[x]` Verificar el funcionamiento y la parada del parpadeo

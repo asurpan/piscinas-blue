@@ -184,9 +184,14 @@
             <p id="f0d">Logra el agua perfecta y presume con el reporte social más impactante. ¡La satisfacción de un 100/100 en tu WhatsApp!</p>
         </div>
         <div class="card">
+            <div class="icon-box"><span class="material-symbols-rounded">air</span></div>
+            <h3 id="f1t">Vigilante 24h</h3>
+            <p id="f1d">Análisis diario silencioso. Te avisamos de vientos fuertes (>45km/h) y tormentas antes de que ensucien tu agua o dañen el motor.</p>
+        </div>
+        <div class="card">
             <div class="icon-box"><span class="material-symbols-rounded">thermostat</span></div>
-            <h3 id="f1t">IA Meteorológica</h3>
-            <p id="f1d">Analizamos el viento, la lluvia y el calor de tu ciudad exacta para calcular el filtrado perfecto cada día.</p>
+            <h3 id="f9t">IA Meteorológica</h3>
+            <p id="f9d">Analizamos el calor extremo de tu ciudad en tiempo real para ajustar el filtrado y que el cloro dure exactamente lo necesario.</p>
         </div>
         <div class="card">
             <div class="icon-box"><span class="material-symbols-rounded">smart_toy</span></div>
@@ -243,7 +248,8 @@
                 tagline: "El Cerebro que tu piscina siempre soñó. IA climática, Nivel Diamante y Control Total desde tu sofá.",
                 btnPlay: "Disponible en Google Play", btnApk: "Descargar APK Directo",
                 f0t: "Nivel Diamante", f0d: "Logra el agua perfecta y presume con el reporte social más impactante. ¡La satisfacción de un 100/100 en tu WhatsApp!",
-                f1t: "IA Meteorológica", f1d: "Analizamos el viento, la lluvia y el calor de tu ciudad exacta para calcular el filtrado perfecto cada día.",
+                f1t: "Vigilante 24h", f1d: "Análisis diario silencioso. Te avisamos de vientos fuertes (>45km/h) y tormentas antes de que ensucien tu agua o dañen el motor.",
+                f9t: "IA Meteorológica", f9d: "Analizamos el calor extremo de tu ciudad en tiempo real para ajustar el filtrado y que el cloro dure exactamente lo necesario.",
                 f2t: "Acceso Compartido", f2d: "Comparte el ID con familiares o jardineros. Todos verán los niveles y el historial en tiempo real.",
                 f4t: "Blue Bot Experto", f4d: "Diagnóstico de gresite, llaves de paso, motores y manchas. Tu maestro técnico disponible para ti 24/7.",
                 f7t: "Compra Inteligente", f7d: "¿Necesitas masilla o cloro? Blue Bot busca las mejores ofertas en las tiendas de tu ciudad automáticamente.",
@@ -267,7 +273,7 @@
             const t = translations[userLang] || translations.es;
 
             // Update simple texts
-            ["title", "tagline", "btnPlay", "btnApk", "f0t", "f0d", "f1t", "f1d", "f2t", "f2d", "f4t", "f4d", "f7t", "f7d", "f8t", "f8d", "f5t", "f5d", "f6t", "f6d", "trustBadge", "guideTitle", "modalTitle", "modalIntro", "btnConfirmDownload", "linkPrivacy", "credits"].forEach(id => {
+            ["title", "tagline", "btnPlay", "btnApk", "f0t", "f0d", "f1t", "f1d", "f9t", "f9d", "f2t", "f2d", "f4t", "f4d", "f7t", "f7d", "f8t", "f8d", "f5t", "f5d", "f6t", "f6d", "trustBadge", "guideTitle", "modalTitle", "modalIntro", "btnConfirmDownload", "linkPrivacy", "credits"].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.innerText = t[id];
             });

@@ -51,6 +51,8 @@
             transition: 0.3s;
             display: inline-flex;
             align-items: center;
+            min-width: 280px;
+            justify-content: center;
             cursor: pointer;
             border: none;
             box-shadow: 0 8px 20px rgba(0,0,0,0.15);
@@ -74,6 +76,15 @@
         .step-row { display: flex; align-items: center; gap: 30px; text-align: left; background: white; padding: 30px; border-radius: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
         .step-num { background: var(--blue-primary); color: white; min-width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.5em; }
         .step-content h3 { margin: 0 0 5px; color: var(--blue-dark); font-size: 1.3em; }
+
+        /* SECCIÓN ESCENARIOS */
+        .scenario-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-top: 40px; }
+        .scenario-card { background: #fff; padding: 25px; border-radius: 30px; text-align: left; border-left: 8px solid var(--blue-light); box-shadow: 0 10px 30px rgba(0,0,0,0.02); }
+        .scenario-card h4 { margin: 0 0 10px; color: var(--blue-dark); display: flex; align-items: center; gap: 10px; font-weight: 900; }
+        .scenario-card p { font-size: 0.9em; color: #555; margin: 0; }
+        .scenario-badge { display: inline-block; padding: 4px 12px; border-radius: 10px; font-size: 0.75em; font-weight: 800; margin-bottom: 10px; text-transform: uppercase; }
+        .badge-alert { background: #ffebee; color: #f44336; }
+        .badge-success { background: #e8f5e9; color: #2e7d32; }
 
         /* SECCIÓN FEATURES */
         .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
@@ -129,24 +140,24 @@
 
     <!-- SECCIÓN EL PROBLEMA -->
     <section>
-        <h2 class="section-title">Olvídate del "Ojímetro"</h2>
-        <p class="section-subtitle">Mantener una piscina no debería ser una fuente de estrés. Resolvemos los problemas reales que te quitan el sueño:</p>
+        <h2 id="prob_t" class="section-title">Olvídate del "Ojímetro"</h2>
+        <p id="prob_st" class="section-subtitle">Mantener una piscina no debería ser una fuente de estrés. Resolvemos los problemas reales que te quitan el sueño:</p>
 
         <div class="problem-grid">
             <div class="problem-card">
                 <span class="material-symbols-rounded">coronavirus</span>
-                <h3>Agua Verde</h3>
-                <p>Aparece de repente tras una tormenta o un día de calor extremo que no previste.</p>
+                <h3 id="prob1_t">Agua Verde</h3>
+                <p id="prob1_d">Aparece de repente tras una tormenta o un día de calor extremo que no previste.</p>
             </div>
             <div class="problem-card">
                 <span class="material-symbols-rounded">payments</span>
-                <h3>Dinero Tirado</h3>
-                <p>Desperdicio de químicos por echar "un chorro" sin saber el volumen exacto.</p>
+                <h3 id="prob2_t">Dinero Tirado</h3>
+                <p id="prob2_d">Desperdicio de químicos por echar "un chorro" sin saber el volumen exacto.</p>
             </div>
             <div class="problem-card">
                 <span class="material-symbols-rounded">visibility_off</span>
-                <h3>Incertidumbre</h3>
-                <p>¿Estará bien el agua? ¿Le picarán los ojos a los niños? ¿Funcionará el motor?</p>
+                <h3 id="prob3_t">Incertidumbre</h3>
+                <p id="prob3_d">¿Estará bien el agua? ¿Le picarán los ojos a los niños? ¿Funcionará el motor?</p>
             </div>
         </div>
     </section>
@@ -154,31 +165,55 @@
     <!-- SECCIÓN CÓMO FUNCIONA -->
     <section style="background: #fff; max-width: 100%; width: 100%;">
         <div style="max-width: 1100px; margin: 0 auto;">
-            <h2 class="section-title">El Cerebro de tu Piscina</h2>
-            <p class="section-subtitle">PISCINAS BLUE usa tecnología de vanguardia para que tú solo tengas que bañarte.</p>
+            <h2 id="how_t" class="section-title">El Cerebro de tu Piscina</h2>
+            <p id="how_st" class="section-subtitle">PISCINAS BLUE usa tecnología de vanguardia para que tú solo tengas que bañarte.</p>
 
             <div class="steps-container">
                 <div class="step-row">
                     <div class="step-num">1</div>
                     <div class="step-content">
-                        <h3>Sincronización GPS con tu Cielo</h3>
-                        <p>La App se conecta a los satélites para saber EXACTAMENTE qué tiempo hace en tu ciudad. Si va a llover o hace viento, el sistema lo sabe antes que tú.</p>
+                        <h3 id="how1_t">Sincronización GPS con tu Cielo</h3>
+                        <p id="how1_d">La App se conecta a los satélites para saber EXACTAMENTE qué tiempo hace en tu ciudad. Si va a llover o hace viento, el sistema lo sabe antes que tú.</p>
                     </div>
                 </div>
                 <div class="step-row">
                     <div class="step-num">2</div>
                     <div class="step-content">
-                        <h3>IA Meteorológica Adaptativa</h3>
-                        <p>Nuestro algoritmo calcula las horas de motor y el desgaste de cloro basándose en el viento, la lluvia y el calor real de cada día.</p>
+                        <h3 id="how2_t">IA Meteorológica Adaptativa</h3>
+                        <p id="how2_d">Nuestro algoritmo calcula las horas de motor y el desgaste de cloro basándose en el viento, la lluvia y el calor real de cada día.</p>
                     </div>
                 </div>
                 <div class="step-row">
                     <div class="step-num">3</div>
                     <div class="step-content">
-                        <h3>Vigilante 24h Silencioso</h3>
-                        <p>Recibe alertas críticas solo cuando importan: una tormenta inminente, vientos que taponan el motor o cuando el cloro se ha agotado.</p>
+                        <h3 id="how3_t">Vigilante 24h Silencioso</h3>
+                        <p id="how3_d">Recibe alertas críticas solo cuando importan: una tormenta inminente, vientos que taponan el motor o cuando el cloro se ha agotado.</p>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN ESCENARIOS -->
+    <section>
+        <h2 id="scen_t" class="section-title">Escenarios Reales</h2>
+        <p id="scen_st" class="section-subtitle">Mira cómo Blue Bot te salva el día en situaciones comunes:</p>
+
+        <div class="scenario-grid">
+            <div class="scenario-card">
+                <div id="scen1_b" class="scenario-badge badge-alert">Tormenta prevista</div>
+                <h4 id="scen1_t"><span class="material-symbols-rounded">thunderstorm</span> Alerta de Lluvia</h4>
+                <p id="scen1_d">"¡Ojo! Se prevé tormenta fuerte en Sevilla. El pH bajará y entrará suciedad. Sube el filtrado hoy para proteger el agua."</p>
+            </div>
+            <div class="scenario-card">
+                <div id="scen2_b" class="scenario-badge badge-alert">Viento extremo</div>
+                <h4 id="scen2_t"><span class="material-symbols-rounded">air</span> Peligro Motor</h4>
+                <p id="scen2_d">"Aviso de rachas de 50km/h. El skimmer se llenará de hojas. Revisa el cestillo para evitar que el motor trabaje en seco."</p>
+            </div>
+            <div class="scenario-card">
+                <div id="scen3_b" class="scenario-badge badge-success">Mantenimiento OK</div>
+                <h4 id="scen3_t"><span class="material-symbols-rounded">check_circle</span> IA de Consumo</h4>
+                <p id="scen3_d">"Hoy hace 38°C. He subido 2h el motor automáticamente para que tu pastilla de cloro no se agote antes de tiempo."</p>
             </div>
         </div>
     </section>
@@ -188,41 +223,41 @@
         <h2 id="f0t">💎 Nivel Diamante</h2>
         <p id="f0d">Logra la perfección absoluta (100/100) y presume con tus amigos compartiendo un reporte social único. ¡Conviértete en el referente de tu zona!</p>
         <div class="btn-container" style="margin-top: 30px;">
-            <button onclick="showDownloadModal()" class="btn btn-apk">¡Quiero mi Piscina Diamante!</button>
+            <button onclick="showDownloadModal()" class="btn btn-apk" id="btnDiamante">¡Quiero mi Piscina Diamante!</button>
         </div>
     </div>
 
     <!-- SECCIÓN OTRAS FUNCIONES -->
     <section>
-        <h2 class="section-title">Y mucho más...</h2>
+        <h2 id="more_t" class="section-title">Y mucho más...</h2>
         <div class="features-grid">
             <div class="card">
                 <div class="icon-box"><span class="material-symbols-rounded">smart_toy</span></div>
-                <h3>Blue Bot Experto</h3>
-                <p>Tu maestro técnico 24/7 para gresite, llaves de paso y averías.</p>
+                <h3 id="f4t">Blue Bot Experto</h3>
+                <p id="f4d">Tu maestro técnico 24/7 para gresite, llaves de paso y averías.</p>
             </div>
             <div class="card">
                 <div class="icon-box"><span class="material-symbols-rounded">mic</span></div>
-                <h3>Control por Voz</h3>
-                <p>Habla con tu piscina. Registra niveles sin tocar la pantalla.</p>
+                <h3 id="f8t">Control por Voz</h3>
+                <p id="f8d">Habla con tu piscina. Registra niveles sin tocar la pantalla.</p>
             </div>
             <div class="card">
                 <div class="icon-box"><span class="material-symbols-rounded">group</span></div>
-                <h3>Acceso Compartido</h3>
-                <p>Comparte el ID con familiares o jardineros. Todos sincronizados.</p>
+                <h3 id="f2t">Acceso Compartido</h3>
+                <p id="f2d">Comparte el ID con familiares o jardineros. Todos sincronizados.</p>
             </div>
             <div class="card">
                 <div class="icon-box"><span class="material-symbols-rounded">shield</span></div>
-                <h3>Seguridad Total</h3>
-                <p>Recordatorios automáticos para revisar el diferencial eléctrico.</p>
+                <h3 id="f5t">Seguridad Total</h3>
+                <p id="f5d">Recordatorios automáticos para revisar el diferencial eléctrico.</p>
             </div>
         </div>
     </section>
 
     <!-- FOOTER -->
     <footer>
-        <p>© 2026 LorenSoft | <a href="privacidad.html">Política de Privacidad</a></p>
-        <p><small>PISCINAS BLUE - La App que protege tu piscina y a tu familia.</small></p>
+        <p>© 2026 LorenSoft | <a href="privacidad.html" id="linkPrivacy">Política de Privacidad</a></p>
+        <p><small id="credits">PISCINAS BLUE - La App que protege tu piscina y a tu familia.</small></p>
     </footer>
 
     <!-- MODAL -->
@@ -230,17 +265,103 @@
         <div class="modal-card">
             <span class="close-btn" onclick="hideDownloadModal()">&times;</span>
             <h2 id="modalTitle">Instalación Segura</h2>
-            <div class="modal-step"><div class="step-num">1</div><div>Pulsa <strong>'Descargar de todos modos'</strong> al aviso de Android.</div></div>
-            <div class="modal-step"><div class="step-num">2</div><div>Abre el archivo y selecciona <strong>'Instalar'</strong>.</div></div>
-            <div class="modal-step"><div class="step-num">3</div><div>Si lo pide, activa <strong>'Confiar en esta fuente'</strong>.</div></div>
+            <div class="modal-step"><div class="step-num">1</div><div id="mStep1">Pulsa <strong>'Descargar de todos modos'</strong> al aviso de Android.</div></div>
+            <div class="modal-step"><div class="step-num">2</div><div id="mStep2">Abre el archivo y selecciona <strong>'Instalar'</strong>.</div></div>
+            <div class="modal-step"><div class="step-num">3</div><div id="mStep3">Si lo pide, activa <strong>'Confiar en esta fuente'</strong>.</div></div>
             <a href="app-release.apk" class="btn btn-apk" style="width: 100%; box-sizing: border-box; margin-top: 20px;" onclick="hideDownloadModal()" id="btnConfirmDownload">ENTENDIDO, EMPEZAR DESCARGA</a>
         </div>
     </div>
 
     <script>
+        const translations = {
+            es: {
+                title: "PISCINAS BLUE 🏊‍♂️",
+                tagline: "¿Harto de adivinar qué necesita tu piscina? Deja que nuestra IA climática tome el control hoy mismo.",
+                btnPlay: "Google Play", btnApk: "Descargar APK", btnDiamante: "¡Quiero mi Piscina Diamante!",
+                prob_t: "Olvídate del \"Ojímetro\"", prob_st: "Mantener una piscina no debería ser una fuente de estrés. Resolvemos los problemas reales que te quitan el sueño:",
+                prob1_t: "Agua Verde", prob1_d: "Aparece de repente tras una tormenta o un día de calor extremo que no previste.",
+                prob2_t: "Dinero Tirado", prob2_d: "Desperdicio de químicos por echar \"un chorro\" sin saber el volumen exacto.",
+                prob3_t: "Incertidumbre", prob3_d: "¿Estará bien el agua? ¿Le picarán los ojos a los niños? ¿Funcionará el motor?",
+                how_t: "El Cerebro de tu Piscina", how_st: "PISCINAS BLUE usa tecnología de vanguardia para que tú solo tengas que bañarte.",
+                how1_t: "Sincronización GPS con tu Cielo", how1_d: "La App se conecta a los satélites para saber EXACTAMENTE qué tiempo hace en tu ciudad.",
+                how2_t: "IA Meteorológica Adaptativa", how2_d: "Nuestro algoritmo calcula las horas de motor basándose en el viento y el calor real de cada día.",
+                how3_t: "Vigilante 24h Silencioso", how3_d: "Recibe alertas críticas solo cuando importan: tormentas, vientos fuertes o falta de cloro.",
+                scen_t: "Escenarios Reales", scen_st: "Mira cómo Blue Bot te salva el día en situaciones comunes:",
+                scen1_b: "Tormenta prevista", scen1_t: "Alerta de Lluvia", scen1_d: "\"¡Ojo! Se prevé tormenta fuerte. El pH bajará y entrará suciedad. Sube el filtrado hoy.\"",
+                scen2_b: "Viento extremo", scen2_t: "Peligro Motor", scen2_d: "\"Aviso de rachas fuertes. El skimmer se llenará de hojas. Revisa el cestillo para proteger el motor.\"",
+                scen3_b: "Mantenimiento OK", scen3_t: "IA de Consumo", scen3_d: "\"Hoy hace 38°C. He subido 2h el motor automáticamente para que el cloro no se agote.\"",
+                f0t: "💎 Nivel Diamante", f0d: "Logra la perfección absoluta (100/100) y presume con tus amigos compartiendo un reporte social único.",
+                more_t: "Y mucho más...", f4t: "Blue Bot Experto", f4d: "Tu maestro técnico 24/7 para gresite, llaves de paso y averías.",
+                f8t: "Control por Voz", f8d: "Habla con tu piscina. Registra niveles sin tocar la pantalla.",
+                f2t: "Acceso Compartido", f2d: "Comparte el ID con familiares o jardineros. Todos sincronizados.",
+                f5t: "Seguridad Total", f5d: "Recordatorios automáticos para revisar el diferencial eléctrico.",
+                linkPrivacy: "Política de Privacidad", credits: "PISCINAS BLUE - La App que protege tu piscina y a tu familia.",
+                modalTitle: "Instalación Segura", mStep1: "Pulsa 'Descargar de todos modos' al aviso de Android.", mStep2: "Abre el archivo e instala.", mStep3: "Confía en la fuente si lo pide.", btnConfirmDownload: "ENTENDIDO, EMPEZAR DESCARGA"
+            },
+            en: {
+                title: "BLUE POOLS 🏊‍♂️",
+                tagline: "Tired of guessing what your pool needs? Let our climate AI take control today.",
+                btnPlay: "Google Play", btnApk: "Download APK", btnDiamante: "I want my Diamond Pool!",
+                prob_t: "Forget the Guesswork", prob_st: "Maintaining a pool shouldn't be stressful. We solve the real problems that keep you up at night:",
+                prob1_t: "Green Water", prob1_d: "Appears suddenly after a storm or an extreme heat day you didn't see coming.",
+                prob2_t: "Wasted Money", prob2_d: "Waste of chemicals by pouring \"a splash\" without knowing the exact volume.",
+                prob3_t: "Uncertainty", prob3_d: "Is the water okay? Will the kids' eyes sting? Will the pump work?",
+                how_t: "Your Pool's Brain", how_st: "BLUE POOLS uses cutting-edge technology so you just have to swim.",
+                how1_t: "GPS Sync with Your Sky", how1_d: "The App connects to satellites to know EXACTLY what the weather is in your city.",
+                how2_t: "Adaptive Weather AI", how2_d: "Our algorithm calculates pump hours based on real wind and heat every day.",
+                how3_t: "24h Silent Watchman", how3_d: "Receive critical alerts only when they matter: storms, high winds, or low chlorine.",
+                scen_t: "Real Scenarios", scen_st: "See how Blue Bot saves the day in common situations:",
+                scen1_b: "Storm predicted", scen1_t: "Rain Alert", scen1_d: "\"Watch out! A heavy storm is expected. pH will drop and dirt will enter. Increase filtration today.\"",
+                scen2_b: "Extreme wind", scen2_t: "Pump Danger", scen2_d: "\"High wind gusts warning. Skimmer will fill with leaves. Check the basket to protect the pump.\"",
+                scen3_b: "Maintenance OK", scen3_t: "Consumption AI", scen3_d: "\"It's 38°C today. I've automatically increased pump time by 2h so chlorine doesn't run out.\"",
+                f0t: "💎 Diamond Level", f0d: "Achieve absolute perfection (100/100) and show off to your friends with a unique social report.",
+                more_t: "And much more...", f4t: "Expert Blue Bot", f4d: "Your 24/7 technical master for tiles, valves, and breakdowns.",
+                f8t: "Voice Control", f8d: "Talk to your pool. Record levels without touching the screen.",
+                f2t: "Shared Access", f2d: "Share the ID with family or gardeners. Everyone synced in the cloud.",
+                f5t: "Total Safety", f5d: "Automatic reminders to check the circuit breaker. Protecting your family.",
+                linkPrivacy: "Privacy Policy", credits: "BLUE POOLS - The App that protects your pool and your family.",
+                modalTitle: "Safe Installation", mStep1: "Click 'Download anyway' on the Android warning.", mStep2: "Open the file and install.", mStep3: "Trust the source if prompted.", btnConfirmDownload: "I UNDERSTAND, START DOWNLOAD"
+            },
+            fr: {
+                title: "PISCINES BLEUES 🏊‍♂️",
+                tagline: "Fatigué de deviner les besoins de votre piscine ? Laissez notre IA climatique prendre le contrôle.",
+                btnPlay: "Google Play", btnApk: "Télécharger APK", btnDiamante: "Je veux ma Piscine Diamant !",
+                prob_t: "Oubliez l'approximation", prob_st: "Entretenir une piscine ne devrait pas être stressant. Nous résolvons les problèmes réels :",
+                prob1_t: "Eau Verte", prob1_d: "Apparaît après une tempête ou une chaleur extrême non prévue.",
+                prob2_t: "Argent Gaspillé", prob2_d: "Gaspillage de produits chimiques sans connaître le volume exact.",
+                prob3_t: "Incertitude", prob3_d: "L'eau est-elle saine ? Les yeux vont-ils piquer ? La pompe fonctionne-t-elle ?",
+                how_t: "Le Cerveau de votre Piscine", how_st: "PISCINES BLEUES utilise une technologie de pointe pour que vous n'ayez qu'à nager.",
+                how1_t: "Synchro GPS avec votre Ciel", how1_d: "L'App se connecte aux satellites pour connaître EXACTEMENT la météo de votre ville.",
+                how2_t: "IA Météo Adaptative", how2_d: "Notre algorithme calcule les heures de filtration selon le vent et la chaleur réelle.",
+                how3_t: "Vigilant 24h Silencieux", how3_d: "Alertes critiques uniquement quand c'est nécessaire : tempêtes ou manque de chlore.",
+                scen_t: "Scénarios Réels", scen_st: "Voyez comment Blue Bot vous sauve la mise :",
+                scen1_b: "Tempête prévue", scen1_t: "Alerte Pluie", scen1_d: "\"Attention ! Forte tempête prévue. Le pH va chuter. Augmentez la filtration aujourd'hui.\"",
+                scen2_b: "Vent extrême", scen2_t: "Danger Pompe", scen2_d: "\"Rafales de vent prévues. Le skimmer sera plein de feuilles. Vérifiez le panier.\"",
+                scen3_b: "Maintenance OK", scen3_t: "IA de Consommation", scen3_d: "\"Il fait 38°C. Filtration augmentée de 2h pour préserver le chlore.\"",
+                f0t: "💎 Niveau Diamant", f0d: "Atteignez la perfection (100/100) et partagez un rapport social unique avec vos amis.",
+                more_t: "Et bien plus...", f4t: "Blue Bot Expert", f4d: "Votre maître technique 24/7 pour gresite, vannes et pannes.",
+                f8t: "Contrôle Vocal", f8d: "Parlez à votre piscine. Enregistrez les niveaux sans toucher l'écran.",
+                f2t: "Accès Partagé", f2d: "Partagez l'ID avec la famille ou le jardinier. Tout est synchronisé.",
+                f5t: "Sécurité Totale", f5d: "Rappels automatiques pour vérifier le disjoncteur différentiel.",
+                linkPrivacy: "Confidentialité", credits: "PISCINES BLEUES - L'App qui protège votre piscine.",
+                modalTitle: "Installation Sûre", mStep1: "Cliquez sur 'Télécharger quand même'.", mStep2: "Ouvrez le fichier et installez.", mStep3: "Autorisez la source si demandé.", btnConfirmDownload: "COMPRIS, TÉLÉCHARGER"
+            }
+        };
+
         function showDownloadModal() { document.getElementById('downloadModal').style.display = 'flex'; }
         function hideDownloadModal() { document.getElementById('downloadModal').style.display = 'none'; }
+
+        function applyTranslation() {
+            const userLang = navigator.language.split('-')[0];
+            const t = translations[userLang] || translations.es;
+            Object.keys(t).forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.innerHTML = t[id];
+            });
+        }
+
         window.onclick = function(event) { if (event.target == document.getElementById('downloadModal')) hideDownloadModal(); }
+        window.onload = applyTranslation;
     </script>
 </body>
 </html>

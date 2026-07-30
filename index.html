@@ -142,18 +142,91 @@
         .icon-card:hover { transform: translateY(-10px); box-shadow: 0 20px 50px rgba(25, 118, 210, 0.1); }
         .icon-card .material-symbols-rounded { font-size: 50px; color: var(--blue-primary); margin-bottom: 20px; }
 
-        /* SECCIÓN DIAMANTE */
+        /* SECCIÓN DIAMANTE (REDISEÑO PREMIUM) */
         .diamond-section {
-            background: linear-gradient(45deg, var(--blue-dark), var(--pink));
-            padding: 100px 20px;
+            background: #1a1a1a;
+            background: radial-gradient(circle at top right, #2c2c2c, #000);
+            padding: 100px 40px;
             border-radius: 80px;
             color: white;
             text-align: center;
             margin: 60px 20px;
-            box-shadow: 0 30px 70px rgba(255, 64, 129, 0.3);
+            box-shadow: 0 40px 100px rgba(0,0,0,0.4);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
         }
-        .diamond-section h2 { font-size: 3.5em; font-weight: 900; margin-bottom: 20px; }
-        .diamond-section p { font-size: 1.3em; max-width: 800px; margin: 0 auto 40px; opacity: 0.9; }
+
+        .diamond-section::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.03), transparent);
+            transform: rotate(45deg);
+            animation: shine 6s infinite linear;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        .diamond-icon-wrapper {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #fff, #aeb1b4);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            box-shadow: 0 0 30px rgba(255,255,255,0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .diamond-icon-wrapper .material-symbols-rounded {
+            font-size: 55px;
+            color: #1a1a1a;
+            font-variation-settings: 'FILL' 1;
+        }
+
+        .diamond-section h2 {
+            font-size: clamp(2.5em, 8vw, 3.8em);
+            font-weight: 900;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+            background: linear-gradient(to bottom, #fff, #999);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            z-index: 1;
+        }
+
+        .diamond-section p {
+            font-size: 1.4em;
+            max-width: 750px;
+            margin: 0 auto 45px;
+            opacity: 0.8;
+            line-height: 1.5;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-diamond {
+            background: white;
+            color: #000;
+            font-size: 1.1em;
+            padding: 22px 50px;
+            box-shadow: 0 15px 35px rgba(255,255,255,0.1);
+            position: relative;
+            z-index: 1;
+        }
+        .btn-diamond:hover { background: #f0f0f0; transform: translateY(-5px) scale(1.02); }
 
         /* MODAL DE CONFIANZA */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px; backdrop-filter: blur(20px); }
@@ -265,9 +338,12 @@
 
     <!-- SECCIÓN DIAMANTE -->
     <div class="diamond-section">
-        <h2 id="f0t">💎 Nivel Diamante</h2>
-        <p id="f0d">¿Quieres fardar de piscina perfecta? Logra el 100/100 y comparte con tus amigos el reporte más impactante de WhatsApp. ¡Ellos querrán ir a tu casa y tú estarás orgulloso!</p>
-        <button onclick="showDownloadModal()" class="btn btn-apk" style="background: white; color: var(--pink);">¡QUIERO MI PISCINA DIAMANTE!</button>
+        <div class="diamond-icon-wrapper">
+            <span class="material-symbols-rounded">workspace_premium</span>
+        </div>
+        <h2 id="f0t">Nivel Diamante</h2>
+        <p id="f0d">Lleva el agua de tu piscina a la perfección absoluta. Obtén el sello 100/100 y comparte el reporte social más exclusivo con tus contactos. Haz que tu piscina sea el orgullo de la temporada.</p>
+        <button onclick="showDownloadModal()" class="btn btn-diamond" id="btnDiamante">¡CONSEGUIR NIVEL DIAMANTE!</button>
     </div>
 
     <!-- SECCIÓN MÁS FUNCIONES -->
@@ -362,8 +438,8 @@
                 watch_d: "La App permanece \"dormida\" para no gastar batería, pero despierta un segundo al día para mirar tu cielo. Si viene una tormenta o un vendaval, te avisará al móvil antes de que el desastre ocurra.",
                 fam_t: "Toda la familia coordinada",
                 fam_d: "Comparte el ID único de tu piscina con tu pareja o el jardinero. Cuando alguien registra una medición o un cambio de pastilla, todos lo ven al instante. Se acabaron los descuidos.",
-                f0t: "💎 Nivel Diamante",
-                f0d: "¿Quieres fardar de piscina perfecta? Logra el 100/100 y comparte con tus amigos el reporte más impactante de WhatsApp. ¡Ellos querrán ir a tu casa!",
+                f0t: "Nivel Diamante",
+                f0d: "Lleva el agua de tu piscina a la perfección absoluta. Obtén el sello 100/100 y comparte el reporte social más exclusivo con tus contactos. Haz que tu piscina sea el orgullo de la temporada.",
                 m_t: "Instalación 100% Segura",
                 m_i1: "¿Por qué Android muestra un aviso?",
                 m_i2: "Al descargar fuera de Google Play, Android lanza un aviso de \"archivo dañino\". Es un mensaje estándar y automático para cualquier App directa. PISCINAS BLUE está verificada, libre de virus y respeta al 100% tu privacidad.",
@@ -383,8 +459,8 @@
                 watch_d: "The App stays \"asleep\" to save battery, but wakes up for a second a day to look at your sky. If a storm or gale is coming, it will alert your phone.",
                 fam_t: "Whole family coordinated",
                 fam_d: "Share your unique pool ID with your partner or gardener. When someone records a measurement, everyone sees it instantly. No more slip-ups.",
-                f0t: "💎 Diamond Level",
-                f0d: "Want to show off a perfect pool? Achieve 100/100 and share with your friends the most impactful WhatsApp report. They'll want to come over!",
+                f0t: "Diamond Level",
+                f0d: "Bring your pool water to absolute perfection. Get the 100/100 seal and share the most exclusive social report with your contacts. Make your pool the season's pride.",
                 m_t: "100% Safe Installation",
                 m_i1: "Why does Android show a warning?",
                 m_i2: "When downloading outside Google Play, Android launches a \"harmful file\" warning. It's a standard and automatic message. BLUE POOLS is verified and virus-free.",

@@ -161,6 +161,20 @@
         .close-btn { position: absolute; top: 30px; right: 35px; cursor: pointer; font-size: 30px; color: #ccc; }
         .warning-pill { background: #fff8e1; border: 1px solid #ffe082; padding: 20px; border-radius: 25px; margin: 20px 0; color: #856404; font-size: 0.95em; line-height: 1.5; }
 
+        /* BOTONES SOCIALES */
+        .social-share { background: white; padding: 40px 20px; text-align: center; border-top: 1px solid rgba(0,0,0,0.05); }
+        .social-title { font-size: 1.2em; font-weight: 800; color: var(--blue-dark); margin-bottom: 20px; }
+        .social-btn-container { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        .social-btn {
+            width: 50px; height: 50px; border-radius: 15px; display: flex; align-items: center; justify-content: center;
+            text-decoration: none; color: white; transition: 0.3s; cursor: pointer; border: none;
+        }
+        .social-btn:hover { transform: translateY(-5px) rotate(8deg); }
+        .btn-whatsapp { background: #25D366; box-shadow: 0 8px 20px rgba(37, 211, 102, 0.2); }
+        .btn-facebook { background: #1877F2; box-shadow: 0 8px 20px rgba(24, 119, 242, 0.2); }
+        .btn-x { background: #000; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); }
+        .btn-copy { background: var(--blue-light); box-shadow: 0 8px 20px rgba(100, 181, 246, 0.2); }
+
         footer { background: var(--blue-dark); color: white; padding: 80px 20px; text-align: center; }
         footer a { color: var(--blue-light); text-decoration: none; font-weight: bold; }
 
@@ -285,6 +299,17 @@
         </div>
     </section>
 
+    <!-- SECCIÓN COMPARTIR -->
+    <div class="social-share">
+        <div class="social-title" id="social_t">Comparte PISCINAS BLUE con otros dueños</div>
+        <div class="social-btn-container">
+            <button onclick="share('whatsapp')" class="social-btn btn-whatsapp" title="WhatsApp"><span class="material-symbols-rounded">chat</span></button>
+            <button onclick="share('facebook')" class="social-btn btn-facebook" title="Facebook"><span class="material-symbols-rounded">share</span></button>
+            <button onclick="share('x')" class="social-btn btn-x" title="X (Twitter)"><span class="material-symbols-rounded">close</span></button>
+            <button onclick="share('copy')" class="social-btn btn-copy" id="btnCopy" title="Copiar Enlace"><span class="material-symbols-rounded">content_copy</span></button>
+        </div>
+    </div>
+
     <!-- FOOTER -->
     <footer>
         <p>© 2026 LorenSoft | <a href="privacidad.html" id="linkPrivacy">Política de Privacidad</a></p>
@@ -345,12 +370,51 @@
                 m_s1: "Pulsa 'Descargar de todos modos'",
                 m_s2: "Abre el archivo e instálalo.",
                 m_s3: "Si lo pide, activa 'Confiar en esta fuente'. ¡Son solo 10 segundos!",
-                m_btn: "ENTENDIDO, DESCARGAR AHORA"
+                m_btn: "ENTENDIDO, DESCARGAR AHORA",
+                social_t: "Comparte PISCINAS BLUE con otros dueños"
+            },
+            en: {
+                title: "BLUE POOLS 🏊‍♂️",
+                tagline: "The first Smart Brain that cares for your pool and your wallet. Weather AI, family sync, and real savings.",
+                btnHero: "DOWNLOAD APP SAFELY", btnDiamante: "DOWNLOAD BLUE POOLS!",
+                save_t: "Your pool will cost you 40% less",
+                save_d: "Pouring chlorine \"by eye\" is throwing money away. BLUE POOLS uses exact volume and real temperature to tell you the precise dose. Avoid buying chemicals you don't need.",
+                watch_t: "She watches while you rest",
+                watch_d: "The App stays \"asleep\" to save battery, but wakes up for a second a day to look at your sky. If a storm or gale is coming, it will alert your phone.",
+                fam_t: "Whole family coordinated",
+                fam_d: "Share your unique pool ID with your partner or gardener. When someone records a measurement, everyone sees it instantly. No more slip-ups.",
+                f0t: "💎 Diamond Level",
+                f0d: "Want to show off a perfect pool? Achieve 100/100 and share with your friends the most impactful WhatsApp report. They'll want to come over!",
+                m_t: "100% Safe Installation",
+                m_i1: "Why does Android show a warning?",
+                m_i2: "When downloading outside Google Play, Android launches a \"harmful file\" warning. It's a standard and automatic message. BLUE POOLS is verified and virus-free.",
+                m_s1: "Press 'Download anyway'",
+                m_s2: "Open the file and install it.",
+                m_s3: "If prompted, enable 'Trust this source'. It only takes 10 seconds!",
+                m_btn: "I UNDERSTAND, START DOWNLOAD",
+                social_t: "Share BLUE POOLS with other owners"
             }
         };
 
         function showDownloadModal() { document.getElementById('downloadModal').style.display = 'flex'; }
         function hideDownloadModal() { document.getElementById('downloadModal').style.display = 'none'; }
+
+        function share(platform) {
+            const url = window.location.href;
+            const text = "¡Mira esta App para la piscina! Te dice exactamente qué necesita según el clima. 🏊‍♂️💎";
+
+            if (platform === 'whatsapp') {
+                window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text + " " + url)}`);
+            } else if (platform === 'facebook') {
+                window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`);
+            } else if (platform === 'x') {
+                window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`);
+            } else if (platform === 'copy') {
+                navigator.clipboard.writeText(url).then(() => {
+                    alert("¡Enlace copiado al portapapeles! 📋");
+                });
+            }
+        }
 
         function applyTranslation() {
             const userLang = navigator.language.split('-')[0];

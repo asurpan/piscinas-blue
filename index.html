@@ -3,47 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PISCINAS BLUE | AI Smart Pool Maintenance & Savings</title>
+    <title>PISCINAS BLUE | AI Smart Pool Maintenance & Global Savings</title>
     <meta name="description" content="Manage your pool with AI. Save 40% on chemicals, weather-based filtering, and family cloud sync. The definitive app for a crystal clear pool.">
-    <meta name="keywords" content="pool maintenance, smart pool, save chlorine, pool AI, piscinas blue, mantenimiento piscinas, ahorro cloro, app piscina">
+    <meta name="keywords" content="pool maintenance, smart pool, save chlorine, pool AI, piscinas blue, maintenance piscine, Poolpflege, 游泳池维护, manutenzione piscina, manutenção de piscinas">
 
-    <!-- SEO Internacional -->
+    <!-- SEO Internacional Pro (Hreflang) -->
     <link rel="alternate" hreflang="es" href="https://asurpan.github.io/piscinas-blue/" />
     <link rel="alternate" hreflang="en" href="https://asurpan.github.io/piscinas-blue/?lang=en" />
     <link rel="alternate" hreflang="fr" href="https://asurpan.github.io/piscinas-blue/?lang=fr" />
+    <link rel="alternate" hreflang="de" href="https://asurpan.github.io/piscinas-blue/?lang=de" />
     <link rel="alternate" hreflang="zh" href="https://asurpan.github.io/piscinas-blue/?lang=zh" />
+    <link rel="alternate" hreflang="pt" href="https://asurpan.github.io/piscinas-blue/?lang=pt" />
+    <link rel="alternate" hreflang="it" href="https://asurpan.github.io/piscinas-blue/?lang=it" />
     <link rel="alternate" hreflang="x-default" href="https://asurpan.github.io/piscinas-blue/" />
 
-    <!-- Open Graph (Facebook/WhatsApp) -->
-    <meta property="og:title" content="PISCINAS BLUE - Smart Pool AI">
-    <meta property="og:description" content="The first AI for your pool. Save money and time. Download now on Play Store.">
+    <!-- Open Graph (Redes Sociales Globales) -->
+    <meta property="og:title" content="PISCINAS BLUE - Global Smart Pool AI">
+    <meta property="og:description" content="The world's smartest AI for pool maintenance. Save money and effort. Available on Play Store.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://asurpan.github.io/piscinas-blue/">
 
-    <!-- Google Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,600,1,0" />
-
-    <!-- Datos Estructurados para Google (SEO Pro) -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "PISCINAS BLUE",
-      "operatingSystem": "ANDROID",
-      "applicationCategory": "HealthApplication",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "EUR"
-      },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.9",
-        "ratingCount": "100"
-      }
-    }
-    </script>
 
     <style>
         :root {
@@ -58,7 +39,7 @@
         body, html { margin: 0; padding: 0; font-family: 'Roboto', sans-serif; background-color: var(--bg-light); color: #333; scroll-behavior: smooth; }
         h1, h2, h3 { font-family: 'Montserrat', sans-serif; margin: 0; }
 
-        .hero { text-align: center; padding: 100px 20px; background: linear-gradient(135deg, var(--blue-dark), var(--blue-primary)); color: white; border-radius: 0 0 60px 60px; box-shadow: 0 20px 50px rgba(13,71,161,0.3); }
+        .hero { text-align: center; padding: 120px 20px; background: linear-gradient(135deg, var(--blue-dark), var(--blue-primary)); color: white; border-radius: 0 0 60px 60px; box-shadow: 0 20px 50px rgba(13,71,161,0.3); position: relative; }
         .hero h1 { font-size: clamp(2.2em, 7vw, 4em); font-weight: 900; letter-spacing: -1px; }
         .hero p { font-size: 1.3em; opacity: 0.9; margin: 20px auto 40px; max-width: 800px; font-weight: 300; }
 
@@ -71,25 +52,28 @@
         .benefit-content h2 { font-size: 2em; color: var(--blue-dark); margin-bottom: 15px; }
         .benefit-content p { font-size: 1.1em; color: #555; line-height: 1.6; }
 
-        .lang-selector { position: absolute; top: 20px; right: 20px; display: flex; gap: 10px; }
-        .lang-btn { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 5px 12px; border-radius: 10px; cursor: pointer; font-size: 0.8em; }
+        .lang-selector { position: absolute; top: 20px; right: 20px; display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; max-width: 250px; }
+        .lang-btn { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 4px 10px; border-radius: 8px; cursor: pointer; font-size: 0.75em; font-weight: bold; }
+        .lang-btn:hover { background: rgba(255,255,255,0.4); }
 
         footer { background: var(--blue-dark); color: white; padding: 60px 20px; text-align: center; font-size: 0.9em; }
         footer a { color: var(--blue-light); text-decoration: none; font-weight: bold; }
 
-        @media (max-width: 800px) { .benefit-block { grid-template-columns: 1fr; text-align: center; } }
+        @media (max-width: 800px) { .benefit-block { grid-template-columns: 1fr; text-align: center; } .lang-selector { position: static; margin: 20px auto; justify-content: center; } }
     </style>
 </head>
 <body>
 
-    <div class="lang-selector">
-        <button class="lang-btn" onclick="changeLang('es')">ES</button>
-        <button class="lang-btn" onclick="changeLang('en')">EN</button>
-        <button class="lang-btn" onclick="changeLang('fr')">FR</button>
-        <button class="lang-btn" onclick="changeLang('zh')">ZH</button>
-    </div>
-
     <header class="hero">
+        <div class="lang-selector">
+            <button class="lang-btn" onclick="changeLang('es')">ES</button>
+            <button class="lang-btn" onclick="changeLang('en')">EN</button>
+            <button class="lang-btn" onclick="changeLang('fr')">FR</button>
+            <button class="lang-btn" onclick="changeLang('de')">DE</button>
+            <button class="lang-btn" onclick="changeLang('zh')">ZH</button>
+            <button class="lang-btn" onclick="changeLang('pt')">PT</button>
+            <button class="lang-btn" onclick="changeLang('it')">IT</button>
+        </div>
         <h1 id="title">PISCINAS BLUE 🏊‍♂️</h1>
         <p id="tagline">El Cerebro Inteligente para tu piscina. Ahorro real y agua perfecta con IA.</p>
         <a href="https://play.google.com/store/apps/details?id=com.sagon.piscinasblue" class="btn btn-google">
@@ -157,6 +141,16 @@
                 cloud_d: "Partagez l'ID avec votre famille. Tout le monde sait quoi faire en temps réel.",
                 footer_text: "PISCINES BLEUES - Maintenance Inteligente"
             },
+            de: {
+                title: "BLAUE POOLS 🏊‍♂️",
+                tagline: "Das intelligente Gehirn für Ihren Pool. Echte Ersparnis und perfektes Wasser mit KI.",
+                btnText: "IM PLAY STORE HERUNTERLADEN",
+                save_t: "40% Chemikalien sparen",
+                save_d: "Unsere KI analysiert das Wetter und das Poolvolumen, um Ihnen die exakte Dosierung zu geben.",
+                cloud_t: "Vollständige Synchronisation",
+                cloud_d: "Teilen Sie die Pool-ID mit Ihrer Familie oder dem Gärtner. Alle wissen in Echtzeit Bescheid.",
+                footer_text: "BLAUE POOLS - Intelligente KI-Wartung"
+            },
             zh: {
                 title: "蓝色游泳池 🏊‍♂️",
                 tagline: "游泳池的智能大脑。AI带来真实节约和完美水质。",
@@ -166,6 +160,26 @@
                 cloud_t: "全面云同步",
                 cloud_d: "与家人或园丁共享泳池 ID。每个人都能实时了解维护进度。",
                 footer_text: "蓝色游泳池 - 智能 AI 维护"
+            },
+            pt: {
+                title: "PISCINAS BLUE 🏊‍♂️",
+                tagline: "O Cérebro Inteligente para a sua piscina. Poupança real e água perfeita com IA.",
+                btnText: "DESCARREGAR NA PLAY STORE",
+                save_t: "Poupe 40% em Químicos",
+                save_d: "A nossa IA analisa o clima e o volume da piscina para lhe dar a dose exacta. Pare de desperdiçar dinheiro.",
+                cloud_t: "Sincronização Total",
+                cloud_d: "Partilhe o ID da piscina com a família ou o jardineiro. Todos saberão o que fazer em tempo real.",
+                footer_text: "PISCINAS BLUE - Manutenção Inteligente IA"
+            },
+            it: {
+                title: "PISCINE BLUE 🏊‍♂️",
+                tagline: "Il Cervello Intelligente per la tua piscina. Risparmio reale e acqua perfetta con l'IA.",
+                btnText: "SCARICA SU PLAY STORE",
+                save_t: "Risparmia il 40% in Prodotti",
+                save_d: "La nostra IA analizza il meteo e il volume della piscina per darti la dose esatta. Smetti di sprecare soldi.",
+                cloud_t: "Sincronizzazione Totale",
+                cloud_d: "Condividi l'ID della piscina con la famiglia o il giardiniere. Tutti sapranno cosa fare in tempo reale.",
+                footer_text: "PISCINE BLUE - Manutenzione Intelligente IA"
             }
         };
 
@@ -176,12 +190,10 @@
                 const el = document.getElementById(id);
                 if (el) el.innerText = t[id];
             });
-            // Update URL without refreshing for better SEO indexing
             const newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?lang=' + lang;
             window.history.pushState({path:newurl},'',newurl);
         }
 
-        // Auto-detect lang
         const urlParams = new URLSearchParams(window.location.search);
         const langParam = urlParams.get('lang');
         const userLang = langParam || navigator.language.split('-')[0];

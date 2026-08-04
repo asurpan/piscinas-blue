@@ -47,25 +47,23 @@
             font-weight: 800;
             font-family: 'Montserrat', sans-serif;
             text-transform: uppercase;
-            font-size: 1em;
+            font-size: 1.1em;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: inline-flex;
             align-items: center;
-            min-width: 300px;
+            min-width: 320px;
             justify-content: center;
             cursor: pointer;
             border: none;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
         .btn-google { background-color: #000; color: white; }
-        .btn-apk { background-color: var(--green); color: white; }
         .btn:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
 
         /* SECCIONES */
         section { padding: 100px 20px; max-width: 1200px; margin: 0 auto; }
         .section-header { text-align: center; margin-bottom: 60px; }
         .section-title { font-size: 2.8em; font-weight: 900; color: var(--blue-dark); line-height: 1.1; margin-bottom: 20px; }
-        .section-subtitle { font-size: 1.2em; color: #666; max-width: 800px; margin: 0 auto; }
 
         /* BLOQUE DE BENEFICIO */
         .benefit-block {
@@ -124,129 +122,7 @@
         .notif-text { font-size: 0.9em; }
         .notif-text b { display: block; color: var(--blue-dark); }
 
-        /* GRID DE ICONOS */
-        .icon-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-top: 50px;
-        }
-        .icon-card {
-            background: white;
-            padding: 40px 30px;
-            border-radius: 40px;
-            text-align: center;
-            transition: 0.3s;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
-        }
-        .icon-card:hover { transform: translateY(-10px); box-shadow: 0 20px 50px rgba(25, 118, 210, 0.1); }
-        .icon-card .material-symbols-rounded { font-size: 50px; color: var(--blue-primary); margin-bottom: 20px; }
-
-        /* SECCIÓN DIAMANTE (REDISEÑO PREMIUM BLUE) */
-        .diamond-section {
-            background: linear-gradient(135deg, var(--blue-dark), var(--blue-primary));
-            padding: 100px 40px;
-            border-radius: 80px;
-            color: white;
-            text-align: center;
-            margin: 60px 20px;
-            box-shadow: 0 30px 80px rgba(13, 71, 161, 0.4);
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.15);
-        }
-
-        .diamond-section::before {
-            content: "";
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
-            transform: rotate(45deg);
-            animation: shine 5s infinite linear;
-        }
-
-        @keyframes shine {
-            0% { transform: translateX(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) rotate(45deg); }
-        }
-
-        .diamond-icon-wrapper {
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(135deg, #fff, #aeb1b4);
-            border-radius: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 30px;
-            box-shadow: 0 0 30px rgba(255,255,255,0.2);
-            position: relative;
-            z-index: 1;
-        }
-
-        .diamond-icon-wrapper .material-symbols-rounded {
-            font-size: 55px;
-            color: #1a1a1a;
-            font-variation-settings: 'FILL' 1;
-        }
-
-        .diamond-section h2 {
-            font-size: clamp(2.5em, 8vw, 3.8em);
-            font-weight: 900;
-            margin-bottom: 20px;
-            letter-spacing: -1px;
-            background: linear-gradient(to bottom, #fff, #999);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            position: relative;
-            z-index: 1;
-        }
-
-        .diamond-section p {
-            font-size: 1.4em;
-            max-width: 750px;
-            margin: 0 auto 45px;
-            opacity: 0.8;
-            line-height: 1.5;
-            font-weight: 300;
-            position: relative;
-            z-index: 1;
-        }
-
-        .btn-diamond {
-            background: white;
-            color: #000;
-            font-size: 1.1em;
-            padding: 22px 50px;
-            box-shadow: 0 15px 35px rgba(255,255,255,0.1);
-            position: relative;
-            z-index: 1;
-        }
-        .btn-diamond:hover { background: #f0f0f0; transform: translateY(-5px) scale(1.02); }
-
-        /* MODAL DE CONFIANZA */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px; backdrop-filter: blur(20px); }
-        .modal-card { background: white; border-radius: 50px; max-width: 600px; width: 100%; padding: 50px; color: #333; position: relative; }
-        .close-btn { position: absolute; top: 30px; right: 35px; cursor: pointer; font-size: 30px; color: #ccc; }
-        .warning-pill { background: #fff8e1; border: 1px solid #ffe082; padding: 20px; border-radius: 25px; margin: 20px 0; color: #856404; font-size: 0.95em; line-height: 1.5; }
-
-        /* BOTONES SOCIALES */
-        .social-share { background: white; padding: 40px 20px; text-align: center; border-top: 1px solid rgba(0,0,0,0.05); }
-        .social-title { font-size: 1.2em; font-weight: 800; color: var(--blue-dark); margin-bottom: 20px; }
-        .social-btn-container { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
-        .social-btn {
-            width: 50px; height: 50px; border-radius: 15px; display: flex; align-items: center; justify-content: center;
-            text-decoration: none; color: white; transition: 0.3s; cursor: pointer; border: none;
-        }
-        .social-btn:hover { transform: translateY(-5px) rotate(8deg); }
-        .btn-whatsapp { background: #25D366; box-shadow: 0 8px 20px rgba(37, 211, 102, 0.2); }
-        .btn-facebook { background: #1877F2; box-shadow: 0 8px 20px rgba(24, 119, 242, 0.2); }
-        .btn-x { background: #000; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); }
-        .btn-copy { background: var(--blue-light); box-shadow: 0 8px 20px rgba(100, 181, 246, 0.2); }
-
+        /* FOOTER */
         footer { background: var(--blue-dark); color: white; padding: 80px 20px; text-align: center; }
         footer a { color: var(--blue-light); text-decoration: none; font-weight: bold; }
 
@@ -262,14 +138,15 @@
     <!-- HERO -->
     <header class="hero">
         <div class="feature-tag" style="background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.3);">
-            <span class="material-symbols-rounded" style="font-size: 18px;">android</span> SOLO PARA ANDROID
+            <span class="material-symbols-rounded" style="font-size: 18px;">verified</span> APP OFICIAL EN GOOGLE PLAY
         </div>
         <h1 id="title">PISCINAS BLUE 🏊‍♂️</h1>
         <p id="tagline">El primer Cerebro Inteligente que cuida tu piscina y tu bolsillo. IA climática, sincronización familiar y ahorro real.</p>
 
         <div class="btn-container">
-            <button onclick="showDownloadModal()" class="btn btn-apk" id="btnHero">DESCARGAR APK SEGURO</button>
-            <a href="https://play.google.com/store/apps/details?id=com.sagon.piscinasblue" style="color: white; opacity: 0.6; font-size: 0.9em; text-decoration: underline; width: 100%; margin-top: 20px; display: block;">También disponible en Play Store</a>
+            <a href="https://play.google.com/store/apps/details?id=com.sagon.piscinasblue" class="btn btn-google">
+                <span class="material-symbols-rounded" style="margin-right: 10px;">download</span> DESCARGAR EN GOOGLE PLAY
+            </a>
         </div>
     </header>
 
@@ -286,7 +163,7 @@
                 </div>
             </div>
             <div class="visual-box" style="background: #f1f8e9;">
-                <div class="icon-card" style="box-shadow: none;">
+                <div class="icon-card" style="box-shadow: none; text-align: center;">
                     <span class="material-symbols-rounded" style="font-size: 80px; color: var(--green);">eco</span>
                     <h3 style="color: #2e7d32;">Eficiencia Total</h3>
                     <p>Menos químicos, menos luz, más disfrute.</p>
@@ -310,80 +187,9 @@
                     <span class="material-symbols-rounded notif-icon" style="background: var(--pink);">air</span>
                     <div class="notif-text"><b>Riesgo Motor</b>Viento de 50km/h previsto. Revisa el skimmer.</div>
                 </div>
-                <div class="notif">
-                    <span class="material-symbols-rounded notif-icon" style="background: #ffa000;">warning</span>
-                    <div class="notif-text"><b>Pastilla Agotada</b>El cloro se ha terminado. Toca reponer.</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- SECCIÓN FAMILIA -->
-        <div class="benefit-block">
-            <div class="benefit-content">
-                <div class="feature-tag"><span class="material-symbols-rounded" style="font-size: 18px;">groups</span> COLABORACIÓN REAL</div>
-                <h2 id="fam_t">Toda la familia coordinada</h2>
-                <p id="fam_d">Comparte el ID único de tu piscina con tu pareja o el jardinero. Cuando alguien registra una medición o un cambio de pastilla, todos lo ven al instante. Se acabaron los descuidos y las mediciones repetidas.</p>
-            </div>
-            <div class="visual-box" style="background: #fff;">
-                <div style="display: flex; gap: -10px; justify-content: center;">
-                    <span class="material-symbols-rounded" style="font-size: 60px; color: var(--blue-primary);">account_circle</span>
-                    <span class="material-symbols-rounded" style="font-size: 60px; color: var(--blue-light);">account_circle</span>
-                    <span class="material-symbols-rounded" style="font-size: 60px; color: var(--pink);">account_circle</span>
-                </div>
-                <p style="text-align: center; font-weight: bold; color: var(--blue-dark);">Sincronización en la Nube ☁️</p>
             </div>
         </div>
     </section>
-
-    <!-- SECCIÓN DIAMANTE -->
-    <div class="diamond-section">
-        <div class="diamond-icon-wrapper">
-            <span class="material-symbols-rounded">workspace_premium</span>
-        </div>
-        <h2 id="f0t">Nivel Diamante</h2>
-        <p id="f0d">Lleva el agua de tu piscina a la perfección absoluta. Obtén el sello 100/100 y comparte el reporte social más exclusivo con tus contactos. Haz que tu piscina sea el orgullo de la temporada.</p>
-        <button onclick="showDownloadModal()" class="btn btn-diamond" id="btnDiamante">¡CONSEGUIR NIVEL DIAMANTE!</button>
-    </div>
-
-    <!-- SECCIÓN MÁS FUNCIONES -->
-    <section>
-        <div class="section-header">
-            <h2 class="section-title">Y mucho más...</h2>
-        </div>
-        <div class="icon-grid">
-            <div class="icon-card">
-                <span class="material-symbols-rounded">smart_toy</span>
-                <h3>Blue Bot Experto</h3>
-                <p>Tu maestro técnico 24/7 para averías y productos.</p>
-            </div>
-            <div class="icon-card">
-                <span class="material-symbols-rounded">mic</span>
-                <h3>Control por Voz</h3>
-                <p>Habla con tu piscina y registra niveles sin tocar el móvil.</p>
-            </div>
-            <div class="icon-card">
-                <span class="material-symbols-rounded">location_on</span>
-                <h3>GPS Dinámico</h3>
-                <p>Tu piscina viaja contigo si te mudas de casa.</p>
-            </div>
-            <div class="icon-card">
-                <span class="material-symbols-rounded">lock_reset</span>
-                <h3>Seguridad Total</h3>
-                <p>Test de diferencial eléctrico para proteger a los tuyos.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- SECCIÓN COMPARTIR -->
-    <div class="social-share">
-        <div class="social-title" id="social_t">Comparte PISCINAS BLUE con otros dueños</div>
-        <div class="social-btn-container">
-            <button onclick="share('whatsapp')" class="social-btn btn-whatsapp" title="WhatsApp"><span class="material-symbols-rounded">chat</span></button>
-            <button onclick="share('facebook')" class="social-btn btn-facebook" title="Facebook"><span class="material-symbols-rounded">share</span></button>
-            <button onclick="share('x')" class="social-btn btn-x" title="X (Twitter)"><span class="material-symbols-rounded">close</span></button>
-            <button onclick="share('copy')" class="social-btn btn-copy" id="btnCopy" title="Copiar Enlace"><span class="material-symbols-rounded">content_copy</span></button>
-        </div>
-    </div>
 
     <!-- FOOTER -->
     <footer>
@@ -391,117 +197,5 @@
         <p><small id="credits">PISCINAS BLUE - Inteligencia en tu piscina</small></p>
     </footer>
 
-    <!-- MODAL DE DESCARGA -->
-    <div id="downloadModal" class="modal-overlay">
-        <div class="modal-card">
-            <span class="close-btn" onclick="hideDownloadModal()">&times;</span>
-            <div style="text-align: center; margin-bottom: 30px;">
-                <span class="material-symbols-rounded" style="font-size: 70px; color: var(--green);">verified_user</span>
-                <h2 id="m_t">Instalación 100% Segura</h2>
-            </div>
-
-            <p id="m_i1" style="font-weight: bold; margin-bottom: 10px;">¿Por qué Android muestra un aviso?</p>
-            <div class="warning-pill" id="m_i2">
-                Al descargar fuera de Google Play, Android lanza un aviso de "archivo dañino". <strong>Es un mensaje estándar y automático</strong> para cualquier App directa. PISCINAS BLUE está verificada, libre de virus y respeta al 100% tu privacidad.
-            </div>
-
-            <div style="display: flex; flex-direction: column; gap: 15px;">
-                <div style="display: flex; gap: 15px; align-items: center;">
-                    <div style="background: var(--blue-primary); color: white; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-weight: 900;">1</div>
-                    <div id="m_s1">Pulsa <b>'Descargar de todos modos'</b></div>
-                </div>
-                <div style="display: flex; gap: 15px; align-items: center;">
-                    <div style="background: var(--blue-primary); color: white; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-weight: 900;">2</div>
-                    <div id="m_s2">Abre el archivo e instálalo.</div>
-                </div>
-                <div style="display: flex; gap: 15px; align-items: center;">
-                    <div style="background: var(--blue-primary); color: white; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-weight: 900;">3</div>
-                    <div id="m_s3">Si lo pide, activa <b>'Confiar en esta fuente'</b>. ¡Son solo 10 segundos!</div>
-                </div>
-            </div>
-
-            <a href="app-release.apk" class="btn btn-apk" style="width: 100%; box-sizing: border-box; margin-top: 30px;" onclick="hideDownloadModal()" id="m_btn">ENTENDIDO, DESCARGAR AHORA</a>
-            <p style="text-align: center; font-size: 0.8em; margin-top: 15px; opacity: 0.5;">Compatible con todos los terminales Android.</p>
-        </div>
-    </div>
-
-    <script>
-        const translations = {
-            es: {
-                title: "PISCINAS BLUE 🏊‍♂️",
-                tagline: "El primer Cerebro Inteligente que cuida tu piscina y tu bolsillo. IA climática, sincronización familiar y ahorro real.",
-                btnHero: "DESCARGAR APK SEGURO",
-                save_t: "Tu piscina te costará un 40% menos",
-                save_d: "Echar cloro \"a ojo\" es tirar el dinero. PISCINAS BLUE usa los m³ exactos de tu vaso y la temperatura real para decirte la dosis milimétrica. Evita comprar químicos que no necesitas y alarga la vida de tus pastillas.",
-                watch_t: "Ella vigila mientras tú descansas",
-                watch_d: "La App permanece \"dormida\" para no gastar batería, pero despierta un segundo al día para mirar tu cielo. Si viene una tormenta o un vendaval, te avisará al móvil antes de que el desastre ocurra.",
-                fam_t: "Toda la familia coordinada",
-                fam_d: "Comparte el ID único de tu piscina con tu pareja o el jardinero. Cuando alguien registra una medición o un cambio de pastilla, todos lo ven al instante. Se acabaron los descuidos.",
-                f0t: "Nivel Diamante",
-                f0d: "Lleva el agua de tu piscina a la perfección absoluta. Obtén el sello 100/100 y comparte el reporte social más exclusivo con tus contactos. Haz que tu piscina sea el orgullo de la temporada.",
-                m_t: "Instalación 100% Segura",
-                m_i1: "¿Por qué Android muestra un aviso?",
-                m_i2: "Al descargar fuera de Google Play, Android lanza un aviso de \"archivo dañino\". Es un mensaje estándar y automático para cualquier App directa. PISCINAS BLUE está verificada, libre de virus y respeta al 100% tu privacidad.",
-                m_s1: "Pulsa 'Descargar de todos modos'",
-                m_s2: "Abre el archivo e instálalo.",
-                m_s3: "Si lo pide, activa 'Confiar en esta fuente'. ¡Son solo 10 segundos!",
-                m_btn: "ENTENDIDO, DESCARGAR AHORA",
-                social_t: "Comparte PISCINAS BLUE con otros dueños"
-            },
-            en: {
-                title: "BLUE POOLS 🏊‍♂️",
-                tagline: "The first Smart Brain that cares for your pool and your wallet. Weather AI, family sync, and real savings.",
-                btnHero: "DOWNLOAD APP SAFELY", btnDiamante: "DOWNLOAD BLUE POOLS!",
-                save_t: "Your pool will cost you 40% less",
-                save_d: "Pouring chlorine \"by eye\" is throwing money away. BLUE POOLS uses exact volume and real temperature to tell you the precise dose. Avoid buying chemicals you don't need.",
-                watch_t: "She watches while you rest",
-                watch_d: "The App stays \"asleep\" to save battery, but wakes up for a second a day to look at your sky. If a storm or gale is coming, it will alert your phone.",
-                fam_t: "Whole family coordinated",
-                fam_d: "Share your unique pool ID with your partner or gardener. When someone records a measurement, everyone sees it instantly. No more slip-ups.",
-                f0t: "Diamond Level",
-                f0d: "Bring your pool water to absolute perfection. Get the 100/100 seal and share the most exclusive social report with your contacts. Make your pool the season's pride.",
-                m_t: "100% Safe Installation",
-                m_i1: "Why does Android show a warning?",
-                m_i2: "When downloading outside Google Play, Android launches a \"harmful file\" warning. It's a standard and automatic message. BLUE POOLS is verified and virus-free.",
-                m_s1: "Press 'Download anyway'",
-                m_s2: "Open the file and install it.",
-                m_s3: "If prompted, enable 'Trust this source'. It only takes 10 seconds!",
-                m_btn: "I UNDERSTAND, START DOWNLOAD",
-                social_t: "Share BLUE POOLS with other owners"
-            }
-        };
-
-        function showDownloadModal() { document.getElementById('downloadModal').style.display = 'flex'; }
-        function hideDownloadModal() { document.getElementById('downloadModal').style.display = 'none'; }
-
-        function share(platform) {
-            const url = window.location.href;
-            const text = "¡Mira esta App para la piscina! Te dice exactamente qué necesita según el clima. 🏊‍♂️💎";
-
-            if (platform === 'whatsapp') {
-                window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text + " " + url)}`);
-            } else if (platform === 'facebook') {
-                window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`);
-            } else if (platform === 'x') {
-                window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`);
-            } else if (platform === 'copy') {
-                navigator.clipboard.writeText(url).then(() => {
-                    alert("¡Enlace copiado al portapapeles! 📋");
-                });
-            }
-        }
-
-        function applyTranslation() {
-            const userLang = navigator.language.split('-')[0];
-            const t = translations[userLang] || translations.es;
-            Object.keys(t).forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.innerHTML = t[id];
-            });
-        }
-
-        window.onclick = function(event) { if (event.target == document.getElementById('downloadModal')) hideDownloadModal(); }
-        window.onload = applyTranslation;
-    </script>
 </body>
 </html>

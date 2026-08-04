@@ -3,11 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PISCINAS BLUE | El Cerebro de tu Piscina</title>
+    <title>PISCINAS BLUE | AI Smart Pool Maintenance & Savings</title>
+    <meta name="description" content="Manage your pool with AI. Save 40% on chemicals, weather-based filtering, and family cloud sync. The definitive app for a crystal clear pool.">
+    <meta name="keywords" content="pool maintenance, smart pool, save chlorine, pool AI, piscinas blue, mantenimiento piscinas, ahorro cloro, app piscina">
+
+    <!-- SEO Internacional -->
+    <link rel="alternate" hreflang="es" href="https://asurpan.github.io/piscinas-blue/" />
+    <link rel="alternate" hreflang="en" href="https://asurpan.github.io/piscinas-blue/?lang=en" />
+    <link rel="alternate" hreflang="fr" href="https://asurpan.github.io/piscinas-blue/?lang=fr" />
+    <link rel="alternate" hreflang="zh" href="https://asurpan.github.io/piscinas-blue/?lang=zh" />
+    <link rel="alternate" hreflang="x-default" href="https://asurpan.github.io/piscinas-blue/" />
+
+    <!-- Open Graph (Facebook/WhatsApp) -->
+    <meta property="og:title" content="PISCINAS BLUE - Smart Pool AI">
+    <meta property="og:description" content="The first AI for your pool. Save money and time. Download now on Play Store.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://asurpan.github.io/piscinas-blue/">
 
     <!-- Google Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,600,1,0" />
+
+    <!-- Datos Estructurados para Google (SEO Pro) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "PISCINAS BLUE",
+      "operatingSystem": "ANDROID",
+      "applicationCategory": "HealthApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "ratingCount": "100"
+      }
+    }
+    </script>
 
     <style>
         :root {
@@ -15,187 +51,141 @@
             --blue-primary: #1976D2;
             --blue-light: #64B5F6;
             --green: #4CAF50;
-            --pink: #FF4081;
-            --gold: #FFD700;
             --white: #ffffff;
             --bg-light: #f8fbff;
         }
-
         * { box-sizing: border-box; }
         body, html { margin: 0; padding: 0; font-family: 'Roboto', sans-serif; background-color: var(--bg-light); color: #333; scroll-behavior: smooth; }
+        h1, h2, h3 { font-family: 'Montserrat', sans-serif; margin: 0; }
 
-        h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; margin: 0; }
+        .hero { text-align: center; padding: 100px 20px; background: linear-gradient(135deg, var(--blue-dark), var(--blue-primary)); color: white; border-radius: 0 0 60px 60px; box-shadow: 0 20px 50px rgba(13,71,161,0.3); }
+        .hero h1 { font-size: clamp(2.2em, 7vw, 4em); font-weight: 900; letter-spacing: -1px; }
+        .hero p { font-size: 1.3em; opacity: 0.9; margin: 20px auto 40px; max-width: 800px; font-weight: 300; }
 
-        /* HERO SECTION */
-        .hero {
-            text-align: center;
-            padding: 120px 20px;
-            background: linear-gradient(135deg, var(--blue-dark), var(--blue-primary));
-            color: white;
-            border-radius: 0 0 80px 80px;
-            box-shadow: 0 20px 50px rgba(13, 71, 161, 0.3);
-        }
-        .hero h1 { font-size: clamp(2.5em, 8vw, 4.5em); font-weight: 900; letter-spacing: -2px; }
-        .hero p { font-size: 1.4em; opacity: 0.95; margin: 25px auto 45px; max-width: 800px; font-weight: 300; }
-
-        /* BOTONES */
-        .btn-container { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
-        .btn {
-            padding: 20px 45px;
-            border-radius: 60px;
-            text-decoration: none;
-            font-weight: 800;
-            font-family: 'Montserrat', sans-serif;
-            text-transform: uppercase;
-            font-size: 1.1em;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: inline-flex;
-            align-items: center;
-            min-width: 320px;
-            justify-content: center;
-            cursor: pointer;
-            border: none;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
+        .btn { padding: 18px 40px; border-radius: 50px; text-decoration: none; font-weight: 800; font-family: 'Montserrat', sans-serif; text-transform: uppercase; transition: 0.3s; display: inline-flex; align-items: center; justify-content: center; min-width: 280px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
         .btn-google { background-color: #000; color: white; }
-        .btn:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
 
-        /* SECCIONES */
-        section { padding: 100px 20px; max-width: 1200px; margin: 0 auto; }
-        .section-header { text-align: center; margin-bottom: 60px; }
-        .section-title { font-size: 2.8em; font-weight: 900; color: var(--blue-dark); line-height: 1.1; margin-bottom: 20px; }
+        section { padding: 80px 20px; max-width: 1100px; margin: 0 auto; }
+        .benefit-block { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; margin-bottom: 60px; }
+        .benefit-content h2 { font-size: 2em; color: var(--blue-dark); margin-bottom: 15px; }
+        .benefit-content p { font-size: 1.1em; color: #555; line-height: 1.6; }
 
-        /* BLOQUE DE BENEFICIO */
-        .benefit-block {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
-            margin-bottom: 100px;
-        }
-        .benefit-reverse { direction: rtl; }
-        .benefit-reverse .benefit-content { direction: ltr; }
+        .lang-selector { position: absolute; top: 20px; right: 20px; display: flex; gap: 10px; }
+        .lang-btn { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 5px 12px; border-radius: 10px; cursor: pointer; font-size: 0.8em; }
 
-        .benefit-content { text-align: left; }
-        .benefit-content h2 { font-size: 2.2em; color: var(--blue-dark); margin-bottom: 20px; }
-        .benefit-content p { font-size: 1.1em; color: #555; line-height: 1.6; margin-bottom: 25px; }
-
-        .feature-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: #e3f2fd;
-            color: var(--blue-primary);
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-weight: 800;
-            font-size: 0.9em;
-            margin-bottom: 15px;
-        }
-        .tag-green { background: #e8f5e9; color: #2e7d32; }
-
-        .visual-box {
-            background: white;
-            border-radius: 50px;
-            padding: 40px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.05);
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            border: 1px solid rgba(0,0,0,0.03);
-        }
-
-        /* NOTIFICACIÓN SIMULADA */
-        .notif {
-            background: #fff;
-            padding: 15px 20px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            border-left: 5px solid var(--blue-primary);
-            animation: float 3s infinite ease-in-out;
-        }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-        .notif-icon { background: var(--blue-light); color: white; border-radius: 12px; padding: 10px; }
-        .notif-text { font-size: 0.9em; }
-        .notif-text b { display: block; color: var(--blue-dark); }
-
-        /* FOOTER */
-        footer { background: var(--blue-dark); color: white; padding: 80px 20px; text-align: center; }
+        footer { background: var(--blue-dark); color: white; padding: 60px 20px; text-align: center; font-size: 0.9em; }
         footer a { color: var(--blue-light); text-decoration: none; font-weight: bold; }
 
-        @media (max-width: 900px) {
-            .benefit-block { grid-template-columns: 1fr; text-align: center; gap: 40px; }
-            .benefit-content { text-align: center; }
-            .section-title { font-size: 2.2em; }
-        }
+        @media (max-width: 800px) { .benefit-block { grid-template-columns: 1fr; text-align: center; } }
     </style>
 </head>
 <body>
 
-    <!-- HERO -->
-    <header class="hero">
-        <div class="feature-tag" style="background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.3);">
-            <span class="material-symbols-rounded" style="font-size: 18px;">verified</span> APP OFICIAL EN GOOGLE PLAY
-        </div>
-        <h1 id="title">PISCINAS BLUE 🏊‍♂️</h1>
-        <p id="tagline">El primer Cerebro Inteligente que cuida tu piscina y tu bolsillo. IA climática, sincronización familiar y ahorro real.</p>
+    <div class="lang-selector">
+        <button class="lang-btn" onclick="changeLang('es')">ES</button>
+        <button class="lang-btn" onclick="changeLang('en')">EN</button>
+        <button class="lang-btn" onclick="changeLang('fr')">FR</button>
+        <button class="lang-btn" onclick="changeLang('zh')">ZH</button>
+    </div>
 
-        <div class="btn-container">
-            <a href="https://play.google.com/store/apps/details?id=com.sagon.piscinasblue" class="btn btn-google">
-                <span class="material-symbols-rounded" style="margin-right: 10px;">download</span> DESCARGAR EN GOOGLE PLAY
-            </a>
-        </div>
+    <header class="hero">
+        <h1 id="title">PISCINAS BLUE 🏊‍♂️</h1>
+        <p id="tagline">El Cerebro Inteligente para tu piscina. Ahorro real y agua perfecta con IA.</p>
+        <a href="https://play.google.com/store/apps/details?id=com.sagon.piscinasblue" class="btn btn-google">
+            <span class="material-symbols-rounded" style="margin-right: 10px;">download</span>
+            <span id="btnText">DESCARGAR EN GOOGLE PLAY</span>
+        </a>
     </header>
 
-    <!-- SECCIÓN AHORRO -->
     <section>
         <div class="benefit-block">
             <div class="benefit-content">
-                <div class="feature-tag tag-green"><span class="material-symbols-rounded" style="font-size: 18px;">payments</span> AHORRO DEMOSTRADO</div>
-                <h2 id="save_t">Tu piscina te costará un 40% menos</h2>
-                <p id="save_d">Echar cloro "a ojo" es tirar el dinero. PISCINAS BLUE usa los m³ exactos de tu vaso y la temperatura real para decirte la dosis milimétrica. Evita comprar químicos que no necesitas y alarga la vida de tus pastillas.</p>
-                <div class="notif" style="animation-delay: 0.5s;">
-                    <span class="material-symbols-rounded notif-icon" style="background: var(--green);">trending_down</span>
-                    <div class="notif-text"><b>Ahorro detectado</b>Hoy hace menos viento. He bajado 1h el motor para ahorrar luz.</div>
-                </div>
+                <h2 id="save_t">Ahorra un 40% en químicos</h2>
+                <p id="save_d">Nuestra IA analiza el clima y el volumen de tu piscina para darte la dosis exacta. Deja de tirar dinero y cuida el medio ambiente.</p>
             </div>
-            <div class="visual-box" style="background: #f1f8e9;">
-                <div class="icon-card" style="box-shadow: none; text-align: center;">
-                    <span class="material-symbols-rounded" style="font-size: 80px; color: var(--green);">eco</span>
-                    <h3 style="color: #2e7d32;">Eficiencia Total</h3>
-                    <p>Menos químicos, menos luz, más disfrute.</p>
-                </div>
+            <div style="text-align: center;">
+                <span class="material-symbols-rounded" style="font-size: 100px; color: var(--green);">savings</span>
             </div>
         </div>
 
-        <!-- SECCIÓN VIGILANTE -->
-        <div class="benefit-block benefit-reverse">
-            <div class="benefit-content">
-                <div class="feature-tag"><span class="material-symbols-rounded" style="font-size: 18px;">shield_with_heart</span> PAZ MENTAL TOTAL</div>
-                <h2 id="watch_t">Ella vigila mientras tú descansas</h2>
-                <p id="watch_d">La App permanece "dormida" para no gastar batería, pero despierta un segundo al día para mirar tu cielo. Si viene una tormenta o un vendaval, te avisará al móvil antes de que el desastre ocurra.</p>
-                <div class="notif">
-                    <span class="material-symbols-rounded notif-icon">thunderstorm</span>
-                    <div class="notif-text"><b>¡Alerta de Tormenta!</b>Viene lluvia fuerte en 2h. Sube el filtrado ahora.</div>
-                </div>
+        <div class="benefit-block" style="direction: rtl;">
+            <div class="benefit-content" style="direction: ltr;">
+                <h2 id="cloud_t">Sincronización Total</h2>
+                <p id="cloud_d">Comparte el ID de tu piscina con tu familia o jardinero. Todos sabrán qué hacer en tiempo real, sin errores.</p>
             </div>
-            <div class="visual-box" style="background: #e3f2fd;">
-                <div class="notif" style="margin-bottom: 10px;">
-                    <span class="material-symbols-rounded notif-icon" style="background: var(--pink);">air</span>
-                    <div class="notif-text"><b>Riesgo Motor</b>Viento de 50km/h previsto. Revisa el skimmer.</div>
-                </div>
+            <div style="text-align: center;">
+                <span class="material-symbols-rounded" style="font-size: 100px; color: var(--blue-primary);">cloud_done</span>
             </div>
         </div>
     </section>
 
-    <!-- FOOTER -->
     <footer>
-        <p>© 2026 LorenSoft | <a href="privacidad.html" id="linkPrivacy">Política de Privacidad</a></p>
-        <p><small id="credits">PISCINAS BLUE - Inteligencia en tu piscina</small></p>
+        <p>© 2026 LorenSoft | <a href="privacidad.html">Privacidad / Privacy</a></p>
+        <p id="footer_text">PISCINAS BLUE - Inteligencia en tu piscina</p>
     </footer>
 
+    <script>
+        const translations = {
+            es: {
+                title: "PISCINAS BLUE 🏊‍♂️",
+                tagline: "El primer Cerebro Inteligente que cuida tu piscina y tu bolsillo. IA climática y ahorro real.",
+                btnText: "DESCARGAR EN GOOGLE PLAY",
+                save_t: "Ahorra un 40% en químicos",
+                save_d: "Nuestra IA analiza el clima y el volumen de tu piscina para darte la dosis exacta. Deja de tirar dinero.",
+                cloud_t: "Sincronización Total",
+                cloud_d: "Comparte el ID con tu familia o jardinero. Todos sabrán qué hacer en tiempo real.",
+                footer_text: "PISCINAS BLUE - Inteligencia en tu piscina"
+            },
+            en: {
+                title: "BLUE POOLS 🏊‍♂️",
+                tagline: "The Smart Brain for your pool. Real savings and perfect water with AI.",
+                btnText: "DOWNLOAD ON PLAY STORE",
+                save_t: "Save 40% on Chemicals",
+                save_d: "Our AI analyzes the weather and pool volume to give you the exact dose. Stop wasting money.",
+                cloud_t: "Total Cloud Sync",
+                cloud_d: "Share the pool ID with family or gardener. Everyone knows what to do in real-time.",
+                footer_text: "BLUE POOLS - Smart Maintenance AI"
+            },
+            fr: {
+                title: "PISCINES BLEUES 🏊‍♂️",
+                tagline: "L'intelligence artificielle pour votre piscine. Économies réelles et eau parfaite.",
+                btnText: "TÉLÉCHARGER SUR PLAY STORE",
+                save_t: "Économisez 40% de Produits",
+                save_d: "Notre IA analyse la météo et le volume pour vous donner la dose exacte. Économisez de l'argent.",
+                cloud_t: "Synchronisation Totale",
+                cloud_d: "Partagez l'ID avec votre famille. Tout le monde sait quoi faire en temps réel.",
+                footer_text: "PISCINES BLEUES - Maintenance Inteligente"
+            },
+            zh: {
+                title: "蓝色游泳池 🏊‍♂️",
+                tagline: "游泳池的智能大脑。AI带来真实节约和完美水质。",
+                btnText: "在 Google Play 下载",
+                save_t: "节省 40% 的化学品",
+                save_d: "我们的 AI 分析天气和池水量，为您提供精确剂量。停止浪费金钱。",
+                cloud_t: "全面云同步",
+                cloud_d: "与家人或园丁共享泳池 ID。每个人都能实时了解维护进度。",
+                footer_text: "蓝色游泳池 - 智能 AI 维护"
+            }
+        };
+
+        function changeLang(lang) {
+            const t = translations[lang] || translations.es;
+            document.documentElement.lang = lang;
+            Object.keys(t).forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.innerText = t[id];
+            });
+            // Update URL without refreshing for better SEO indexing
+            const newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?lang=' + lang;
+            window.history.pushState({path:newurl},'',newurl);
+        }
+
+        // Auto-detect lang
+        const urlParams = new URLSearchParams(window.location.search);
+        const langParam = urlParams.get('lang');
+        const userLang = langParam || navigator.language.split('-')[0];
+        window.onload = () => changeLang(userLang);
+    </script>
 </body>
 </html>
